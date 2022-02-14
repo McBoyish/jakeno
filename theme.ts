@@ -14,11 +14,11 @@ declare global {
 const theme = {
   ...DefaultTheme,
   color: {
-    primary: '#1B262C',
-    secondary: '#0F4C75',
-    tertiary: '#3282B8',
-    background: '#BBE1FA',
-    text: '#1B262C',
+    primary: '#F38181',
+    secondary: '#FCE38A',
+    tertiary: '#EAFFD0',
+    background: '#95E1D3',
+    text: '#000000',
     black: '#000000',
     white: '#FFFFFF',
   },

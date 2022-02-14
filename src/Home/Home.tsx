@@ -81,7 +81,7 @@ const styleSheet = (color: Color, font: Font) =>
     heading: {
       fontSize: font.size.lg,
       fontFamily: font.family.heading,
-      color: color.primary,
+      color: color.text,
       textAlign: 'center',
     },
     text: {
@@ -96,6 +96,7 @@ const styleSheet = (color: Color, font: Font) =>
       fontFamily: font.family.text,
       height: 25,
       outlineStyle: 'none',
+      borderColor: color.primary,
     },
     button: {
       borderWidth: 2,
@@ -109,6 +110,6 @@ const styleSheet = (color: Color, font: Font) =>
     buttonLabel: {
       fontSize: font.size.xs,
       fontFamily: font.family.text,
-      color: color.background,
+      color: color.text,
     },
   });

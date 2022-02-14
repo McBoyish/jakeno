@@ -26,6 +26,20 @@ export default function ChatBox({ messages }: ChatBoxProps) {
       </View>
     );
   };
+  const renderItem2 = (item: MessageField, index: number) => {
+    return (
+      <View style={styles.messageContainer} key={index}>
+        <View style={styles.messageHeaderContainer}>
+          <Text style={styles.username}>{item.userName}</Text>
+          <View style={styles.spacing} />
+          <Text style={styles.timestamp}>
+            {`${new Date(item.date).toLocaleString('en-GB').slice(12, 17)}`}
+          </Text>
+        </View>
+        <Text style={styles.content}>{item.content}</Text>
+      </View>
+    );
+  };
   const separator = () => <View style={styles.separator} />;
 
   return (
@@ -37,6 +51,7 @@ export default function ChatBox({ messages }: ChatBoxProps) {
         ItemSeparatorComponent={separator}
         scrollEnabled
       />
+      {/* {messages.map((message, index) => renderItem2(message, index))} */}
     </View>
   );
 }
@@ -44,12 +59,16 @@ export default function ChatBox({ messages }: ChatBoxProps) {
 const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
+      flexDirection: 'column',
+      flexGrow: 1,
       alignSelf: 'center',
       width: '100%',
+      height: '50vh',
       marginVertical: 5,
       padding: 10,
       borderWidth: 2,
       borderRadius: 10,
+      borderColor: color.primary,
     },
     messageContainer: {
       backgroundColor: color.tertiary,
@@ -66,11 +85,12 @@ const styleSheet = (color: Color, font: Font) =>
     username: {
       fontFamily: font.family.text,
       fontSize: font.size.xs,
+      color: color.primary,
     },
     content: {
       fontFamily: font.family.text,
       fontSize: font.size.sm,
-      color: color.background,
+      color: color.text,
     },
     timestamp: {
       fontFamily: font.family.text,

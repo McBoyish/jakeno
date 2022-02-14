@@ -44,6 +44,7 @@ const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     inputContainer: {
       flexDirection: 'row',
+      flexGrow: 0,
       width: '100%',
       marginVertical: 5,
     },
@@ -56,6 +57,7 @@ const styleSheet = (color: Color, font: Font) =>
       height: 25,
       width: '100%',
       outlineStyle: 'none',
+      borderColor: color.primary,
     },
     button: {
       borderWidth: 2,
@@ -69,7 +71,7 @@ const styleSheet = (color: Color, font: Font) =>
     buttonLabel: {
       fontSize: font.size.xs,
       fontFamily: font.family.text,
-      color: color.background,
+      color: color.text,
     },
     separator: {
       width: 5,

@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ChatBox from './components/ChatBox';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from '../../server/socket';
 import { MessageField, InputMessage } from '../../types';
@@ -79,6 +85,7 @@ const styleSheet = (color: Color, font: Font) =>
       flex: 1,
       alignSelf: 'center',
       width: '100%',
+      height: '100vh',
       backgroundColor: color.background,
       padding: 10,
     },
