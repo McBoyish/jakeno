@@ -69,9 +69,10 @@ const styleSheet = (color: Color, font: Font) =>
       borderWidth: 2,
       borderRadius: 10,
       borderColor: color.primary,
+      backgroundColor: color.secondary,
     },
     messageContainer: {
-      backgroundColor: color.tertiary,
+      backgroundColor: color.white,
       borderRadius: 10,
       padding: 5,
       alignSelf: 'flex-start',

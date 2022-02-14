@@ -58,6 +58,7 @@ const styleSheet = (color: Color, font: Font) =>
       width: '100%',
       outlineStyle: 'none',
       borderColor: color.primary,
+      backgroundColor: color.secondary,
     },
     button: {
       borderWidth: 2,
