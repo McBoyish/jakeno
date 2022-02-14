@@ -14,7 +14,7 @@ export default function Home() {
       userName,
       roomName,
       async (userId: string, roomId: string) => {
-        await router.push(`room/${roomId}?userId=${userId}`);
+        await router.push(`/room/${roomId}?userId=${userId}`);
       }
     );
   };
