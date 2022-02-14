@@ -82,6 +82,7 @@ const styleSheet = (color: Color, font: Font) =>
       fontSize: font.size.lg,
       fontFamily: font.family.heading,
       color: color.primary,
+      textAlign: 'center',
     },
     text: {
       fontSize: font.size.sm,

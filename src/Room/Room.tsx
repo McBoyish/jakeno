@@ -7,6 +7,7 @@ import { socket } from '../../server/socket';
 import { MessageField, InputMessage } from '../../types';
 import { Color, Font } from '../../types';
 import MessageInput from './components/MessageInput';
+import sortByDate from '../../util/sortByDate';
 
 export default function Room() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function Room() {
         loading: false,
         error: false,
       });
-      setMessages(messages);
+      setMessages(sortByDate(messages));
     });
     socket.on('join-room-error', async () => {
       setState({
@@ -63,10 +64,10 @@ export default function Room() {
         <Text style={styles.text}>{'Page not found'}</Text>
       )}
       {!state.loading && !state.error && (
-        <View>
+        <>
           <MessageInput onSubmit={onSubmit} />
           <ChatBox messages={messages} />
-        </View>
+        </>
       )}
     </View>
   );
@@ -77,8 +78,8 @@ const styleSheet = (color: Color, font: Font) =>
     container: {
       flex: 1,
       alignSelf: 'center',
-      backgroundColor: color.background,
       width: '100%',
+      backgroundColor: color.background,
       padding: 10,
     },
     text: {

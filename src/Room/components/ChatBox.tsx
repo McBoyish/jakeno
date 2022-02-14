@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { Text, View, FlatList, StyleSheet, ScrollView } from 'react-native';
 import { MessageField } from '../../../types';
-import sortByDate from '../../../util/sortByDate';
 import { Color, Font } from '../../../types';
 import { useTheme } from 'react-native-paper';
 
@@ -23,9 +22,7 @@ export default function ChatBox({ messages }: ChatBoxProps) {
             {`${new Date(item.date).toLocaleString('en-GB').slice(12, 17)}`}
           </Text>
         </View>
-        <View style={styles.contentContainer}>
-          <Text style={styles.content}>{item.content}</Text>
-        </View>
+        <Text style={styles.content}>{item.content}</Text>
       </View>
     );
   };
@@ -34,7 +31,7 @@ export default function ChatBox({ messages }: ChatBoxProps) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={sortByDate(messages)}
+        data={messages}
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}
         ItemSeparatorComponent={separator}
@@ -47,10 +44,9 @@ export default function ChatBox({ messages }: ChatBoxProps) {
 const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
-      flex: 1,
       alignSelf: 'center',
-      backgroundColor: color.background,
       width: '100%',
+      marginVertical: 5,
       padding: 10,
       borderWidth: 2,
       borderRadius: 10,
@@ -60,14 +56,12 @@ const styleSheet = (color: Color, font: Font) =>
       borderRadius: 10,
       padding: 5,
       alignSelf: 'flex-start',
+      maxWidth: '50%',
     },
     messageHeaderContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'baseline',
-    },
-    contentContainer: {
-      flexDirection: 'row',
     },
     username: {
       fontFamily: font.family.text,
