@@ -21,7 +21,8 @@
     "dev": "next dev",
     "build": "next build",
     "clean": "npx rimraf -f node_modules yarn.lock package-lock.json .next",
-    "clean-install": "yarn run clean && yarn"
+    "clean-install": "yarn run clean && yarn",
+    "start": "next start -p $PORT"
   },
   "version": "1.0.0",
   "private": true,
