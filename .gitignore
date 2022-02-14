@@ -1,6 +1,6 @@
 # @generated: @expo/next-adapter@2.1.0
 /node_modules
-.expo/*
+.expo
 npm-debug.*
 *.jks
 *.p8
@@ -20,7 +20,6 @@ yarn-error.log*
 
 # misc
 .DS_Store
-.env*
 
 .next
 

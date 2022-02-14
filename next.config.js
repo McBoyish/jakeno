@@ -2,7 +2,24 @@
 // Learn more: https://docs.expo.io/guides/using-nextjs/
 
 const { withExpo } = require('@expo/next-adapter');
+const withFonts = require('next-fonts');
+const withImages = require('next-images');
+const withPlugins = require('next-compose-plugins');
+const withTM = require('next-transpile-modules');
 
-module.exports = withExpo({
-  projectRoot: __dirname,
-});
+module.exports = withPlugins(
+  [
+    [
+      withTM,
+      {
+        transpileModules: ['expo-next-react-navigation'],
+      },
+    ],
+    withFonts,
+    withImages,
+    [withExpo, { projectRoot: __dirname }],
+  ],
+  {
+    webpack5: false,
+  }
+);
