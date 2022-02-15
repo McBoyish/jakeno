@@ -1,3 +1,3 @@
-## This is a small website where you can chat with random strangers
+## VERSION 1.1.0
 
-All you need to do is enter a username and a room name and you can start chatting!
+## This is a small website where you can chat with random strangers by joining rooms
