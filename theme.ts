@@ -25,11 +25,11 @@ const theme = {
   },
   font: {
     size: {
-      lg: 20,
-      md: 16,
-      sm: 14,
-      xs: 12,
-      xxs: 8,
+      lg: 24,
+      md: 20,
+      sm: 16,
+      xs: 14,
+      xxs: 12,
     },
     family: {
       text: 'Comic Sans MS',

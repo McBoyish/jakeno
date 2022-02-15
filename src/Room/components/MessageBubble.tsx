@@ -31,9 +31,9 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color.white,
+      backgroundColor: color.secondary,
       borderRadius: 10,
-      padding: 5,
+      padding: 10,
       alignSelf: 'flex-start',
       maxWidth: '50%',
     },

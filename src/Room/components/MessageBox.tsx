@@ -24,7 +24,7 @@ export default function MessageBox({ messages }: MessageBoxProps) {
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}
         ItemSeparatorComponent={separator}
-        scrollEnabled
+        scrollEnabled={true}
       />
     </View>
   );
@@ -40,10 +40,9 @@ const styleSheet = (color: Color) =>
       height: '50vh',
       marginVertical: 5,
       padding: 10,
-      borderWidth: 2,
       borderRadius: 10,
       borderColor: color.primary,
-      backgroundColor: color.secondary,
+      backgroundColor: color.tertiary,
     },
     separator: {
       height: 5,

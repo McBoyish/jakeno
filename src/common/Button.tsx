@@ -7,11 +7,17 @@ interface ButtonProps {
   text: string;
   onClick: () => void;
   disabled: boolean;
+  width?: number;
 }
 
-export default function Button({ text, onClick, disabled }: ButtonProps) {
+export default function Button({
+  text,
+  onClick,
+  disabled,
+  width,
+}: ButtonProps) {
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const styles = styleSheet(color, font, width);
 
   return (
     <PaperButton
@@ -28,21 +34,21 @@ export default function Button({ text, onClick, disabled }: ButtonProps) {
   );
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, width?: number) =>
   StyleSheet.create({
     container: {
-      borderWidth: 0,
       borderRadius: 10,
       backgroundColor: 'transparent',
-      height: 25,
+      height: 50,
+      width: width,
     },
     content: {
-      borderWidth: 2,
       borderRadius: 10,
       borderStyle: 'solid',
       borderColor: color.primary,
-      backgroundColor: color.secondary,
-      height: 25,
+      backgroundColor: color.primary,
+      height: 50,
+      width: width,
     },
     label: {
       fontSize: font.size.xs,

@@ -29,31 +29,35 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>
-        {'Welcome! Join a room and start chatting with random strangers.'}
+      <Text style={styles.heading}>{'Random Stranger'}</Text>
+      <Text style={styles.subHeading}>
+        {'Join a room and start chatting with random strangers.'}
       </Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          onChangeText={onChangeUsername}
-          value={username}
-          style={styles.textInput}
-          placeholder={'Enter username'}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          onChangeText={onChangeRoomName}
-          value={roomName}
-          style={styles.textInput}
-          placeholder={'Enter room'}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Button
-          text={'Join'}
-          disabled={username === '' || roomName === ''}
-          onClick={handleOnSubmit}
-        />
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            onChangeText={onChangeUsername}
+            value={username}
+            style={styles.textInput}
+            placeholder={'Enter username'}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            onChangeText={onChangeRoomName}
+            value={roomName}
+            style={styles.textInput}
+            placeholder={'Enter room'}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Button
+            text={'Join'}
+            disabled={username === '' || roomName === ''}
+            onClick={handleOnSubmit}
+            width={300}
+          />
+        </View>
       </View>
     </View>
   );
@@ -69,6 +73,9 @@ const styleSheet = (color: Color, font: Font) =>
       width: '100%',
       padding: 10,
     },
+    formContainer: {
+      marginVertical: 20,
+    },
     inputContainer: {
       marginVertical: 5,
     },
@@ -76,17 +83,21 @@ const styleSheet = (color: Color, font: Font) =>
       fontSize: font.size.lg,
       fontFamily: font.family.heading,
       color: color.text,
-      textAlign: 'center',
+    },
+    subHeading: {
+      fontSize: font.size.md,
+      fontFamily: font.family.heading,
+      color: color.text,
     },
     textInput: {
-      borderWidth: 2,
       borderRadius: 10,
-      paddingHorizontal: 5,
+      paddingHorizontal: 10,
       fontSize: font.size.sm,
       fontFamily: font.family.text,
       outlineStyle: 'none',
       borderColor: color.primary,
-      backgroundColor: color.secondary,
-      height: 25,
+      backgroundColor: color.tertiary,
+      height: 50,
+      width: 300,
     },
   });
