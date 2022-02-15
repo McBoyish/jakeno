@@ -8,17 +8,17 @@ import { socket } from '../../server/socket';
 
 export default function Home() {
   const router = useRouter();
-  const [userName, setUserName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
   const { color, font } = useTheme();
   const styles = styleSheet(color, font);
 
-  const onChangeUserName = (text: string) => setUserName(text);
+  const onChangeUsername = (text: string) => setUsername(text);
   const onChangeRoomName = (text: string) => setRoomName(text);
   const handleOnSubmit = () => {
     socket.emit(
       'join-room-request',
-      userName,
+      username,
       roomName,
       async (userId: string, roomId: string) => {
         await router.push(`/room/${roomId}?userId=${userId}`);
@@ -33,8 +33,8 @@ export default function Home() {
       </Text>
       <View style={styles.inputContainer}>
         <TextInput
-          onChangeText={onChangeUserName}
-          value={userName}
+          onChangeText={onChangeUsername}
+          value={username}
           style={styles.textInput}
           placeholder={'Enter username'}
         />
@@ -51,10 +51,10 @@ export default function Home() {
         <Button
           mode='contained'
           onPress={handleOnSubmit}
-          disabled={userName === '' || roomName === ''}
+          disabled={username === '' || roomName === ''}
           style={[
             styles.button,
-            userName === '' || roomName === '' ? { opacity: 0.5 } : {},
+            username === '' || roomName === '' ? { opacity: 0.5 } : {},
           ]}
           labelStyle={styles.buttonLabel}
         >
@@ -97,6 +97,7 @@ const styleSheet = (color: Color, font: Font) =>
       height: 25,
       outlineStyle: 'none',
       borderColor: color.primary,
+      backgroundColor: color.secondary,
     },
     button: {
       borderWidth: 2,

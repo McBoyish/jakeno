@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ChatBox from './components/ChatBox';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from '../../server/socket';
-import { MessageField, InputMessage } from '../../types';
+import { InputMessage, Message } from '../../types';
 import { Color, Font } from '../../types';
 import MessageInput from './components/MessageInput';
 import sortByDate from '../../util/sortByDate';
 
 export default function Room() {
   const router = useRouter();
-  const [messages, setMessages] = useState<MessageField[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [state, setState] = useState({
     loading: true,
     error: false,
@@ -32,14 +26,14 @@ export default function Room() {
       roomId: roomId as string,
       content: text,
     };
-    socket.emit('message', message, (res: MessageField) => {
+    socket.emit('message', message, (res: Message) => {
       setMessages((messages) => [res, ...messages]);
     });
   };
 
   useEffect(() => {
     if (roomId && userId) socket.emit('join-room', userId, roomId);
-    socket.on('join-room-success', (messages: MessageField[]) => {
+    socket.on('join-room-success', (messages: Message[]) => {
       setState({
         loading: false,
         error: false,
@@ -52,7 +46,7 @@ export default function Room() {
         error: true,
       });
     });
-    socket.on('message', (message: MessageField) => {
+    socket.on('message', (message: Message) => {
       setMessages((messages) => [message, ...messages]);
     });
     return () => {

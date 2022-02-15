@@ -1,36 +1,21 @@
 import React from 'react';
-import { Text, View, FlatList, StyleSheet, ScrollView } from 'react-native';
-import { MessageField } from '../../../types';
-import { Color, Font } from '../../../types';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { Color, Font, Message } from '../../../types';
 import { useTheme } from 'react-native-paper';
 
 interface ChatBoxProps {
-  messages: MessageField[];
+  messages: Message[];
 }
 
 export default function ChatBox({ messages }: ChatBoxProps) {
   const { color, font } = useTheme();
   const styles = styleSheet(color, font);
-
-  const renderItem = ({ item }: { item: MessageField }) => {
+  const renderItem = ({ item }: { item: Message }) => {
+    console.log(item.user.name);
     return (
       <View style={styles.messageContainer}>
         <View style={styles.messageHeaderContainer}>
-          <Text style={styles.username}>{item.userName}</Text>
-          <View style={styles.spacing} />
-          <Text style={styles.timestamp}>
-            {`${new Date(item.date).toLocaleString('en-GB').slice(12, 17)}`}
-          </Text>
-        </View>
-        <Text style={styles.content}>{item.content}</Text>
-      </View>
-    );
-  };
-  const renderItem2 = (item: MessageField, index: number) => {
-    return (
-      <View style={styles.messageContainer} key={index}>
-        <View style={styles.messageHeaderContainer}>
-          <Text style={styles.username}>{item.userName}</Text>
+          <Text style={styles.username}>{item.user.name}</Text>
           <View style={styles.spacing} />
           <Text style={styles.timestamp}>
             {`${new Date(item.date).toLocaleString('en-GB').slice(12, 17)}`}

@@ -26,14 +26,18 @@ export interface Color {
   white: string;
 }
 
-export interface MessageField {
-  date: string;
+export interface User {
+  name: string;
+}
+
+export interface Message {
   content: string;
-  userName: string;
+  user: User;
+  date: string;
 }
 
 export interface InputMessage {
-  userId: string;
   roomId: string;
   content: string;
+  userId: string;
 }
