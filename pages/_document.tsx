@@ -4,20 +4,19 @@ import { Children } from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 // @ts-ignore
 import { AppRegistry } from 'react-native-web';
-import config from '../app.json';
 // Force Next-generated DOM elements to fill their parent's height
 const normalizeNextElements = `
   #__next {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
   }
 `;
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }: { renderPage: any }) {
-    AppRegistry.registerComponent(config.expo.name, () => Main);
-    const { getStyleElement } = AppRegistry.getApplication(config.expo.name);
+    AppRegistry.registerComponent('Random Stranger', () => Main);
+    const { getStyleElement } = AppRegistry.getApplication('Random Stranger');
     const page = await renderPage();
     const styles = [
       <style dangerouslySetInnerHTML={{ __html: normalizeNextElements }} />,
@@ -28,9 +27,9 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html style={{ height: '100%' }}>
+      <Html>
         <Head />
-        <body style={{ height: '100%', overflow: 'hidden' }}>
+        <body>
           <Main />
           <NextScript />
         </body>

@@ -83,11 +83,13 @@ const styleSheet = (color: Color, font: Font) =>
       fontSize: font.size.lg,
       fontFamily: font.family.heading,
       color: color.text,
+      textAlign: 'center',
     },
     subHeading: {
       fontSize: font.size.md,
       fontFamily: font.family.heading,
       color: color.text,
+      textAlign: 'center',
     },
     textInput: {
       borderRadius: 10,

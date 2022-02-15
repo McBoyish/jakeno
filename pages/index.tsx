@@ -4,11 +4,7 @@ import Home from '../src/Home';
 import { ScrollView } from 'react-native';
 
 const HomePage: NextPage = () => {
-  return (
-    <ScrollView>
-      <Home />
-    </ScrollView>
-  );
+  return <Home />;
 };
 
 export default HomePage;
