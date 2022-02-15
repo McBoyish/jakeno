@@ -9,7 +9,7 @@ const normalizeNextElements = `
   #__next {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
   }
 `;
 
@@ -27,9 +27,9 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html style={{ height: '100%' }}>
         <Head />
-        <body>
+        <body style={{ height: '100%' }}>
           <Main />
           <NextScript />
         </body>
