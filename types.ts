@@ -24,6 +24,7 @@ export interface Color {
   tertiary: string;
   black: string;
   white: string;
+  hyperlink: string;
 }
 
 export interface User {

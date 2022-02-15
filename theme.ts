@@ -21,6 +21,7 @@ const theme = {
     text: '#000000',
     black: '#000000',
     white: '#FFFFFF',
+    hyperlink: '#0000EE',
   },
   font: {
     size: {

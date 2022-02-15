@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
+import HyperLink from 'react-native-hyperlink';
 import { Color, Font, Message } from '../../../types';
 import { useTheme } from 'react-native-paper';
 
@@ -10,8 +11,8 @@ interface ChatBoxProps {
 export default function ChatBox({ messages }: ChatBoxProps) {
   const { color, font } = useTheme();
   const styles = styleSheet(color, font);
+
   const renderItem = ({ item }: { item: Message }) => {
-    console.log(item.user.name);
     return (
       <View style={styles.messageContainer}>
         <View style={styles.messageHeaderContainer}>
@@ -21,7 +22,15 @@ export default function ChatBox({ messages }: ChatBoxProps) {
             {`${new Date(item.date).toLocaleString('en-GB').slice(12, 17)}`}
           </Text>
         </View>
-        <Text style={styles.content}>{item.content}</Text>
+        <HyperLink
+          linkDefault
+          linkStyle={{
+            color: color.hyperlink,
+            textDecorationLine: 'underline',
+          }}
+        >
+          <Text style={styles.content}>{item.content}</Text>
+        </HyperLink>
       </View>
     );
   };

@@ -10,6 +10,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-hyperlink": "^0.0.19",
     "react-native-paper": "^4.11.2",
     "react-native-web": "0.17.1",
     "socket.io-client": "^4.4.1"
@@ -33,7 +34,7 @@
     "build": "next build",
     "clean": "npx rimraf -f node_modules yarn.lock package-lock.json .next",
     "clean-install": "yarn run clean && yarn",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "version": "1.1.1",
   "private": true,

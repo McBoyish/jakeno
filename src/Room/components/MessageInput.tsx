@@ -31,7 +31,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         mode={'contained'}
         onPress={handleOnSubmit}
         disabled={text === ''}
-        style={styles.button}
+        style={[styles.button, text === '' ? { opacity: 0.5 } : {}]}
         labelStyle={styles.buttonLabel}
       >
         {'Send'}
