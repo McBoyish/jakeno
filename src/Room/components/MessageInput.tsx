@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  NativeSyntheticEvent,
+  TextInputKeyPressEventData,
+} from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from '../../../types';
 import Button from '../../common/Button';
@@ -7,6 +13,7 @@ import Button from '../../common/Button';
 interface MessageInputProps {
   onSubmit: (text: string) => void;
 }
+type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
   const [text, setText] = useState<string>('');
@@ -14,6 +21,10 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   const styles = styleSheet(color, font);
 
   const onChangeText = (text: string) => setText(text);
+  const handleOnKeyPress = (e: OnKeyPressEvent) => {
+    if (text === '') return;
+    if (e.nativeEvent.key === 'Enter') handleOnSubmit();
+  };
   const handleOnSubmit = () => {
     setText('');
     onSubmit(text);
@@ -26,6 +37,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         value={text}
         placeholder={'Message'}
         style={styles.textInput}
+        onKeyPress={handleOnKeyPress}
       />
       <View style={styles.separator} />
       <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
