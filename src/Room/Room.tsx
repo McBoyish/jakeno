@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import ChatBox from './components/ChatBox';
+import ChatBox from './components/MessageBox';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from '../../server/socket';

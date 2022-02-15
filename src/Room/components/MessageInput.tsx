@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { Button, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { Color, Font } from '../../../types';
+import Button from '../../common/Button';
 
 interface MessageInputProps {
   onSubmit: (text: string) => void;
@@ -19,7 +20,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={styles.container}>
       <TextInput
         onChangeText={onChangeText}
         value={text}
@@ -27,22 +28,14 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         style={styles.textInput}
       />
       <View style={styles.separator} />
-      <Button
-        mode={'contained'}
-        onPress={handleOnSubmit}
-        disabled={text === ''}
-        style={[styles.button, text === '' ? { opacity: 0.5 } : {}]}
-        labelStyle={styles.buttonLabel}
-      >
-        {'Send'}
-      </Button>
+      <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
     </View>
   );
 }
 
 const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
-    inputContainer: {
+    container: {
       flexDirection: 'row',
       flexGrow: 0,
       width: '100%',
@@ -59,20 +52,6 @@ const styleSheet = (color: Color, font: Font) =>
       outlineStyle: 'none',
       borderColor: color.primary,
       backgroundColor: color.secondary,
-    },
-    button: {
-      borderWidth: 2,
-      borderRadius: 10,
-      borderStyle: 'solid',
-      borderColor: color.primary,
-      backgroundColor: color.secondary,
-      justifyContent: 'center',
-      height: 25,
-    },
-    buttonLabel: {
-      fontSize: font.size.xs,
-      fontFamily: font.family.text,
-      color: color.text,
     },
     separator: {
       width: 5,
