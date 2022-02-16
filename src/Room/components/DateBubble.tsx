@@ -30,11 +30,11 @@ export default function DateBubble({ date }: DateProps) {
 const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color.secondary,
+      backgroundColor: color.primary,
       borderRadius: 10,
       padding: 5,
+      // margin: 2.5,
       alignSelf: 'center',
-      marginVertical: 10,
     },
     date: {
       fontFamily: font.family.text,

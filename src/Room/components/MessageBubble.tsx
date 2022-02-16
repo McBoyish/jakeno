@@ -42,7 +42,7 @@ const styleSheet = (color: Color, font: Font) =>
       paddingVertical: 5,
       paddingHorizontal: 10,
       minHeight: 50,
-      maxWidth: '70%',
+      maxWidth: '90%',
       justifyContent: 'center',
     },
     left: {

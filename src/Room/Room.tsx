@@ -81,7 +81,7 @@ const styleSheet = (color: Color, font: Font) =>
       width: '100%',
       height: '100vh',
       backgroundColor: color.background,
-      padding: 10,
+      padding: 20,
     },
     text: {
       fontFamily: font.family.text,

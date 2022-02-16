@@ -16,24 +16,16 @@ export default function MessageBox({ messages }: MessageBoxProps) {
 
   const separator = () => <View style={styles.separator} />;
   const renderItem = ({ item, index }: { item: Message; index: number }) => {
-    if (index === messages.length - 1) return <MessageBubble message={item} />;
-    if (index === 0)
+    const shouldAddDate =
+      index === 0 ||
+      parseDate(messages[index].date).date !==
+        parseDate(messages[index - 1].date).date;
+    if (shouldAddDate)
       return (
         <>
           <DateBubble date={item.date} />
           <View style={styles.separator} />
           <MessageBubble message={item} />
-        </>
-      );
-    const shouldAddDate =
-      parseDate(messages[index].date).date !==
-      parseDate(messages[index + 1].date).date;
-    if (shouldAddDate)
-      return (
-        <>
-          <MessageBubble message={item} />
-          <View style={styles.separator} />
-          <DateBubble date={messages[index + 1].date} />
         </>
       );
     return <MessageBubble message={item} />;
@@ -68,6 +60,6 @@ const styleSheet = (color: Color) =>
       backgroundColor: color.tertiary,
     },
     separator: {
-      height: 5,
+      height: 10,
     },
   });
