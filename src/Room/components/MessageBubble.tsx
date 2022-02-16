@@ -43,6 +43,7 @@ const styleSheet = (color: Color, font: Font) =>
       borderRadius: 10,
       paddingVertical: 5,
       paddingHorizontal: 10,
+      height: 50,
       maxWidth: '90%',
     },
     left: {

@@ -29,14 +29,13 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>{'Random Stranger'}</Text>
-      <Text style={styles.subHeading}>
-        {'Join a room and start chatting with random strangers.'}
-      </Text>
-      <Text style={styles.subHeading}>
-        {'Username limited to 18 characters.'}
-      </Text>
       <View style={styles.formContainer}>
+        <Text style={styles.heading}>
+          {'Join a room and start chatting with random strangers.'}
+        </Text>
+        <Text style={styles.subHeading}>
+          {'Username limited to 18 characters.'}
+        </Text>
         <View style={styles.inputContainer}>
           <TextInput
             onChangeText={onChangeUsername}
@@ -73,13 +72,17 @@ const styleSheet = (color: Color, font: Font) =>
     container: {
       flex: 1,
       alignSelf: 'center',
-      alignItems: 'center',
       backgroundColor: color.background,
       width: '100%',
       padding: 10,
     },
     formContainer: {
       marginVertical: 20,
+      padding: 20,
+      backgroundColor: color.secondary,
+      borderRadius: 10,
+      alignSelf: 'center',
+      alignItems: 'center',
     },
     inputContainer: {
       marginVertical: 5,
