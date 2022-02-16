@@ -28,9 +28,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         </Text>
       </View>
       <HyperLink linkDefault linkStyle={styles.hyperlink}>
-        <Text style={[styles.content, isSelf ? { textAlign: 'right' } : {}]}>
-          {message.content}
-        </Text>
+        <Text style={styles.content}>{message.content}</Text>
       </HyperLink>
     </View>
   );
@@ -43,8 +41,9 @@ const styleSheet = (color: Color, font: Font) =>
       borderRadius: 10,
       paddingVertical: 5,
       paddingHorizontal: 10,
-      height: 50,
-      maxWidth: '90%',
+      minHeight: 50,
+      maxWidth: '70%',
+      justifyContent: 'center',
     },
     left: {
       alignSelf: 'flex-start',
