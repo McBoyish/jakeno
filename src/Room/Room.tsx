@@ -7,7 +7,7 @@ import { socket } from '../../server/socket';
 import { InputMessage, Message } from '../../types';
 import { Color, Font } from '../../types';
 import MessageInput from './components/MessageInput';
-import sortByDate from '../../util/sortByDate';
+import sortByDate from '../../utils/sortByDate';
 
 export default function Room() {
   const router = useRouter();

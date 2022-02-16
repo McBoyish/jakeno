@@ -51,6 +51,7 @@ const styleSheet = (color: Color, font: Font) =>
       flexDirection: 'row',
       flexGrow: 0,
       width: '100%',
+      alignSelf: 'center',
       marginVertical: 5,
     },
     textInput: {

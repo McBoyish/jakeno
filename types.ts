@@ -28,10 +28,13 @@ export interface Color {
 }
 
 export interface User {
+  _id: string;
   name: string;
 }
 
 export interface Message {
+  _id: string;
+  roomId: string;
   content: string;
   user: User;
   date: string;

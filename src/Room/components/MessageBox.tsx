@@ -3,6 +3,8 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { Color, Message } from '../../../types';
 import { useTheme } from 'react-native-paper';
 import MessageBubble from './MessageBubble';
+import DateBubble from './DateBubble';
+import { parseDate } from '../../../utils/parseDate';
 
 interface MessageBoxProps {
   messages: Message[];
@@ -13,7 +15,21 @@ export default function MessageBox({ messages }: MessageBoxProps) {
   const styles = styleSheet(color);
 
   const separator = () => <View style={styles.separator} />;
-  const renderItem = ({ item }: { item: Message }) => {
+  const renderItem = ({ item, index }: { item: Message; index: number }) => {
+    if (index === messages.length - 1) return <MessageBubble message={item} />;
+    const shouldAddDate =
+      index === 0 ||
+      parseDate(messages[index].date).date !==
+        parseDate(messages[index + 1].date).date;
+    if (shouldAddDate) {
+      return (
+        <>
+          <DateBubble date={messages[index + 1].date} />
+          <View style={styles.separator} />
+          <MessageBubble message={item} />
+        </>
+      );
+    }
     return <MessageBubble message={item} />;
   };
 
@@ -24,7 +40,8 @@ export default function MessageBox({ messages }: MessageBoxProps) {
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}
         ItemSeparatorComponent={separator}
-        scrollEnabled={true}
+        scrollEnabled
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

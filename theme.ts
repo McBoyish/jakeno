@@ -26,10 +26,10 @@ const theme = {
   font: {
     size: {
       lg: 24,
-      md: 20,
+      md: 18,
       sm: 16,
       xs: 14,
-      xxs: 12,
+      xxs: 10,
     },
     family: {
       text: 'Comic Sans MS',

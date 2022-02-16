@@ -33,6 +33,9 @@ export default function Home() {
       <Text style={styles.subHeading}>
         {'Join a room and start chatting with random strangers.'}
       </Text>
+      <Text style={styles.subHeading}>
+        {'Username limited to 18 characters.'}
+      </Text>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -53,7 +56,9 @@ export default function Home() {
         <View style={styles.inputContainer}>
           <Button
             text={'Join'}
-            disabled={username === '' || roomName === ''}
+            disabled={
+              username === '' || roomName === '' || username.length > 18
+            }
             onClick={handleOnSubmit}
             width={300}
           />
