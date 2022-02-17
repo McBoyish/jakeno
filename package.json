@@ -34,7 +34,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn lint && next build",
     "clean": "npx rimraf -f node_modules yarn.lock package-lock.json .next",
     "clean-install": "yarn run clean && yarn",
     "lint": "eslint . --ext .ts,.tsx"

@@ -51,7 +51,7 @@ const styleSheet = (color: Color, font: Font, width?: number) =>
       width: width,
     },
     label: {
-      fontSize: font.size.sm,
+      fontSize: font.size.secondary,
       fontFamily: font.family.text,
       color: color.text,
     },
