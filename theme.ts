@@ -25,11 +25,11 @@ const theme = {
   },
   font: {
     size: {
-      lg: 24,
-      md: 18,
-      sm: 16,
-      xs: 14,
-      xxs: 10,
+      heading: 28,
+      subheading: 20,
+      primary: 16,
+      secondary: 14,
+      tertiary: 10,
     },
     family: {
       text: 'Roboto',

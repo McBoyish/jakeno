@@ -28,6 +28,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           {`${parseDate(message.date).time}`}
         </Text>
       </View>
+      <View style={styles.verticalSpacing} />
       <HyperLink linkDefault linkStyle={styles.hyperlink}>
         <Text style={styles.content}>{message.content}</Text>
       </HyperLink>
@@ -41,8 +42,9 @@ const styleSheet = (color: Color, font: Font) =>
       backgroundColor: color.secondary,
       borderRadius: 10,
       paddingVertical: 5,
-      paddingHorizontal: 10,
+      paddingHorizontal: 7.5,
       minHeight: 50,
+      minWidth: 50,
       maxWidth: '90%',
       justifyContent: 'center',
     },
@@ -55,22 +57,22 @@ const styleSheet = (color: Color, font: Font) =>
     headerContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'baseline',
+      alignItems: 'flex-start',
     },
     username: {
       fontFamily: font.family.text,
-      fontSize: font.size.xs,
+      fontSize: font.size.secondary,
       color: color.primary,
     },
     content: {
       fontFamily: font.family.text,
-      fontSize: font.size.xs,
+      fontSize: font.size.primary,
       color: color.text,
       textAlign: 'left',
     },
     timestamp: {
       fontFamily: font.family.text,
-      fontSize: font.size.xxs,
+      fontSize: font.size.tertiary,
       opacity: 0.5,
     },
     hyperlink: {
@@ -79,5 +81,8 @@ const styleSheet = (color: Color, font: Font) =>
     },
     spacing: {
       width: 5,
+    },
+    verticalSpacing: {
+      height: 3,
     },
   });

@@ -38,8 +38,9 @@ const styleSheet = (color: Color, font: Font) =>
     },
     date: {
       fontFamily: font.family.text,
-      fontSize: font.size.xxs,
+      fontSize: font.size.tertiary,
       opacity: 0.5,
       textAlign: 'center',
+      textTransform: 'uppercase',
     },
   });

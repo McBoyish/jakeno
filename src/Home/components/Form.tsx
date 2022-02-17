@@ -88,13 +88,13 @@ const styleSheet = (color: Color, font: Font) =>
       marginVertical: 5,
     },
     heading: {
-      fontSize: font.size.lg,
+      fontSize: font.size.heading,
       fontFamily: font.family.heading,
       color: color.text,
       textAlign: 'center',
     },
     subHeading: {
-      fontSize: font.size.md,
+      fontSize: font.size.subheading,
       fontFamily: font.family.heading,
       color: color.text,
       textAlign: 'center',
@@ -102,7 +102,7 @@ const styleSheet = (color: Color, font: Font) =>
     textInput: {
       borderRadius: 10,
       paddingHorizontal: 10,
-      fontSize: font.size.sm,
+      fontSize: font.size.primary,
       fontFamily: font.family.text,
       outlineStyle: 'none',
       borderColor: color.primary,

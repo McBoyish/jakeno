@@ -1,9 +1,9 @@
 interface FontSize {
-  lg: number;
-  md: number;
-  sm: number;
-  xs: number;
-  xxs: number;
+  heading: number;
+  subheading: number;
+  primary: number;
+  secondary: number;
+  tertiary: number;
 }
 
 interface FontFamily {

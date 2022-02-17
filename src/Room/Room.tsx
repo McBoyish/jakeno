@@ -86,7 +86,7 @@ const styleSheet = (color: Color, font: Font) =>
     },
     text: {
       fontFamily: font.family.text,
-      fontSize: font.size.md,
+      fontSize: font.size.primary,
       color: color.text,
     },
   });

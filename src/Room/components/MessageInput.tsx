@@ -57,7 +57,7 @@ const styleSheet = (color: Color, font: Font) =>
     textInput: {
       borderRadius: 10,
       paddingHorizontal: 10,
-      fontSize: font.size.sm,
+      fontSize: font.size.primary,
       fontFamily: font.family.text,
       height: 50,
       width: '100%',
