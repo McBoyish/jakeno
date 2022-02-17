@@ -33,7 +33,6 @@ const styleSheet = (color: Color, font: Font) =>
       backgroundColor: color.primary,
       borderRadius: 10,
       padding: 5,
-      // margin: 2.5,
       alignSelf: 'center',
     },
     date: {

@@ -32,8 +32,8 @@ const theme = {
       xxs: 10,
     },
     family: {
-      text: 'Comic Sans MS',
-      heading: 'Comic Sans MS',
+      text: 'Roboto',
+      heading: 'Roboto',
     },
   },
 };

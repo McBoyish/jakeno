@@ -16,6 +16,8 @@ export default function MessageBox({ messages }: MessageBoxProps) {
 
   const separator = () => <View style={styles.separator} />;
   const renderItem = ({ item, index }: { item: Message; index: number }) => {
+    const shouldAddSpacing =
+      index > 0 && messages[index].user._id !== messages[index - 1].user._id;
     const shouldAddDate =
       index === 0 ||
       parseDate(messages[index].date).date !==
@@ -23,7 +25,16 @@ export default function MessageBox({ messages }: MessageBoxProps) {
     if (shouldAddDate)
       return (
         <>
+          {index > 0 && <View style={styles.separator} />}
           <DateBubble date={item.date} />
+          <View style={styles.separator} />
+          <View style={styles.separator} />
+          <MessageBubble message={item} />
+        </>
+      );
+    if (shouldAddSpacing)
+      return (
+        <>
           <View style={styles.separator} />
           <MessageBubble message={item} />
         </>
@@ -60,6 +71,6 @@ const styleSheet = (color: Color) =>
       backgroundColor: color.tertiary,
     },
     separator: {
-      height: 10,
+      height: 5,
     },
   });
