@@ -8,6 +8,6 @@ function compareDesc(a: Message, b: Message) {
 //   return new Date(a.date).valueOf() - new Date(b.date).valueOf();
 // }
 
-export default function sortByDate(data: Message[]) {
+export function sortByDate(data: Message[]) {
   return data.sort(compareDesc);
 }

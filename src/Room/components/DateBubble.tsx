@@ -2,9 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Color, Font } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
-import { isToday } from 'utils/isToday';
-import { isYesterday } from 'utils/isYesterday';
-import { parseDate } from 'utils/parseDate';
+import { parseDate, isToday, isYesterday } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
 
 interface DateProps {

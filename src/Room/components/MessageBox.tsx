@@ -4,7 +4,7 @@ import { Color, Message } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
 import MessageBubble from './MessageBubble';
 import DateBubble from './DateBubble';
-import { parseDate } from 'utils/parseDate';
+import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
 
 interface MessageBoxProps {

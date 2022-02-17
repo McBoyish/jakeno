@@ -7,7 +7,7 @@ import { socket } from 'server/socket';
 import { InputMessage, Message } from 'src/common/types';
 import { Color, Font } from 'src/common/types';
 import MessageInput from './components/MessageInput';
-import sortByDate from 'utils/sortByDate';
+import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
 
 export default function Room() {

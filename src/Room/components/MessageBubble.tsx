@@ -4,7 +4,7 @@ import HyperLink from 'react-native-hyperlink';
 import { Color, Font, Message } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
 import { useRouter } from 'next/router';
-import { parseDate } from 'utils/parseDate';
+import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
 
 interface MessageBubbleProps {
