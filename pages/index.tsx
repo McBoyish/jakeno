@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import React from 'react';
-import Home from '../src/Home';
+import Home from 'src/Home';
 
 const HomePage: NextPage = () => {
   return <Home />;

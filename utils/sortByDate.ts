@@ -1,4 +1,4 @@
-import { Message } from '../types';
+import { Message } from 'src/common/types';
 
 function compareDesc(a: Message, b: Message) {
   return new Date(b.date).valueOf() - new Date(a.date).valueOf();

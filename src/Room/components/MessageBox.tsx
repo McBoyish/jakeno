@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import { Color, Message } from '../../../types';
+import { View, FlatList } from 'react-native';
+import { Color, Message } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
 import MessageBubble from './MessageBubble';
 import DateBubble from './DateBubble';
-import { parseDate } from '../../../utils/parseDate';
+import { parseDate } from 'utils/parseDate';
+import StyleSheet from 'react-native-media-query';
 
 interface MessageBoxProps {
   messages: Message[];
@@ -12,7 +13,7 @@ interface MessageBoxProps {
 
 export default function MessageBox({ messages }: MessageBoxProps) {
   const { color } = useTheme();
-  const styles = styleSheet(color);
+  const { styles } = styleSheet(color);
 
   const separator = () => <View style={styles.separator} />;
   const renderItem = ({ item, index }: { item: Message; index: number }) => {

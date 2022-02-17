@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Color, Font } from '../../../types';
+import { Text, View } from 'react-native';
+import { Color, Font } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
-import { isToday } from '../../../utils/isToday';
-import { isYesterday } from '../../../utils/isYesterday';
-import { parseDate } from '../../../utils/parseDate';
+import { isToday } from 'utils/isToday';
+import { isYesterday } from 'utils/isYesterday';
+import { parseDate } from 'utils/parseDate';
+import StyleSheet from 'react-native-media-query';
 
 interface DateProps {
   date: string;
@@ -12,7 +13,7 @@ interface DateProps {
 
 export default function DateBubble({ date }: DateProps) {
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const { styles } = styleSheet(color, font);
 
   return (
     <View style={styles.container}>

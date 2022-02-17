@@ -2,17 +2,20 @@ import React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import Button from '../../common/Button';
-import { Color, Font } from '../../../types';
-import { Text, TextInput, View, StyleSheet } from 'react-native';
-import { socket } from '../../../server/socket';
+import Button from 'src/common/Button';
+import { Color, Font } from 'src/common/types';
+import { Text, TextInput, View } from 'react-native';
+import { socket } from 'server/socket';
+import { useBreakPoints } from 'utils/responsive';
+import StyleSheet from 'react-native-media-query';
 
 export default function Form() {
+  const { isSmallScreen } = useBreakPoints();
   const router = useRouter();
   const [username, setUsername] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const { styles } = styleSheet(color, font);
 
   const onChangeUsername = (text: string) => setUsername(text);
   const onChangeRoomName = (text: string) => setRoomName(text);
@@ -30,7 +33,9 @@ export default function Form() {
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
-        <Text style={styles.heading}>{'Join a room and start chatting!'}</Text>
+        <Text style={styles.heading}>
+          {isSmallScreen ? 'Join a room and start chatting!' : 'Join a room!'}
+        </Text>
         <Text style={styles.subHeading}>
           {'Username limited to 18 characters.'}
         </Text>

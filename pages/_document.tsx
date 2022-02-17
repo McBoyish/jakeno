@@ -4,6 +4,7 @@ import { Children } from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 // @ts-ignore
 import { AppRegistry } from 'react-native-web';
+import { flush } from 'react-native-media-query';
 // Force Next-generated DOM elements to fill their parent's height
 const normalizeNextElements = `
   #__next {
@@ -21,6 +22,7 @@ export default class MyDocument extends Document {
     const styles = [
       <style dangerouslySetInnerHTML={{ __html: normalizeNextElements }} />,
       getStyleElement(),
+      flush(),
     ];
     return { ...page, styles: Children.toArray(styles) };
   }

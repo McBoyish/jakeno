@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import {
   View,
   TextInput,
-  StyleSheet,
   NativeSyntheticEvent,
   TextInputKeyPressEventData,
 } from 'react-native';
+import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
-import { Color, Font } from '../../../types';
-import Button from '../../common/Button';
+import { Color, Font } from 'src/common/types';
+import Button from 'src/common/Button';
 
 interface MessageInputProps {
   onSubmit: (text: string) => void;
@@ -18,7 +18,7 @@ type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 export default function MessageInput({ onSubmit }: MessageInputProps) {
   const [text, setText] = useState<string>('');
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const { styles } = styleSheet(color, font);
 
   const onChangeText = (text: string) => setText(text);
   const handleOnKeyPress = (e: OnKeyPressEvent) => {

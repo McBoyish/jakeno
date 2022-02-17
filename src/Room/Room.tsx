@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ChatBox from './components/MessageBox';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { socket } from '../../server/socket';
-import { InputMessage, Message } from '../../types';
-import { Color, Font } from '../../types';
+import { socket } from 'server/socket';
+import { InputMessage, Message } from 'src/common/types';
+import { Color, Font } from 'src/common/types';
 import MessageInput from './components/MessageInput';
-import sortByDate from '../../utils/sortByDate';
+import sortByDate from 'utils/sortByDate';
+import StyleSheet from 'react-native-media-query';
 
 export default function Room() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function Room() {
     error: false,
   });
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const { styles } = styleSheet(color, font);
   const { userId, roomId } = router.query;
 
   const onSubmit = (text: string) => {

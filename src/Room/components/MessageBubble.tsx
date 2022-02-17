@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import HyperLink from 'react-native-hyperlink';
-import { Color, Font, Message } from '../../../types';
+import { Color, Font, Message } from 'src/common/types';
 import { useTheme } from 'react-native-paper';
 import { useRouter } from 'next/router';
-import { parseDate } from '../../../utils/parseDate';
+import { parseDate } from 'utils/parseDate';
+import StyleSheet from 'react-native-media-query';
 
 interface MessageBubbleProps {
   message: Message;
@@ -13,7 +14,7 @@ interface MessageBubbleProps {
 export default function MessageBubble({ message }: MessageBubbleProps) {
   const router = useRouter();
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font);
+  const { styles } = styleSheet(color, font);
   const { userId } = router.query;
   const isSelf = userId === message.user._id;
 

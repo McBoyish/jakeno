@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import StyleSheet from 'react-native-media-query';
 import { Button as PaperButton, useTheme } from 'react-native-paper';
-import { Color, Font } from '../../types';
+import { Color, Font } from 'src/common/types';
 
 interface ButtonProps {
   text: string;
@@ -17,7 +17,7 @@ export default function Button({
   width,
 }: ButtonProps) {
   const { color, font } = useTheme();
-  const styles = styleSheet(color, font, width);
+  const { styles } = styleSheet(color, font, width);
 
   return (
     <PaperButton
