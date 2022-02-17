@@ -32,7 +32,7 @@ const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
       backgroundColor: color.primary,
-      borderRadius: 10,
+      borderRadius: 5,
       padding: 5,
       alignSelf: 'center',
     },
@@ -41,6 +41,5 @@ const styleSheet = (color: Color, font: Font) =>
       fontSize: font.size.tertiary,
       opacity: 0.5,
       textAlign: 'center',
-      textTransform: 'uppercase',
     },
   });
