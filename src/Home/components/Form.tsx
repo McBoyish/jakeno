@@ -74,7 +74,7 @@ const styleSheet = (color: Color, font: Font) =>
       alignItems: 'center',
     },
     headingContainer: {
-      marginVertical: 5,
+      marginBottom: 15,
     },
     inputContainer: {
       marginVertical: 5,

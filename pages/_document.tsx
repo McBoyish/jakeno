@@ -28,7 +28,12 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html style={{ height: '100%' }}>
-        <Head />
+        <Head>
+          <link
+            href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
+            rel='stylesheet'
+          />
+        </Head>
         <body style={{ height: '100%' }}>
           <Main />
           <NextScript />
