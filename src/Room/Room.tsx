@@ -24,7 +24,7 @@ export default function Room() {
   const { styles } = styleSheet(color, font);
   const { userId, roomId } = router.query;
 
-  const onSubmit = async (text: string) => {
+  const onSubmit = (text: string) => {
     const message: InputMessage = {
       userId: userId as string,
       roomId: roomId as string,

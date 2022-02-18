@@ -30,7 +30,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
     if (e.nativeEvent.key === 'Enter') handleOnSubmit();
   };
 
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = () => {
     setText('');
     onSubmit(text);
   };
@@ -46,14 +46,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         blurOnSubmit={false}
       />
       <View style={styles.separator} />
-      <Button
-        text={'Send'}
-        disabled={text === ''}
-        onClick={() => {
-          Keyboard.dismiss();
-          handleOnSubmit();
-        }}
-      />
+      <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
     </View>
   );
 }
