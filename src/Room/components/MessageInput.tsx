@@ -42,6 +42,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         placeholder={'Message'}
         style={styles.textInput}
         onKeyPress={handleOnKeyPress}
+        blurOnSubmit={false}
       />
       <View style={styles.separator} />
       <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
