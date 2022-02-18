@@ -60,7 +60,7 @@ export default function MessageBox({ messages, scrollRef }: MessageBoxProps) {
         ref={scrollRef}
         inverted
         disableVirtualization // this makes inverted work lol
-        keyboardShouldPersistTaps={'handled'}
+        keyboardShouldPersistTaps={'always'}
       />
     </View>
   );

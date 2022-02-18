@@ -4,6 +4,7 @@ import {
   TextInput,
   NativeSyntheticEvent,
   TextInputKeyPressEventData,
+  Keyboard,
 } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
@@ -35,11 +36,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   };
 
   return (
-    <View
-      style={styles.container}
-      onStartShouldSetResponder={() => true}
-      pointerEvents={'box-none'}
-    >
+    <View style={styles.container}>
       <TextInput
         onChangeText={onChangeText}
         value={text}
@@ -49,7 +46,14 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         blurOnSubmit={false}
       />
       <View style={styles.separator} />
-      <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
+      <Button
+        text={'Send'}
+        disabled={text === ''}
+        onClick={() => {
+          Keyboard.dismiss();
+          handleOnSubmit();
+        }}
+      />
     </View>
   );
 }
