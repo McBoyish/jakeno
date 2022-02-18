@@ -29,7 +29,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
     if (e.nativeEvent.key === 'Enter') handleOnSubmit();
   };
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
     setText('');
     onSubmit(text);
   };
