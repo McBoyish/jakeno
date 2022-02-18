@@ -35,7 +35,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   };
 
   return (
-    <View style={styles.container} onStartShouldSetResponder={() => true}>
+    <View
+      style={styles.container}
+      onStartShouldSetResponder={() => true}
+      pointerEvents={'box-none'}
+    >
       <TextInput
         onChangeText={onChangeText}
         value={text}
