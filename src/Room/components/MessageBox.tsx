@@ -30,26 +30,22 @@ export default function MessageBox({ messages, scrollRef }: MessageBoxProps) {
         parseDate(messages[index + 1].date).date;
     if (shouldAddDate)
       return (
-        <View onStartShouldSetResponder={() => true} pointerEvents={'box-none'}>
+        <>
           <MessageBubble message={item} />
           <View style={styles.separator} />
           <View style={styles.separator} />
           <DateBubble date={item.date} />
           {index < messages.length - 1 && <View style={styles.separator} />}
-        </View>
+        </>
       );
     if (shouldAddSpacing)
       return (
-        <View onStartShouldSetResponder={() => true} pointerEvents={'box-none'}>
+        <>
           <MessageBubble message={item} />
           <View style={styles.separator} />
-        </View>
+        </>
       );
-    return (
-      <View onStartShouldSetResponder={() => true} pointerEvents={'box-none'}>
-        <MessageBubble message={item} />;
-      </View>
-    );
+    return <MessageBubble message={item} />;
   };
 
   return (
@@ -64,7 +60,6 @@ export default function MessageBox({ messages, scrollRef }: MessageBoxProps) {
         ref={scrollRef}
         inverted
         disableVirtualization // this makes inverted work lol
-        keyboardShouldPersistTaps={'always'}
       />
     </View>
   );
