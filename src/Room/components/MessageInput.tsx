@@ -4,7 +4,6 @@ import {
   TextInput,
   NativeSyntheticEvent,
   TextInputKeyPressEventData,
-  Keyboard,
 } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';

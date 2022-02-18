@@ -9,9 +9,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": "./",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "strict": true
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "exclude": ["node_modules"],
