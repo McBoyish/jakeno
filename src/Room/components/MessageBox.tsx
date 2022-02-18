@@ -72,7 +72,7 @@ const styleSheet = (color: Color, isSmallScreen: boolean) =>
       flexDirection: 'column',
       flexGrow: 1,
       width: isSmallScreen ? 385 : '100%',
-      height: '50vh',
+      height: 385,
       marginVertical: 5,
       padding: 10,
       borderRadius: 5,

@@ -90,7 +90,7 @@ const styleSheet = (color: Color, font: Font) =>
       alignSelf: 'center',
       alignItems: 'center',
       width: '100%',
-      height: '100vh',
+      height: '100%',
       backgroundColor: color.background,
       padding: 20,
     },
