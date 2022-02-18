@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import ChatBox from './components/MessageBox';
+import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from 'server/socket';
@@ -67,7 +67,7 @@ export default function Room() {
       {!state.loading && !state.error && (
         <>
           <MessageInput onSubmit={onSubmit} />
-          <ChatBox messages={messages} />
+          <MessageBox messages={messages} />
         </>
       )}
     </View>

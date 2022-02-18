@@ -6,6 +6,7 @@ import MessageBubble from './MessageBubble';
 import DateBubble from './DateBubble';
 import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
+import { useBreakPoints } from 'utils/responsive';
 
 interface MessageBoxProps {
   messages: Message[];
@@ -13,7 +14,8 @@ interface MessageBoxProps {
 
 export default function MessageBox({ messages }: MessageBoxProps) {
   const { color } = useTheme();
-  const { styles } = styleSheet(color);
+  const { isSmallScreen } = useBreakPoints();
+  const { styles } = styleSheet(color, isSmallScreen);
 
   const separator = () => <View style={styles.separator} />;
   const renderItem = ({ item, index }: { item: Message; index: number }) => {
@@ -48,7 +50,7 @@ export default function MessageBox({ messages }: MessageBoxProps) {
       <FlatList
         data={messages}
         renderItem={renderItem}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={(item) => item._id}
         ItemSeparatorComponent={separator}
         scrollEnabled
         showsVerticalScrollIndicator={false}
@@ -57,13 +59,13 @@ export default function MessageBox({ messages }: MessageBoxProps) {
   );
 }
 
-const styleSheet = (color: Color) =>
+const styleSheet = (color: Color, isSmallScreen: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: 'column',
       flexGrow: 1,
       alignSelf: 'center',
-      width: '100%',
+      width: isSmallScreen ? 385 : '100%',
       height: '50vh',
       marginVertical: 5,
       padding: 10,
