@@ -13,7 +13,7 @@ import { useVerticalScroll } from 'utils/useVerticalScroll';
 
 export default function Room() {
   const router = useRouter();
-  const flatListRef = useVerticalScroll();
+  const { scrollRef, scrollToStart } = useVerticalScroll(0.75, true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageSent, setMessageSent] = useState<boolean>(false);
   const [state, setState] = useState({
@@ -37,6 +37,7 @@ export default function Room() {
   };
 
   useEffect(() => {
+    scrollToStart();
     setMessageSent(false);
   }, [messageSent]);
 
@@ -74,7 +75,7 @@ export default function Room() {
       )}
       {!state.loading && !state.error && (
         <>
-          <MessageBox messages={messages} flatListRef={flatListRef} />
+          <MessageBox messages={messages} scrollRef={scrollRef} />
           <MessageInput onSubmit={onSubmit} />
         </>
       )}

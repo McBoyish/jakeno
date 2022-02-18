@@ -1,17 +1,23 @@
 import { useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
 
-export function useVerticalScroll() {
+export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
   const scrollRef = useRef<FlatList>(null);
 
+  const scrollToStart = () => {
+    if (!scrollRef?.current) return;
+    scrollRef.current.scrollToOffset({ offset: 0, animated: false });
+  };
+
   const onWheel = (e: any) => {
-    if (!e || !scrollRef.current) return;
+    if (!e || !scrollRef?.current) return;
     e.preventDefault();
     const scrollFriction = 0.75; // 0 for no friction, 1 for full friction
+    const reverse = inverted ? -1 : 1;
     scrollRef.current.scrollToOffset({
       offset:
-        scrollRef.current.getScrollableNode().scrollTop -
-        (1 - scrollFriction) * e.deltaY,
+        scrollRef.current.getScrollableNode().scrollTop +
+        reverse * ((1 - scrollFriction) * e.deltaY),
       animated: false,
     });
   };
@@ -28,5 +34,6 @@ export function useVerticalScroll() {
       }
     };
   }, [scrollRef.current]);
-  return scrollRef;
+
+  return { scrollRef, scrollToStart };
 }

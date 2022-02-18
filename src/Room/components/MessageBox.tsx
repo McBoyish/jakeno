@@ -10,10 +10,10 @@ import { useBreakPoints } from 'utils/responsive';
 
 interface MessageBoxProps {
   messages: Message[];
-  flatListRef: React.RefObject<FlatList>;
+  scrollRef: React.RefObject<FlatList>;
 }
 
-export default function MessageBox({ messages, flatListRef }: MessageBoxProps) {
+export default function MessageBox({ messages, scrollRef }: MessageBoxProps) {
   const { color } = useTheme();
   const { isSmallScreen } = useBreakPoints();
   const { styles } = styleSheet(color, isSmallScreen);
@@ -57,7 +57,7 @@ export default function MessageBox({ messages, flatListRef }: MessageBoxProps) {
         ItemSeparatorComponent={separator}
         scrollEnabled
         showsVerticalScrollIndicator={false}
-        ref={flatListRef}
+        ref={scrollRef}
         inverted
         disableVirtualization // this makes inverted work lol
       />
