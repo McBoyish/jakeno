@@ -72,7 +72,7 @@ const styleSheet = (color: Color, isSmallScreen: boolean) =>
       flexDirection: 'column',
       flexGrow: 1,
       width: isSmallScreen ? 385 : '100%',
-      height: '50vh',
+      height: '10vh', // it will grow to full size because of flex grow
       marginVertical: 5,
       padding: 10,
       borderRadius: 5,
