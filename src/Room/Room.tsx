@@ -66,7 +66,7 @@ export default function Room() {
   }, [userId, roomId]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onStartShouldSetResponder={() => true}>
       {state.loading && !state.error && (
         <Text style={styles.text}>{'Loading...'}</Text>
       )}
