@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MessageBox from './components/MessageBox';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from 'server/socket';
 import { InputMessage, Message } from 'src/common/types';

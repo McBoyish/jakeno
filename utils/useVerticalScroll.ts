@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
 
@@ -12,7 +13,6 @@ export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
   const onWheel = (e: any) => {
     if (!e || !scrollRef?.current) return;
     e.preventDefault();
-    const scrollFriction = 0.75; // 0 for no friction, 1 for full friction
     const reverse = inverted ? -1 : 1;
     scrollRef.current.scrollToOffset({
       offset:

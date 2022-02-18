@@ -8,7 +8,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "exclude": ["node_modules"],
