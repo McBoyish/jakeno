@@ -26,7 +26,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 
   const handleOnKeyPress = (e: OnKeyPressEvent) => {
     if (text === '') return;
-    // if (e.nativeEvent.key === 'Enter') handleOnSubmit();
+    if (e.nativeEvent.key === 'Enter') handleOnSubmit();
   };
 
   const handleOnSubmit = () => {
