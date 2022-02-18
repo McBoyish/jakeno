@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -17,6 +17,7 @@ interface MessageInputProps {
 type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
+  const textInputRef = useRef<TextInput>(null);
   const [text, setText] = useState<string>('');
   const { color, font } = useTheme();
   const { isSmallScreen } = useBreakPoints();
@@ -34,6 +35,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
     onSubmit(text);
   };
 
+  const handleOnButtonPress = () => {
+    if (textInputRef && textInputRef.current) textInputRef.current.focus();
+    handleOnSubmit();
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -43,9 +49,14 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         style={styles.textInput}
         onKeyPress={handleOnKeyPress}
         blurOnSubmit={false}
+        ref={textInputRef}
       />
       <View style={styles.separator} />
-      <Button text={'Send'} disabled={text === ''} onClick={handleOnSubmit} />
+      <Button
+        text={'Send'}
+        disabled={text === ''}
+        onClick={handleOnButtonPress}
+      />
     </View>
   );
 }
