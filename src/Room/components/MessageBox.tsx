@@ -49,7 +49,7 @@ export default function MessageBox({ messages, scrollRef }: MessageBoxProps) {
   };
 
   return (
-    <View style={styles.container} onStartShouldSetResponder={() => true}>
+    <View style={styles.container}>
       <FlatList
         data={messages}
         renderItem={renderItem}
