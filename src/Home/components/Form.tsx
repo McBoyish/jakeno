@@ -18,7 +18,9 @@ export default function Form() {
   const { styles } = styleSheet(color, font);
 
   const onChangeUsername = (text: string) => setUsername(text);
+
   const onChangeRoomName = (text: string) => setRoomName(text);
+
   const handleOnSubmit = () => {
     socket.emit(
       'join-room-request',
@@ -74,7 +76,7 @@ const styleSheet = (color: Color, font: Font) =>
       marginVertical: 5,
       padding: 20,
       backgroundColor: color.secondary,
-      borderRadius: 10,
+      borderRadius: 5,
       alignSelf: 'center',
       alignItems: 'center',
     },
@@ -100,7 +102,7 @@ const styleSheet = (color: Color, font: Font) =>
       textAlign: 'center',
     },
     textInput: {
-      borderRadius: 10,
+      borderRadius: 5,
       paddingHorizontal: 10,
       fontSize: font.size.primary,
       fontFamily: font.family.text,

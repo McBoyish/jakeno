@@ -10,36 +10,39 @@ import { useBreakPoints } from 'utils/responsive';
 
 interface MessageBoxProps {
   messages: Message[];
+  flatListRef: React.RefObject<FlatList>;
 }
 
-export default function MessageBox({ messages }: MessageBoxProps) {
+export default function MessageBox({ messages, flatListRef }: MessageBoxProps) {
   const { color } = useTheme();
   const { isSmallScreen } = useBreakPoints();
   const { styles } = styleSheet(color, isSmallScreen);
 
   const separator = () => <View style={styles.separator} />;
+
   const renderItem = ({ item, index }: { item: Message; index: number }) => {
     const shouldAddSpacing =
-      index > 0 && messages[index].user._id !== messages[index - 1].user._id;
+      index < messages.length - 1 &&
+      messages[index].user._id !== messages[index + 1].user._id;
     const shouldAddDate =
-      index === 0 ||
+      index === messages.length - 1 ||
       parseDate(messages[index].date).date !==
-        parseDate(messages[index - 1].date).date;
+        parseDate(messages[index + 1].date).date;
     if (shouldAddDate)
       return (
         <>
-          {index > 0 && <View style={styles.separator} />}
-          <DateBubble date={item.date} />
-          <View style={styles.separator} />
-          <View style={styles.separator} />
           <MessageBubble message={item} />
+          <View style={styles.separator} />
+          <View style={styles.separator} />
+          <DateBubble date={item.date} />
+          {index < messages.length - 1 && <View style={styles.separator} />}
         </>
       );
     if (shouldAddSpacing)
       return (
         <>
-          <View style={styles.separator} />
           <MessageBubble message={item} />
+          <View style={styles.separator} />
         </>
       );
     return <MessageBubble message={item} />;
@@ -54,6 +57,9 @@ export default function MessageBox({ messages }: MessageBoxProps) {
         ItemSeparatorComponent={separator}
         scrollEnabled
         showsVerticalScrollIndicator={false}
+        ref={flatListRef}
+        inverted
+        disableVirtualization // this makes inverted work lol
       />
     </View>
   );
@@ -64,12 +70,11 @@ const styleSheet = (color: Color, isSmallScreen: boolean) =>
     container: {
       flexDirection: 'column',
       flexGrow: 1,
-      alignSelf: 'center',
       width: isSmallScreen ? 385 : '100%',
       height: '50vh',
       marginVertical: 5,
       padding: 10,
-      borderRadius: 10,
+      borderRadius: 5,
       borderColor: color.primary,
       backgroundColor: color.tertiary,
     },

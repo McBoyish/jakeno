@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import MessageBox from './components/MessageBox';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from 'server/socket';
 import { InputMessage, Message } from 'src/common/types';
@@ -9,10 +9,13 @@ import { Color, Font } from 'src/common/types';
 import MessageInput from './components/MessageInput';
 import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
+import { useVerticalScroll } from 'utils/useVerticalScroll';
 
 export default function Room() {
   const router = useRouter();
+  const flatListRef = useVerticalScroll();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageSent, setMessageSent] = useState<boolean>(false);
   const [state, setState] = useState({
     loading: true,
     error: false,
@@ -29,8 +32,13 @@ export default function Room() {
     };
     socket.emit('message', message, (res: Message) => {
       setMessages((messages) => [res, ...messages]);
+      setMessageSent(true);
     });
   };
+
+  useEffect(() => {
+    setMessageSent(false);
+  }, [messageSent]);
 
   useEffect(() => {
     if (roomId && userId) socket.emit('join-room', userId, roomId);
@@ -66,8 +74,8 @@ export default function Room() {
       )}
       {!state.loading && !state.error && (
         <>
+          <MessageBox messages={messages} flatListRef={flatListRef} />
           <MessageInput onSubmit={onSubmit} />
-          <MessageBox messages={messages} />
         </>
       )}
     </View>
@@ -79,6 +87,7 @@ const styleSheet = (color: Color, font: Font) =>
     container: {
       flex: 1,
       alignSelf: 'center',
+      alignItems: 'center',
       width: '100%',
       height: '100vh',
       backgroundColor: color.background,

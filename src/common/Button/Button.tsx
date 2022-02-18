@@ -37,13 +37,13 @@ export default function Button({
 const styleSheet = (color: Color, font: Font, width?: number) =>
   StyleSheet.create({
     container: {
-      borderRadius: 10,
+      borderRadius: 5,
       backgroundColor: 'transparent',
       height: 50,
       width: width,
     },
     content: {
-      borderRadius: 10,
+      borderRadius: 5,
       borderStyle: 'solid',
       borderColor: color.primary,
       backgroundColor: color.primary,

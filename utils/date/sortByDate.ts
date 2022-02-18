@@ -1,13 +1,10 @@
 import { Message } from 'src/common/types';
 
-function compareDesc(a: Message, b: Message) {
+function compare(a: Message, b: Message) {
+  // b - a for descending, a - b for ascending
   return new Date(b.date).valueOf() - new Date(a.date).valueOf();
 }
 
-// function compareAsc(a: Message, b: Message) {
-//   return new Date(a.date).valueOf() - new Date(b.date).valueOf();
-// }
-
 export function sortByDate(data: Message[]) {
-  return data.sort(compareDesc);
+  return data.sort(compare);
 }

@@ -40,7 +40,7 @@ const styleSheet = (color: Color, font: Font) =>
   StyleSheet.create({
     container: {
       backgroundColor: color.secondary,
-      borderRadius: 10,
+      borderRadius: 5,
       paddingVertical: 5,
       paddingHorizontal: 7.5,
       minHeight: 50,

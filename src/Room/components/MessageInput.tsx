@@ -23,10 +23,12 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   const { styles } = styleSheet(color, font, isSmallScreen);
 
   const onChangeText = (text: string) => setText(text);
+
   const handleOnKeyPress = (e: OnKeyPressEvent) => {
     if (text === '') return;
     if (e.nativeEvent.key === 'Enter') handleOnSubmit();
   };
+
   const handleOnSubmit = () => {
     setText('');
     onSubmit(text);
@@ -53,11 +55,10 @@ const styleSheet = (color: Color, font: Font, isSmallScreen: boolean) =>
       flexDirection: 'row',
       flexGrow: 0,
       width: isSmallScreen ? 385 : '100%',
-      alignSelf: 'center',
       marginVertical: 5,
     },
     textInput: {
-      borderRadius: 10,
+      borderRadius: 5,
       paddingHorizontal: 10,
       fontSize: font.size.primary,
       fontFamily: font.family.text,
