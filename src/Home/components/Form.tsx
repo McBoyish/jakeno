@@ -3,33 +3,37 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
-import { Color, Font } from 'src/common/types';
+import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
-import { socket } from 'server/socket';
 import { useBreakPoints } from 'utils/responsive';
 import StyleSheet from 'react-native-media-query';
+import { getUserData } from 'server/routers/userRouter';
+import useSessionStorage from 'utils/useSessionStorage';
 
 export default function Form() {
+  const { getUser, updateUser } = useSessionStorage();
   const { isSmallScreen } = useBreakPoints();
   const router = useRouter();
-  const [username, setUsername] = useState<string>('');
+  const [username, setUsername] = useState<string>(getUser().name);
   const [roomName, setRoomName] = useState<string>('');
   const { color, font } = useTheme();
   const { styles } = styleSheet(color, font);
 
-  const onChangeUsername = (text: string) => setUsername(text);
+  const onChangeUsername = (value: string) => {
+    setUsername(value);
+    updateUser({
+      name: value,
+    });
+  };
 
-  const onChangeRoomName = (text: string) => setRoomName(text);
-
-  const handleOnSubmit = () => {
-    socket.emit(
-      'join-room-request',
-      username,
-      roomName,
-      async (userId: string, roomId: string) => {
-        await router.push(`/room/${roomId}?userId=${userId}`);
-      }
-    );
+  const handleOnSubmit = async () => {
+    const data = await getUserData(username);
+    if (data) {
+      updateUser({ _id: data._id });
+      router.push(`/room/${roomName}`);
+      return;
+    }
+    router.push(`/404`);
   };
 
   return (
@@ -38,9 +42,7 @@ export default function Form() {
         <Text style={styles.heading}>
           {isSmallScreen ? 'Join a room and start chatting!' : 'Join a room!'}
         </Text>
-        <Text style={styles.subHeading}>
-          {'Username limited to 18 characters.'}
-        </Text>
+        <Text style={styles.subHeading}>{'Username limited to 18 characters.'}</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -52,7 +54,7 @@ export default function Form() {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
-          onChangeText={onChangeRoomName}
+          onChangeText={setRoomName}
           value={roomName}
           style={styles.textInput}
           placeholder={'Enter room'}

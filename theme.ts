@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { DefaultTheme } from 'react-native-paper';
-import { Color, Font } from './src/common/types';
+import { Color, Font } from './types';
 
 declare global {
   namespace ReactNativePaper {

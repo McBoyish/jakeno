@@ -6,12 +6,12 @@ export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
   const scrollRef = useRef<FlatList>(null);
 
   const scrollToStart = () => {
-    if (!scrollRef?.current) return;
+    if (!scrollRef.current) return;
     scrollRef.current.scrollToOffset({ offset: 0, animated: false });
   };
 
   const onWheel = (e: any) => {
-    if (!e || !scrollRef?.current) return;
+    if (!e || !scrollRef.current) return;
     e.preventDefault();
     const reverse = inverted ? -1 : 1;
     scrollRef.current.scrollToOffset({
@@ -28,9 +28,7 @@ export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
     }
     return () => {
       if (scrollRef.current) {
-        scrollRef.current
-          .getScrollableNode()
-          .removeEventListener('wheel', onWheel);
+        scrollRef.current.getScrollableNode().removeEventListener('wheel', onWheel);
       }
     };
   }, [scrollRef.current]);

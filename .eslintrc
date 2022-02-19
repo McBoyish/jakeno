@@ -10,8 +10,8 @@
   "rules": {
     "no-console": "warn",
     "no-undef": "warn",
-    "no-unused-expressions": "warn",
-    "no-unused-vars": "off",
+    "no-unused-expressions": "off",
+    "no-unused-vars": "warn",
     "no-empty-function": "warn"
   },
   "env": {

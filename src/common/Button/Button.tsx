@@ -1,7 +1,7 @@
 import React from 'react';
 import StyleSheet from 'react-native-media-query';
 import { Button as PaperButton, useTheme } from 'react-native-paper';
-import { Color, Font } from 'src/common/types';
+import { Color, Font } from 'types';
 
 interface ButtonProps {
   text: string;

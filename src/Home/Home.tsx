@@ -1,9 +1,8 @@
 import React from 'react';
 import { useTheme } from 'react-native-paper';
-import { Color } from 'src/common/types';
+import { Color } from 'types';
 import { View } from 'react-native';
 import Form from './components/Form';
-// import { socket } from 'server/socket';
 import StyleSheet from 'react-native-media-query';
 
 export default function Home() {

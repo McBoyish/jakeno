@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
-import { Color, Font } from 'src/common/types';
+import { Color, Font } from 'types';
 import Button from 'src/common/Button';
 import { useBreakPoints } from 'utils/responsive';
 
 interface MessageInputProps {
-  onSubmit: (text: string) => void;
+  onSubmit: (_: string) => void;
 }
 type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
@@ -22,8 +22,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   const { color, font } = useTheme();
   const { isSmallScreen } = useBreakPoints();
   const { styles } = styleSheet(color, font, isSmallScreen);
-
-  const onChangeText = (text: string) => setText(text);
 
   const handleOnKeyPress = (e: OnKeyPressEvent) => {
     if (text === '') return;
@@ -43,7 +41,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
   return (
     <View style={styles.container}>
       <TextInput
-        onChangeText={onChangeText}
+        onChangeText={setText}
         value={text}
         placeholder={'Message'}
         style={styles.textInput}
@@ -52,11 +50,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
         ref={textInputRef}
       />
       <View style={styles.separator} />
-      <Button
-        text={'Send'}
-        disabled={text === ''}
-        onClick={handleOnButtonPress}
-      />
+      <Button text={'Send'} disabled={text === ''} onClick={handleOnButtonPress} />
     </View>
   );
 }

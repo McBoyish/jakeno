@@ -4,78 +4,90 @@ import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { socket } from 'server/socket';
-import { InputMessage, Message } from 'src/common/types';
-import { Color, Font } from 'src/common/types';
+import { InputMessage, Message, RoomData, User } from 'types';
+import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
 import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import { useVerticalScroll } from 'utils/useVerticalScroll';
+import { getRoomData } from 'server/routers/roomRouter';
+import useSessionStorage from 'utils/useSessionStorage';
 
 export default function Room() {
+  const { getUser } = useSessionStorage();
   const router = useRouter();
-  const { scrollRef, scrollToStart } = useVerticalScroll(0.75, true);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [messageSent, setMessageSent] = useState<boolean>(false);
-  const [state, setState] = useState({
-    loading: true,
-    error: false,
+  const [user] = useState<User>(getUser());
+  const [scrollToStart, setScrollToStart] = useState<() => void>();
+  const [roomData, setRoomData] = useState<RoomData>({
+    _id: '',
+    name: '',
+    messages: [],
   });
+  const [messageSent, setMessageSent] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { color, font } = useTheme();
   const { styles } = styleSheet(color, font);
-  const { userId, roomId } = router.query;
-
-  const onSubmit = (text: string) => {
-    const message: InputMessage = {
-      userId: userId as string,
-      roomId: roomId as string,
-      content: text,
-    };
-    socket.emit('message', message, (res: Message) => {
-      setMessages((messages) => [res, ...messages]);
-      setMessageSent(true);
-    });
-  };
+  const { roomName } = router.query;
 
   useEffect(() => {
+    let isMounted = true;
+    const handleGetRoomData = async () => {
+      const data = await getRoomData(roomName as string);
+      if (data) {
+        data.messages = sortByDate(data.messages);
+        isMounted && setRoomData(data);
+        isMounted && setIsLoading(false);
+        socket.emit('join-room', data._id);
+        return;
+      }
+      router.push(`/404`);
+    };
+    if (!user.name || !user._id) router.push('/404');
+    if (roomName) handleGetRoomData();
+    socket.on('message', (message: Message) => {
+      addMessage(message);
+    });
+    return () => {
+      isMounted = false;
+      socket.emit('leave-room', roomData._id as string);
+      socket.removeAllListeners();
+    };
+  }, [roomName]);
+
+  useEffect(() => {
+    if (!scrollToStart) return;
     scrollToStart();
     setMessageSent(false);
   }, [messageSent]);
 
-  useEffect(() => {
-    if (roomId && userId) socket.emit('join-room', userId, roomId);
-    socket.on('join-room-success', (messages: Message[]) => {
-      setState({
-        loading: false,
-        error: false,
-      });
-      setMessages(sortByDate(messages));
+  const addMessage = (message: Message) => {
+    setRoomData((prev) => {
+      const data = {
+        _id: prev._id,
+        name: prev.name,
+        messages: [message, ...prev.messages],
+      };
+      return data;
     });
-    socket.on('join-room-error', async () => {
-      setState({
-        loading: false,
-        error: true,
-      });
-    });
-    socket.on('message', (message: Message) => {
-      setMessages((messages) => [message, ...messages]);
-    });
-    return () => {
-      socket.emit('leave-room', roomId);
-      socket.removeAllListeners();
+  };
+
+  const onSubmit = (text: string) => {
+    const message: InputMessage = {
+      userId: user._id,
+      roomId: roomData._id,
+      content: text,
     };
-  }, [userId, roomId]);
+    socket.emit('message', message, (res: Message) => {
+      addMessage(res);
+      setMessageSent(true);
+    });
+  };
 
   return (
     <View style={styles.container}>
-      {state.loading && !state.error && (
-        <Text style={styles.text}>{'Loading...'}</Text>
-      )}
-      {!state.loading && state.error && (
-        <Text style={styles.text}>{'Page not found'}</Text>
-      )}
-      {!state.loading && !state.error && (
+      {isLoading && <Text style={styles.text}>{'Loading...'}</Text>}
+      {!isLoading && (
         <>
-          <MessageBox messages={messages} scrollRef={scrollRef} />
+          <MessageBox messages={roomData.messages} setScrollToStart={setScrollToStart} />
           <MessageInput onSubmit={onSubmit} />
         </>
       )}

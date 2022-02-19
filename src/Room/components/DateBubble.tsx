@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Color, Font } from 'src/common/types';
+import { Color, Font } from 'types';
 import { useTheme } from 'react-native-paper';
 import { parseDate, isToday, isYesterday } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
@@ -16,11 +16,7 @@ export default function DateBubble({ date }: DateProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.date}>{`${
-        isToday(date)
-          ? 'Today'
-          : isYesterday(date)
-          ? 'Yesterday'
-          : parseDate(date).date
+        isToday(date) ? 'Today' : isYesterday(date) ? 'Yesterday' : parseDate(date).date
       }`}</Text>
     </View>
   );
