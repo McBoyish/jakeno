@@ -20,8 +20,8 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
   return (
     <View style={[styles.container, isSelf ? styles.right : styles.left]}>
       <View style={styles.headerContainer}>
-        {isSelf && <Text style={styles.username}>{message.user.name}</Text>}
-        {isSelf && <View style={styles.spacing} />}
+        {!isSelf && <Text style={styles.username}>{message.user.name}</Text>}
+        {!isSelf && <View style={styles.spacing} />}
         <Text style={styles.timestamp}>{`${parseDate(message.date).time}`}</Text>
       </View>
       <View style={styles.verticalSpacing} />
