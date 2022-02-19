@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { socket } from 'server/socket';
+import { io, uri } from 'server/socket';
 import { InputMessage, Message, RoomData, User } from 'types';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
@@ -11,10 +11,12 @@ import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
 import { getRoomData } from 'server/routers/roomRouter';
 import useSessionStorage from 'utils/useSessionStorage';
+import { Socket } from 'socket.io-client';
 
 export default function Room() {
   const { getUser } = useSessionStorage();
   const router = useRouter();
+  const [socket, setSocket] = useState<Socket>();
   const [user] = useState<User>(getUser());
   const [scrollToStart, setScrollToStart] = useState<() => void>();
   const [roomData, setRoomData] = useState<RoomData>({
@@ -29,6 +31,26 @@ export default function Room() {
   const { roomName } = router.query;
 
   useEffect(() => {
+    setSocket(io(uri));
+  }, []);
+
+  useEffect(() => {
+    if (socket && !isLoading) socket.emit('join-room', roomData._id);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('message', (message: Message) => {
+      addMessage(message);
+    });
+    return () => {
+      socket.emit('leave-room', roomData._id as string);
+      socket.removeAllListeners();
+      socket.disconnect();
+    };
+  }, [socket]);
+
+  useEffect(() => {
     let isMounted = true;
     const handleGetRoomData = async () => {
       const data = await getRoomData(roomName as string);
@@ -36,20 +58,14 @@ export default function Room() {
         data.messages = sortByDate(data.messages);
         isMounted && setRoomData(data);
         isMounted && setIsLoading(false);
-        socket.emit('join-room', data._id);
         return;
       }
       router.push(`/404`);
     };
     if (!user.name || !user._id) router.push('/404');
     if (roomName) handleGetRoomData();
-    socket.on('message', (message: Message) => {
-      addMessage(message);
-    });
     return () => {
       isMounted = false;
-      socket.emit('leave-room', roomData._id as string);
-      socket.removeAllListeners();
     };
   }, [roomName]);
 
@@ -71,6 +87,7 @@ export default function Room() {
   };
 
   const onSubmit = (text: string) => {
+    if (!socket) return;
     const message: InputMessage = {
       userId: user._id,
       roomId: roomData._id,
