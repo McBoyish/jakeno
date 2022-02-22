@@ -5,7 +5,7 @@ import { Color, Font, Message } from 'types';
 import { useTheme } from 'react-native-paper';
 import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import useSessionStorage from 'utils/useSessionStorage';
+import { useUserContext } from 'src/common/context/UserContext';
 
 interface MessageBubbleProps {
   message: Message;
@@ -14,8 +14,8 @@ interface MessageBubbleProps {
 export default function MessageBubble({ message }: MessageBubbleProps) {
   const { color, font } = useTheme();
   const { styles } = styleSheet(color, font);
-  const { getUser } = useSessionStorage();
-  const isSelf = getUser()._id === message.user._id;
+  const { user } = useUserContext();
+  const isSelf = user._id === message.user._id;
 
   return (
     <View style={[styles.container, isSelf ? styles.right : styles.left]}>

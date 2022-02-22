@@ -26,6 +26,7 @@ export interface Color {
   black: string;
   white: string;
   hyperlink: string;
+  error: string;
 }
 
 /***************MONGODB INTERFACES***************/
@@ -54,11 +55,19 @@ export interface InputMessage {
   userId: string;
 }
 
+export interface InputRoom {
+  name: string;
+}
+
+export interface InputUserAccount {
+  name: string;
+  password: string;
+}
+
 export interface RoomData extends Room {
   messages: Message[];
 }
 
-export enum ErrorType {
-  UNKNOWN_ERROR = 'unknown-error',
-  ERROR_404 = 'page-not-found',
+export interface UserData extends User {
+  token: string;
 }

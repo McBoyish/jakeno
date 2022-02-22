@@ -10,10 +10,7 @@ const Error404Page: NextPage = () => {
   const { styles } = styleSheet(color, font);
   return (
     <View style={styles.container}>
-      <Text style={styles.subHeading}>{'Error 404: Page not found'}</Text>
-      <Text style={styles.text}>
-        {'An error has occurred. Please make sure to join a room with a username'}
-      </Text>
+      <Text style={styles.text}>{'Error 404: Page not found.'}</Text>
     </View>
   );
 };
@@ -25,20 +22,15 @@ const styleSheet = (color: Color, font: Font) =>
     container: {
       flex: 1,
       alignSelf: 'center',
-      alignItems: 'center',
       width: '100%',
       height: '100%',
       backgroundColor: color.background,
       padding: 20,
     },
-    subHeading: {
-      fontSize: font.size.subheading,
+    text: {
+      fontSize: font.size.primary,
       fontFamily: font.family.heading,
       color: color.text,
-    },
-    text: {
-      fontFamily: font.family.text,
-      fontSize: font.size.primary,
-      color: color.text,
+      textAlign: 'left',
     },
   });

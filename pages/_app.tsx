@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import theme from 'theme';
 import Head from 'next/head';
+import { UserContextProvider } from 'src/common/context/UserContext';
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -11,7 +12,9 @@ function App({ Component, pageProps }: AppProps) {
         <title>{'Random Stranger'}</title>
         <link rel='icon' href='/icon.png' />
       </Head>
-      <Component {...pageProps} />
+      <UserContextProvider>
+        <Component {...pageProps} />
+      </UserContextProvider>
     </PaperProvider>
   );
 }

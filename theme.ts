@@ -22,6 +22,7 @@ const theme = {
     black: '#000000',
     white: '#FFFFFF',
     hyperlink: '#0000EE',
+    error: '#EE0000',
   },
   font: {
     size: {

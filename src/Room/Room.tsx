@@ -1,42 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { io, uri } from 'server/socket';
-import { InputMessage, Message, RoomData, User } from 'types';
+import { InputMessage, Message, RoomData } from 'types';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
 import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import { getRoomData } from 'server/routers/roomRouter';
-import useSessionStorage from 'utils/useSessionStorage';
+import { getRoom } from 'server/routers';
+import { useUserContext } from 'src/common/context/UserContext';
 import { Socket } from 'socket.io-client';
+import { useRouting } from 'expo-next-react-navigation';
 
 export default function Room() {
-  const { getUser } = useSessionStorage();
-  const router = useRouter();
+  const { user, userLoading } = useUserContext();
+  const router = useRouting();
   const [socket, setSocket] = useState<Socket>();
-  const [user] = useState<User>(getUser());
-  const [scrollToStart, setScrollToStart] = useState<() => void>();
   const [roomData, setRoomData] = useState<RoomData>({
     _id: '',
     name: '',
     messages: [],
   });
+  const [userExists, setUserExists] = useState<boolean>(false);
+  const [roomExists, setRoomExists] = useState<boolean>(false);
+  const [roomLoading, setRoomLoading] = useState<boolean>(true);
   const [messageSent, setMessageSent] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [scrollToStart, setScrollToStart] = useState<() => void>();
   const { color, font } = useTheme();
   const { styles } = styleSheet(color, font);
-  const { roomName } = router.query;
+  const roomName = router.getParam('roomName');
 
   useEffect(() => {
     setSocket(io(uri));
   }, []);
 
   useEffect(() => {
-    if (socket && !isLoading) socket.emit('join-room', roomData._id);
-  }, [isLoading]);
+    let isMounted = true;
+    const handleGetRoomData = async () => {
+      const data = await getRoom(roomName as string);
+      if (data) {
+        data.messages = sortByDate(data.messages);
+        if (!isMounted) return;
+        setRoomData(data);
+        setRoomExists(true);
+      }
+      setRoomLoading(false);
+    };
+    if (roomName) handleGetRoomData();
+    return () => {
+      isMounted = false;
+    };
+  }, [roomName]);
+
+  useEffect(() => {
+    if (user._id && user.name) setUserExists(true);
+  }, [user._id, user.name]);
+
+  useEffect(() => {
+    if (socket && userExists && roomExists) socket.emit('join-room', roomData._id);
+  }, [socket, userExists, roomExists]);
 
   useEffect(() => {
     if (!socket) return;
@@ -51,29 +74,10 @@ export default function Room() {
   }, [socket]);
 
   useEffect(() => {
-    let isMounted = true;
-    const handleGetRoomData = async () => {
-      const data = await getRoomData(roomName as string);
-      if (data) {
-        data.messages = sortByDate(data.messages);
-        isMounted && setRoomData(data);
-        isMounted && setIsLoading(false);
-        return;
-      }
-      router.push(`/404`);
-    };
-    if (!user.name || !user._id) router.push('/404');
-    if (roomName) handleGetRoomData();
-    return () => {
-      isMounted = false;
-    };
-  }, [roomName]);
-
-  useEffect(() => {
-    if (!scrollToStart) return;
+    if (!scrollToStart || !messageSent) return;
     scrollToStart();
     setMessageSent(false);
-  }, [messageSent]);
+  }, [scrollToStart, messageSent]);
 
   const addMessage = (message: Message) => {
     setRoomData((prev) => {
@@ -99,15 +103,33 @@ export default function Room() {
     });
   };
 
+  if (userLoading || roomLoading)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>{'Loading...'}</Text>
+      </View>
+    );
+
+  if (!roomExists)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>{'Page not found.'}</Text>
+      </View>
+    );
+
+  if (!userExists)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>{'Please join the room with a username.'}</Text>
+      </View>
+    );
+
   return (
     <View style={styles.container}>
-      {isLoading && <Text style={styles.text}>{'Loading...'}</Text>}
-      {!isLoading && (
-        <>
-          <MessageBox messages={roomData.messages} setScrollToStart={setScrollToStart} />
-          <MessageInput onSubmit={onSubmit} />
-        </>
-      )}
+      <>
+        <MessageBox messages={roomData.messages} setScrollToStart={setScrollToStart} />
+        <MessageInput onSubmit={onSubmit} />
+      </>
     </View>
   );
 }
@@ -117,7 +139,7 @@ const styleSheet = (color: Color, font: Font) =>
     container: {
       flex: 1,
       alignSelf: 'center',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       width: '100%',
       height: '100vh',
       backgroundColor: color.background,
@@ -127,5 +149,6 @@ const styleSheet = (color: Color, font: Font) =>
       fontFamily: font.family.text,
       fontSize: font.size.primary,
       color: color.text,
+      textAlign: 'left',
     },
   });

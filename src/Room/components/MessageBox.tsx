@@ -24,8 +24,7 @@ export default function MessageBox({ messages, setScrollToStart }: MessageBoxPro
 
   const renderItem = ({ item, index }: { item: Message; index: number }) => {
     const shouldAddSpacing =
-      index < messages.length - 1 &&
-      messages[index].user._id !== messages[index + 1].user._id;
+      index < messages.length - 1 && messages[index].user._id !== messages[index + 1].user._id;
     const shouldAddDate =
       index === messages.length - 1 ||
       parseDate(messages[index].date).date !== parseDate(messages[index + 1].date).date;
