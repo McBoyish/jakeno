@@ -22,7 +22,6 @@ export default function Room() {
 		name: '',
 		messages: [],
 	});
-	const [userExists, setUserExists] = useState<boolean>(false);
 	const [roomExists, setRoomExists] = useState<boolean>(false);
 	const [roomLoading, setRoomLoading] = useState<boolean>(true);
 	const [messageSent, setMessageSent] = useState<boolean>(false);
@@ -54,13 +53,8 @@ export default function Room() {
 	}, [roomName]);
 
 	useEffect(() => {
-		if (user._id && user.name) setUserExists(true);
-	}, [user._id, user.name]);
-
-	useEffect(() => {
-		if (socket && userExists && roomExists)
-			socket.emit('join-room', roomData._id);
-	}, [socket, userExists, roomExists]);
+		if (socket && roomExists) socket.emit('join-room', roomData._id);
+	}, [socket, roomExists]);
 
 	useEffect(() => {
 		if (!socket) return;
@@ -113,17 +107,8 @@ export default function Room() {
 
 	if (!roomExists)
 		return (
-			<View style={styles.container}>
-				<Text style={styles.text}>{'Page not found.'}</Text>
-			</View>
-		);
-
-	if (!userExists)
-		return (
-			<View style={styles.container}>
-				<Text style={styles.text}>
-					{'Please join the room with a username.'}
-				</Text>
+			<View style={styles.errorContainer}>
+				<Text style={styles.text}>{'Page not found'}</Text>
 			</View>
 		);
 
@@ -146,6 +131,15 @@ const styleSheet = (color: Color, font: Font) =>
 			flex: 1,
 			alignSelf: 'center',
 			alignItems: 'flex-start',
+			width: '100%',
+			height: '100vh',
+			backgroundColor: color.background,
+			padding: 20,
+		},
+		errorContainer: {
+			flex: 1,
+			alignSelf: 'center',
+			alignItems: 'center',
 			width: '100%',
 			height: '100vh',
 			backgroundColor: color.background,

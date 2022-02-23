@@ -4,7 +4,7 @@ import { Color, Font } from 'types';
 import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouting } from 'expo-next-react-navigation';
-import { useUserContext } from './context/UserContext';
+import { useUserContext } from '../context/UserContext';
 
 export default function NavBar() {
 	const router = useRouting();
