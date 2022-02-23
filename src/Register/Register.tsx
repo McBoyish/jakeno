@@ -2,8 +2,7 @@ import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Color } from 'types';
 import { View } from 'react-native';
-import JoinRoomForm from './components/JoinRoomForm';
-import CreateRoomForm from './components/CreateRoomForm';
+import RegisterForm from './components/RegisterForm';
 import StyleSheet from 'react-native-media-query';
 
 export default function Home() {
@@ -12,14 +11,7 @@ export default function Home() {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.sectionContainer}>
-				<View style={styles.formContainer}>
-					<JoinRoomForm />
-				</View>
-				<View style={styles.formContainer}>
-					<CreateRoomForm />
-				</View>
-			</View>
+			<RegisterForm />
 		</View>
 	);
 }
@@ -29,20 +21,9 @@ const styleSheet = (color: Color) =>
 		container: {
 			flex: 1,
 			alignSelf: 'center',
-			alignItems: 'center',
+			alignItems: 'flex-start',
 			backgroundColor: color.background,
 			width: '100%',
 			padding: 20,
-		},
-
-		sectionContainer: {
-			width: '100%',
-			alignSelf: 'center',
-			justifyContent: 'center',
-			flexDirection: 'row',
-		},
-
-		formContainer: {
-			margin: 20,
 		},
 	});

@@ -3,7 +3,7 @@ import React from 'react';
 import Home from 'src/Home';
 
 const HomePage: NextPage = () => {
-  return <Home />;
+	return <Home />;
 };
 
 export default HomePage;

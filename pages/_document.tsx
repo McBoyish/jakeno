@@ -10,37 +10,36 @@ const normalizeNextElements = `
   #__next {
     display: flex;
     flex-direction: column;
-    height: 100%;
   }
 `;
 
 export default class MyDocument extends Document {
-  static async getInitialProps({ renderPage }: { renderPage: any }) {
-    AppRegistry.registerComponent('Random Stranger', () => Main);
-    const { getStyleElement } = AppRegistry.getApplication('Random Stranger');
-    const page = await renderPage();
-    const styles = [
-      <style dangerouslySetInnerHTML={{ __html: normalizeNextElements }} />,
-      getStyleElement(),
-      flush(),
-    ];
-    return { ...page, styles: Children.toArray(styles) };
-  }
+	static async getInitialProps({ renderPage }: { renderPage: any }) {
+		AppRegistry.registerComponent('Random Stranger', () => Main);
+		const { getStyleElement } = AppRegistry.getApplication('Random Stranger');
+		const page = await renderPage();
+		const styles = [
+			<style dangerouslySetInnerHTML={{ __html: normalizeNextElements }} />,
+			getStyleElement(),
+			flush(),
+		];
+		return { ...page, styles: Children.toArray(styles) };
+	}
 
-  render() {
-    return (
-      <Html style={{ height: '100%' }}>
-        <Head>
-          <link
-            href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
-            rel='stylesheet'
-          />
-        </Head>
-        <body style={{ height: '100%' }}>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+	render() {
+		return (
+			<Html>
+				<Head>
+					<link
+						href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
+						rel='stylesheet'
+					/>
+				</Head>
+				<body>
+					<Main />
+					<NextScript />
+				</body>
+			</Html>
+		);
+	}
 }

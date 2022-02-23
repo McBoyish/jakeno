@@ -4,64 +4,65 @@ import { useTheme, HelperText } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
-import { useBreakPoints } from 'utils/responsive';
 import StyleSheet from 'react-native-media-query';
-import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
 
-export default function Form() {
-	const { user } = useUserContext();
-	const { isSmallScreen } = useBreakPoints();
+export default function RegisterForm() {
 	const router = useRouting();
 	const [username, setUsername] = useState<string>('');
-	const [roomName, setRoomName] = useState<string>('');
-	const [isValidRoomName, setIsValidRoomName] = useState<boolean>(true);
+	const [password, setPassword] = useState<string>('');
+	const [passwordHelper, setPasswordHelper] = useState<string>('');
+	const [usernameHelper, setUsernameHelper] = useState<string>('');
+	const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
 	const [isValidUsername, setIsValidUsername] = useState<boolean>(true);
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	useEffect(() => {
 		setIsValidUsername(/^[a-zA-Z0-9]{3,12}$/.test(username) || !username);
-		setIsValidRoomName(/^[a-zA-Z0-9]{1,8}$/.test(roomName) || !roomName);
-	}, [username, roomName]);
+		setIsValidPassword(/^[a-zA-Z0-9]{1,8}$/.test(password) || !password);
+	}, [username, password]);
 
 	const handleOnSubmit = async () => {
-		// TODO
+		// TODO: validate, and save account
+		router.navigate({ routeName: '' });
 	};
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.headingContainer}>
-				<Text style={styles.heading}>
-					{isSmallScreen ? 'Join a room and start chatting!' : 'Join a room!'}
-				</Text>
+				<Text style={styles.heading}>{'Create a new account'}</Text>
 			</View>
 			<View style={styles.inputContainer}>
 				<TextInput
 					onChangeText={setUsername}
-					value={user.name}
-					style={[styles.textInput, !isValidUsername ? styles.error : {}]}
+					value={username}
+					style={[styles.textInput, !isValidUsername ? styles.error : null]}
 					placeholder={'Enter username'}
 				/>
-				<HelperText style={styles.helper} visible={!isValidUsername} type={'error'}>
-					{'Username should be 3—12 letters or numbers'}
-				</HelperText>
+				{/* <HelperText style={styles.helper} visible={!isValidUsername} type={'error'}>
+					{usernameHelper}
+				</HelperText> */}
 			</View>
 			<View style={styles.inputContainer}>
 				<TextInput
-					onChangeText={setRoomName}
-					value={roomName}
-					style={[styles.textInput, !isValidRoomName ? styles.error : {}]}
-					placeholder={'Enter room name'}
+					onChangeText={setPassword}
+					value={password}
+					style={[styles.textInput, !isValidPassword ? styles.error : null]}
+					placeholder={'Enter password'}
+					textContentType={'password'}
+					secureTextEntry
 				/>
-				<HelperText style={styles.helper} visible={!isValidRoomName} type={'error'}>
-					{'Room name should be 1—8 letters or numbers'}
-				</HelperText>
+				{/* <HelperText style={styles.helper} visible={!isValidPassword} type={'error'}>
+					{passwordHelper}
+				</HelperText> */}
 			</View>
 			<Button
-				text={'Join'}
-				disabled={!isValidRoomName || !isValidUsername || !user.name || !roomName}
+				text={'Register'}
+				disabled={
+					!isValidUsername || !isValidUsername || !username || !password
+				}
 				onClick={handleOnSubmit}
 				width={225}
 			/>
@@ -76,15 +77,13 @@ const styleSheet = (color: Color, font: Font) =>
 			padding: 20,
 			backgroundColor: color.secondary,
 			borderRadius: 5,
-			alignSelf: 'flex-start',
 			alignItems: 'center',
-			maxWidth: 500,
 		},
 		headingContainer: {
 			marginBottom: 15,
 		},
 		inputContainer: {
-			alignItems: 'center',
+			marginBottom: 15,
 		},
 		heading: {
 			fontSize: font.size.heading,
