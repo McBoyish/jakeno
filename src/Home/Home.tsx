@@ -36,10 +36,9 @@ const styleSheet = (color: Color) =>
 		},
 
 		sectionContainer: {
-			width: '100%',
 			alignSelf: 'center',
 			justifyContent: 'center',
-			flexDirection: 'row',
+			flexDirection: 'column',
 		},
 
 		formContainer: {

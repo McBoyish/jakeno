@@ -14,6 +14,7 @@ export default function JoinRoomForm() {
 	const { styles } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
+		// check if room exists
 		router.navigate({ routeName: `room/${roomName}` });
 	};
 

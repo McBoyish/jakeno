@@ -10,6 +10,7 @@ const normalizeNextElements = `
   #__next {
     display: flex;
     flex-direction: column;
+		height: 100vh;
   }
 `;
 

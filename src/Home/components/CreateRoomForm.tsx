@@ -4,12 +4,12 @@ import { useTheme, HelperText } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
-import { useBreakPoints } from 'utils/responsive';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
 
 export default function CreateRoomForm() {
+	const { loggedIn } = useUserContext();
 	const router = useRouting();
 	const [roomName, setRoomName] = useState<string>('');
 	const [isValidRoomName, setIsValidRoomName] = useState<boolean>(true);
@@ -21,7 +21,10 @@ export default function CreateRoomForm() {
 	}, [roomName]);
 
 	const handleOnSubmit = async () => {
-		// TODO
+		// create room
+		if (loggedIn) {
+			router.navigate({ routeName: `room/${roomName}` });
+		}
 	};
 
 	return (
@@ -36,6 +39,13 @@ export default function CreateRoomForm() {
 					style={[styles.textInput, !isValidRoomName ? styles.error : {}]}
 					placeholder={'Enter room name'}
 				/>
+				<HelperText
+					style={styles.helper}
+					visible={!isValidRoomName}
+					type={'error'}
+				>
+					{'Name must be between 1 to 12 numbers or letters'}
+				</HelperText>
 			</View>
 			<Button
 				text={'Create'}
