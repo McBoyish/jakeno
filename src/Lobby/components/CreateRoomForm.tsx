@@ -66,19 +66,23 @@ const styleSheet = (color: Color, font: Font) =>
 			borderRadius: 5,
 			alignItems: 'center',
 		},
+
 		headingContainer: {
 			marginBottom: 15,
 		},
+
 		inputContainer: {
 			alignItems: 'center',
 			marginBottom: 15,
 		},
+
 		heading: {
 			fontSize: font.size.heading,
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
 		},
+
 		textInput: {
 			borderRadius: 5,
 			paddingHorizontal: 10,
@@ -90,10 +94,12 @@ const styleSheet = (color: Color, font: Font) =>
 			height: 50,
 			width: 225,
 		},
+
 		error: {
 			borderColor: color.error,
 			borderWidth: 1,
 		},
+
 		helper: {
 			fontSize: font.size.tertiary,
 			fontFamily: font.family.text,

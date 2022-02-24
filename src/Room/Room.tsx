@@ -136,6 +136,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.background,
 			padding: 20,
 		},
+
 		errorContainer: {
 			flex: 1,
 			alignSelf: 'center',
@@ -145,6 +146,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.background,
 			padding: 20,
 		},
+
 		text: {
 			fontFamily: font.family.text,
 			fontSize: font.size.primary,

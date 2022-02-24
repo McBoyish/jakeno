@@ -16,20 +16,20 @@ export default function NavBar() {
 		router.navigate({ routeName: '' });
 	};
 
-	const redirectToRegisterPage = () => {
-		router.navigate({ routeName: 'register' });
+	const logoff = () => {
+		// logoff
 	};
 
 	return (
 		<View style={styles.container}>
 			<Pressable style={styles.leftContainer} onPress={redirectToHomePage}>
-				<Text style={styles.heading}>{'Random Stranger'}</Text>
+				<Text style={styles.heading}>{'RS'}</Text>
 			</Pressable>
 			<View style={styles.rightContainer}>
 				{loggedIn && <Text style={styles.text}>{user.name}</Text>}
 				{!loggedIn && (
 					<Pressable>
-						<Text style={styles.text}>{'Login'}</Text>
+						<Text style={styles.text}>{'Not logged in'}</Text>
 					</Pressable>
 				)}
 			</View>

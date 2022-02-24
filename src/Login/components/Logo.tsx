@@ -1,34 +1,43 @@
-import type { NextPage } from 'next';
 import React from 'react';
-import { Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
+import { Text, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 
-const Error404Page: NextPage = () => {
+export default function Logo() {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>{'Error 404: Page not found'}</Text>
+			<View style={styles.headingContainer}>
+				<Text style={styles.heading}>{'Random Stranger'}</Text>
+			</View>
+			<Text style={styles.description}>
+				{'Start chatting with random strangers now.'}
+			</Text>
 		</View>
 	);
-};
-
-export default Error404Page;
+}
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
-			flex: 1,
-			alignSelf: 'center',
-			width: '100%',
-			backgroundColor: color.background,
-			padding: 20,
+			alignItems: 'center',
 		},
 
-		text: {
+		headingContainer: {
+			marginBottom: 15,
+		},
+
+		heading: {
+			fontSize: font.size.heading,
+			fontFamily: font.family.heading,
+			color: color.text,
+			textAlign: 'center',
+		},
+
+		description: {
 			fontSize: font.size.subheading,
 			fontFamily: font.family.text,
 			color: color.text,

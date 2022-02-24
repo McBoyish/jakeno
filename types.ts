@@ -59,7 +59,7 @@ export interface InputRoom {
 	name: string;
 }
 
-export interface InputUserAccount {
+export interface InputAccount {
 	name: string;
 	password: string;
 }

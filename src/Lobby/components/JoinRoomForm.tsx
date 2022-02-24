@@ -48,10 +48,12 @@ const styleSheet = (color: Color, font: Font) =>
 			borderRadius: 5,
 			alignItems: 'center',
 		},
+
 		inputContainer: {
 			marginBottom: 15,
 			alignItems: 'center',
 		},
+
 		heading: {
 			fontSize: font.size.heading,
 			fontFamily: font.family.heading,
@@ -59,6 +61,7 @@ const styleSheet = (color: Color, font: Font) =>
 			textAlign: 'center',
 			marginBottom: 15,
 		},
+
 		textInput: {
 			borderRadius: 5,
 			paddingHorizontal: 10,

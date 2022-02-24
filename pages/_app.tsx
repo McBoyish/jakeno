@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import React from 'react';
-import { Provider as PaperProvider, Portal } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import theme from 'theme';
 import Head from 'next/head';
 import { UserContextProvider } from 'src/common/context/UserContext';

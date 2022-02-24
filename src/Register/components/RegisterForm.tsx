@@ -1,32 +1,49 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
-import { useTheme, HelperText } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
+import { register } from 'server/routers';
 
 export default function RegisterForm() {
 	const router = useRouting();
-	const [username, setUsername] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
-	const [passwordHelper, setPasswordHelper] = useState<string>('');
-	const [usernameHelper, setUsernameHelper] = useState<string>('');
-	const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
-	const [isValidUsername, setIsValidUsername] = useState<boolean>(true);
+	const { updateToken } = useUserContext();
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirm, setConfirm] = useState('');
+	const [isValidUsername, setIsValidUsername] = useState(true);
+	const [isValidPassword, setIsValidPassword] = useState(true);
+	const [isValidConfirm, setIsValidConfirm] = useState(true);
+	const [errorMsg, setErrorMsg] = useState('');
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
-	useEffect(() => {
-		setIsValidUsername(/^[a-zA-Z0-9]{3,12}$/.test(username) || !username);
-		setIsValidPassword(/^[a-zA-Z0-9]{1,8}$/.test(password) || !password);
-	}, [username, password]);
-
 	const handleOnSubmit = async () => {
-		// TODO: validate, and save account
-		router.navigate({ routeName: '' });
+		const usernameValid = /^[a-zA-Z0-9]{3,12}$/.test(username);
+		const passwordValid = /^[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password);
+		const confirmValid = confirm === password;
+		if (!usernameValid || !passwordValid || !confirmValid) {
+			setIsValidUsername(usernameValid);
+			setIsValidPassword(passwordValid);
+			setIsValidConfirm(passwordValid && confirmValid);
+			return;
+		}
+		const userData = await register(username, password);
+		if (!userData) {
+			setErrorMsg('Account already exists');
+			setPassword('');
+			setConfirm('');
+			setTimeout(() => {
+				setErrorMsg('');
+			}, 5000);
+			return;
+		}
+		updateToken(userData.token);
+		router.navigate({ routeName: 'lobby' });
 	};
 
 	return (
@@ -34,38 +51,52 @@ export default function RegisterForm() {
 			<View style={styles.headingContainer}>
 				<Text style={styles.heading}>{'Create a new account'}</Text>
 			</View>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setUsername}
-					value={username}
-					style={[styles.textInput, !isValidUsername ? styles.error : null]}
-					placeholder={'Enter username'}
+			<View style={styles.formContainer}>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setUsername}
+						value={username}
+						style={[styles.textInput, !isValidUsername ? styles.error : null]}
+						placeholder={'Enter username'}
+					/>
+				</View>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setPassword}
+						value={password}
+						style={[styles.textInput, !isValidPassword ? styles.error : null]}
+						placeholder={'Enter password'}
+						textContentType={'password'}
+						secureTextEntry
+					/>
+				</View>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setConfirm}
+						value={confirm}
+						style={[styles.textInput, !isValidConfirm ? styles.error : null]}
+						placeholder={'Confirm password'}
+						textContentType={'password'}
+						secureTextEntry
+					/>
+				</View>
+				<Button
+					text={errorMsg || 'Register'}
+					disabled={!username || !password}
+					onClick={handleOnSubmit}
+					width={225}
 				/>
-				{/* <HelperText style={styles.helper} visible={!isValidUsername} type={'error'}>
-					{usernameHelper}
-				</HelperText> */}
 			</View>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setPassword}
-					value={password}
-					style={[styles.textInput, !isValidPassword ? styles.error : null]}
-					placeholder={'Enter password'}
-					textContentType={'password'}
-					secureTextEntry
-				/>
-				{/* <HelperText style={styles.helper} visible={!isValidPassword} type={'error'}>
-					{passwordHelper}
-				</HelperText> */}
-			</View>
-			<Button
-				text={'Register'}
-				disabled={
-					!isValidUsername || !isValidUsername || !username || !password
+			<Text style={styles.formHelperText}>
+				{
+					'Username should be between 3 to 12 characters and can contain numbers and letters.'
 				}
-				onClick={handleOnSubmit}
-				width={225}
-			/>
+			</Text>
+			<Text style={styles.formHelperText}>
+				{
+					'Password should be between 8 to 20 characters and can contain numbers, letters and special characters.'
+				}
+			</Text>
 		</View>
 	);
 }
@@ -74,23 +105,31 @@ const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			marginVertical: 5,
+		},
+
+		formContainer: {
+			marginVertical: 5,
 			padding: 20,
 			backgroundColor: color.secondary,
 			borderRadius: 5,
 			alignItems: 'center',
 		},
+
 		headingContainer: {
 			marginBottom: 15,
 		},
+
 		inputContainer: {
 			marginBottom: 15,
 		},
+
 		heading: {
 			fontSize: font.size.heading,
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
 		},
+
 		textInput: {
 			borderRadius: 5,
 			paddingHorizontal: 10,
@@ -102,17 +141,20 @@ const styleSheet = (color: Color, font: Font) =>
 			height: 50,
 			width: 225,
 		},
+
 		error: {
 			borderColor: color.error,
 			borderWidth: 1,
 		},
-		helper: {
+
+		formHelperText: {
 			fontSize: font.size.tertiary,
 			fontFamily: font.family.text,
-			color: color.error,
-			textAlign: 'left',
-			alignSelf: 'flex-start',
+			color: color.text,
+			textAlign: 'center',
+			alignSelf: 'center',
 			paddingHorizontal: 10,
-			width: 225,
+			marginVertical: 2.5,
+			width: 300,
 		},
 	});
