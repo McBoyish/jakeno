@@ -6,7 +6,7 @@ import MessageBubble from './MessageBubble';
 import DateBubble from './DateBubble';
 import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import { useBreakPoints } from 'utils/responsive';
+import { useMediaQueries } from 'utils/responsive';
 import { useVerticalScroll } from 'utils/useVerticalScroll';
 
 interface MessageBoxProps {
@@ -14,14 +14,15 @@ interface MessageBoxProps {
 	setScrollToStart: (_: () => void) => void;
 }
 
+const { sm } = useMediaQueries();
+
 export default function MessageBox({
 	messages,
 	setScrollToStart,
 }: MessageBoxProps) {
 	const { scrollRef, scrollToStart } = useVerticalScroll(0.75, true);
 	const { color } = useTheme();
-	const { isSmallScreen } = useBreakPoints();
-	const { styles } = styleSheet(color, isSmallScreen);
+	const { styles, ids } = styleSheet(color);
 
 	useEffect(() => {
 		setScrollToStart(scrollToStart);
@@ -58,7 +59,7 @@ export default function MessageBox({
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} dataSet={{ media: ids.container }}>
 			<FlatList
 				data={messages}
 				renderItem={renderItem}
@@ -74,18 +75,22 @@ export default function MessageBox({
 	);
 }
 
-const styleSheet = (color: Color, isSmallScreen: boolean) =>
+const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
 			flexDirection: 'column',
 			flexGrow: 1,
-			width: isSmallScreen ? 385 : '100%',
+			width: '100%',
 			height: '10vh', // it will grow to full size because of flex grow
 			marginVertical: 5,
 			padding: 10,
 			borderRadius: 5,
 			borderColor: color.primary,
 			backgroundColor: color.tertiary,
+
+			[sm]: {
+				width: 385,
+			},
 		},
 
 		separator: {

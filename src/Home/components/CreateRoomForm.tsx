@@ -9,7 +9,7 @@ import { useRouting } from 'expo-next-react-navigation';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
-import { useMediaQueries, useBreakPoints } from 'utils/responsive';
+import { useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
@@ -25,7 +25,6 @@ export default function RegisterForm() {
 	const [isValidDescription, setIsValidDescription] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
-	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
@@ -110,7 +109,7 @@ export default function RegisterForm() {
 							onValueChange={handleSwitch}
 							color={color.primary}
 							disabled={!loggedIn}
-							style={isMediumScreen ? undefined : { width: 30, height: 15 }}
+							style={{ width: 30, height: 15 }}
 						/>
 					</View>
 					<View style={styles.spacing} />
@@ -149,8 +148,8 @@ export default function RegisterForm() {
 						!roomName || (locked && !code) || !description || errorMsg !== ''
 					}
 					onClick={handleOnSubmit}
-					width={isMediumScreen ? 300 : 250}
 					loading={loading}
+					dataSet={{ media: ids.button }}
 				/>
 				<View
 					style={styles.formHelperContainer}
@@ -198,6 +197,14 @@ const styleSheet = (color: Color, font: Font) =>
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			marginBottom: 15,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
+		},
+
+		button: {
 			width: 250,
 
 			[md]: {

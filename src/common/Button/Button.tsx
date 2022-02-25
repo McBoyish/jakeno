@@ -9,7 +9,11 @@ interface ButtonProps {
 	onClick: () => void;
 	disabled: boolean;
 	width?: number;
+	height?: number;
 	loading?: boolean;
+	dataSet?: {
+		[key: string]: string;
+	};
 }
 
 export default function Button({
@@ -17,10 +21,12 @@ export default function Button({
 	onClick,
 	disabled,
 	width,
+	height,
 	loading,
+	dataSet,
 }: ButtonProps) {
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font, width);
+	const { styles } = styleSheet(color, font, width, height);
 
 	return (
 		<View
@@ -28,6 +34,7 @@ export default function Button({
 				styles.container,
 				disabled || loading ? { opacity: 0.5 } : undefined,
 			]}
+			dataSet={dataSet}
 		>
 			<TouchableOpacity
 				onPress={onClick}
@@ -41,13 +48,18 @@ export default function Button({
 	);
 }
 
-const styleSheet = (color: Color, font: Font, width?: number) =>
+const styleSheet = (
+	color: Color,
+	font: Font,
+	width?: number,
+	height?: number
+) =>
 	StyleSheet.create({
 		container: {
 			borderRadius: 5,
 			backgroundColor: 'transparent',
-			height: 50,
-			width: width,
+			height: height || 50,
+			width: width || 250,
 		},
 
 		content: {
@@ -55,8 +67,8 @@ const styleSheet = (color: Color, font: Font, width?: number) =>
 			borderStyle: 'solid',
 			borderColor: color.primary,
 			backgroundColor: color.primary,
-			height: 50,
-			width: width,
+			height: '100%',
+			width: '100%',
 			justifyContent: 'center',
 			alignItems: 'center',
 		},

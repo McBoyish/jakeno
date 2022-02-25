@@ -5,16 +5,20 @@ import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
 import CreateRoomForm from './components/CreateRoomForm';
 import StyleSheet from 'react-native-media-query';
-import { useBreakPoints } from 'utils/responsive';
+import { useMediaQueries } from 'utils/responsive';
+
+const { md } = useMediaQueries();
 
 export default function Home() {
-	const { isMediumScreen } = useBreakPoints();
 	const { color } = useTheme();
-	const { styles } = styleSheet(color, isMediumScreen);
+	const { styles, ids } = styleSheet(color);
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.sectionContainer}>
+			<View
+				style={styles.sectionContainer}
+				dataSet={{ media: ids.sectionContainer }}
+			>
 				<View style={styles.formContainer}>
 					<JoinRoomForm />
 				</View>
@@ -26,7 +30,7 @@ export default function Home() {
 	);
 }
 
-const styleSheet = (color: Color, isMediumScreen: boolean) =>
+const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
 			flex: 1,
@@ -38,7 +42,11 @@ const styleSheet = (color: Color, isMediumScreen: boolean) =>
 
 		sectionContainer: {
 			justifyContent: 'space-around',
-			flexDirection: isMediumScreen ? 'row' : 'column',
+			flexDirection: 'column',
+
+			[md]: {
+				flexDirection: 'row',
+			},
 		},
 
 		formContainer: {

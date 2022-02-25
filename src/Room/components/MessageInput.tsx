@@ -9,19 +9,20 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
-import { useBreakPoints } from 'utils/responsive';
+import { useMediaQueries } from 'utils/responsive';
 
 interface MessageInputProps {
 	onSubmit: (_: string) => void;
 }
 type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
+const { sm } = useMediaQueries();
+
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
 	const [text, setText] = useState('');
 	const { color, font } = useTheme();
-	const { isSmallScreen } = useBreakPoints();
-	const { styles } = styleSheet(color, font, isSmallScreen);
+	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
 		if (text === '') return;
@@ -59,13 +60,17 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	);
 }
 
-const styleSheet = (color: Color, font: Font, isSmallScreen: boolean) =>
+const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			flexDirection: 'row',
 			flexGrow: 0,
-			width: isSmallScreen ? 385 : '100%',
+			width: '100%',
 			marginVertical: 5,
+
+			[sm]: {
+				width: 385,
+			},
 		},
 
 		textInput: {

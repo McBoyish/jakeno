@@ -8,7 +8,7 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
 import { register } from 'server/routers';
-import { useBreakPoints, useMediaQueries } from 'utils/responsive';
+import { useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
@@ -23,7 +23,6 @@ export default function RegisterForm() {
 	const [isValidConfirm, setIsValidConfirm] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
-	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
@@ -107,8 +106,8 @@ export default function RegisterForm() {
 					text={errorMsg || 'Register'}
 					disabled={!username || !password || !confirm || errorMsg !== ''}
 					onClick={handleOnSubmit}
-					width={isMediumScreen ? 300 : 250}
 					loading={loading}
+					dataSet={{ media: ids.button }}
 				/>
 				<View
 					style={styles.formHelperContainer}
@@ -165,6 +164,14 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
+		},
+
+		button: {
 			width: 250,
 
 			[md]: {

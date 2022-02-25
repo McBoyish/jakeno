@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Color, User } from 'types';
+import { User } from 'types';
 import { verify } from 'server/routers';
-import { ActivityIndicator, useTheme } from 'react-native-paper';
-import StyleSheet from 'react-native-media-query';
 
 interface UserContextData {
 	user: User;
@@ -34,8 +32,6 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 	const [userLoading, setUserLoading] = useState(true);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [token, setToken] = useState('');
-	const { color } = useTheme();
-	const { styles } = styleSheet(color);
 
 	useEffect(() => {
 		// retrieve and verify token on page load
@@ -86,8 +82,6 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		userLoading && setUserLoading(false);
 	};
 
-	if (userLoading) return <ActivityIndicator style={styles.container} />;
-
 	return (
 		<UserContext.Provider
 			value={{ user, userLoading, loggedIn, token, updateToken, logoff }}
@@ -98,12 +92,3 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 }
 
 export { useUserContext, UserContextProvider };
-
-const styleSheet = (color: Color) =>
-	StyleSheet.create({
-		container: {
-			flex: 1,
-			backgroundColor: color.background,
-			padding: 20,
-		},
-	});
