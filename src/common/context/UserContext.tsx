@@ -91,12 +91,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		userLoading && setUserLoading(false);
 	};
 
-	if (userLoading)
-		return (
-			<View style={{ height }}>
-				<ActivityIndicator style={styles.container} />
-			</View>
-		);
+	if (userLoading) return <ActivityIndicator style={styles.container} />;
 
 	return (
 		<UserContext.Provider
@@ -112,7 +107,7 @@ export { useUserContext, UserContextProvider };
 const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
-			flexGrow: 1,
+			flex: 1,
 			backgroundColor: color.background,
 			padding: 20,
 		},

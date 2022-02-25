@@ -10,14 +10,17 @@ import { useWindowDimensions } from 'react-native';
 
 function App({ Component, pageProps }: AppProps) {
 	const { height } = useWindowDimensions();
+
+	if (!height) return null;
+
 	return (
-		<PaperProvider theme={theme}>
-			<Head>
-				<title>{'Random Stranger'}</title>
-				<link rel='icon' href='/ufo.png' />
-			</Head>
-			<UserContextProvider>
-				<View style={{ height }}>
+		<View style={{ height }}>
+			<PaperProvider theme={theme}>
+				<Head>
+					<title>{'Random Stranger'}</title>
+					<link rel='icon' href='/ufo.png' />
+				</Head>
+				<UserContextProvider>
 					<NavBar />
 					<ScrollView
 						style={{ flex: 1 }}
@@ -25,9 +28,9 @@ function App({ Component, pageProps }: AppProps) {
 					>
 						<Component {...pageProps} />
 					</ScrollView>
-				</View>
-			</UserContextProvider>
-		</PaperProvider>
+				</UserContextProvider>
+			</PaperProvider>
+		</View>
 	);
 }
 
