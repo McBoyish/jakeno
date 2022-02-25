@@ -150,6 +150,7 @@ export default function RegisterForm() {
 					onClick={handleOnSubmit}
 					loading={loading}
 					dataSet={{ media: ids.button }}
+					style={styles.button}
 				/>
 				<View
 					style={styles.formHelperContainer}

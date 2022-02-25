@@ -3,7 +3,7 @@ import React from 'react';
 import Login from 'src/Login';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
-import Blank from 'src/common/Blank';
+import Loading from 'src/common/Loading';
 
 const LoginPage: NextPage = () => {
 	const { loggedIn } = useUserContext();
@@ -11,7 +11,7 @@ const LoginPage: NextPage = () => {
 
 	if (loggedIn) {
 		navigate({ routeName: '' });
-		return <Blank />;
+		return <Loading />;
 	}
 
 	return <Login />;

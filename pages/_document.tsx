@@ -10,7 +10,7 @@ const normalizeNextElements = `
   #__next {
     display: flex;
     flex-direction: column;
-		height: 100vh;
+		height: 100%;
   }
 `;
 
@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
 
 	render() {
 		return (
-			<Html>
+			<Html style={{ height: '100%' }}>
 				<Head>
 					<link
 						href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
@@ -37,7 +37,7 @@ export default class MyDocument extends Document {
 					/>
 					<meta name='viewport' content='width=device-width, initial-scale=1' />
 				</Head>
-				<body>
+				<body style={{ height: '100%' }}>
 					<Main />
 					<NextScript />
 				</body>

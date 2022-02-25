@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
 import { verify } from 'server/routers';
-import Blank from '../Blank';
+import Loading from '../Loading';
 
 interface UserContextData {
 	user: User;
@@ -83,7 +83,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		userLoading && setUserLoading(false);
 	};
 
-	if (userLoading) return <Blank />;
+	if (userLoading) return <Loading />;
 
 	return (
 		<UserContext.Provider

@@ -2,7 +2,13 @@ import React from 'react';
 import StyleSheet from 'react-native-media-query';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
-import { View, TouchableOpacity, Text } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	Text,
+	StyleProp,
+	ViewStyle,
+} from 'react-native';
 
 interface ButtonProps {
 	text: string;
@@ -11,6 +17,7 @@ interface ButtonProps {
 	width?: number;
 	height?: number;
 	loading?: boolean;
+	style?: StyleProp<ViewStyle>;
 	dataSet?: {
 		media: string;
 	};
@@ -23,6 +30,7 @@ export default function Button({
 	width,
 	height,
 	loading,
+	style,
 	dataSet,
 }: ButtonProps) {
 	const { color, font } = useTheme();
@@ -33,6 +41,7 @@ export default function Button({
 			style={[
 				styles.container,
 				disabled || loading ? { opacity: 0.5 } : undefined,
+				style,
 			]}
 			dataSet={dataSet}
 		>
@@ -59,7 +68,7 @@ const styleSheet = (
 			borderRadius: 5,
 			backgroundColor: 'transparent',
 			height: height || 50,
-			width: width,
+			width: width || 250,
 		},
 
 		content: {

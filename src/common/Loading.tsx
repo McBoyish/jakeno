@@ -2,9 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-function Blank() {
+function Loading() {
 	const { color } = useTheme();
-	return <View style={{ backgroundColor: color.background, flex: 1 }} />;
+	return (
+		<View
+			style={{ backgroundColor: color.background, flex: 1, height: '100%' }}
+		/>
+	);
 }
 
-export default Blank;
+export default Loading;

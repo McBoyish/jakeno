@@ -47,6 +47,7 @@ export default function JoinRoomForm() {
 				disabled={!roomName || errorMsg !== ''}
 				onClick={handleOnSubmit}
 				width={225}
+				height={50}
 				loading={loading}
 			/>
 		</View>

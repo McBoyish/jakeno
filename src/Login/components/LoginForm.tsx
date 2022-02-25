@@ -72,6 +72,7 @@ export default function LoginForm() {
 				onClick={handleOnSubmit}
 				loading={loading}
 				dataSet={{ media: ids.button }}
+				style={styles.button}
 			/>
 			<View style={styles.divider} />
 			<Button
@@ -79,6 +80,7 @@ export default function LoginForm() {
 				disabled={false}
 				onClick={redirectToRegisterPage}
 				dataSet={{ media: ids.button }}
+				style={styles.button}
 			/>
 		</View>
 	);
