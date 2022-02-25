@@ -55,6 +55,8 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				text={'Send'}
 				disabled={text === ''}
 				onClick={handleOnButtonPress}
+				width={75}
+				height={50}
 			/>
 		</View>
 	);

@@ -14,10 +14,7 @@ function Layout({ children }: LayoutProps) {
 		<PaperProvider theme={theme}>
 			<UserContextProvider>
 				<NavBar />
-				<ScrollView
-					style={{ flex: 1, height: '100%' }}
-					contentContainerStyle={{ flexGrow: 1 }}
-				>
+				<ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
 					{children}
 				</ScrollView>
 			</UserContextProvider>
