@@ -49,7 +49,8 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 				setUser(user);
 				setLoggedIn(true);
 				setToken(token);
-				setUserLoading(false);
+				// setUserLoading(false);
+				setTimeout(() => setUserLoading(false), 50000);
 				return;
 			}
 			if (isMounted && token && !user) {
@@ -58,7 +59,8 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 			}
 			if (isMounted && !token) {
 				localStorage.setItem('token', '');
-				setUserLoading(false);
+				setTimeout(() => setUserLoading(false), 50000);
+				// setUserLoading(false);
 				return;
 			}
 		};
@@ -76,7 +78,8 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 			setToken(token);
 			setUser(user);
 			!loggedIn && setLoggedIn(true);
-			userLoading && setUserLoading(false);
+			// userLoading && setUserLoading(false);
+			setTimeout(() => setUserLoading(false), 50000);
 		}
 	};
 
@@ -109,7 +112,7 @@ export { useUserContext, UserContextProvider };
 const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
-			flex: 1,
+			flexGrow: 1,
 			backgroundColor: color.background,
 			padding: 20,
 		},
