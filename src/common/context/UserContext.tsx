@@ -4,7 +4,6 @@ import { Color, User } from 'types';
 import { verify } from 'server/routers';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 import StyleSheet from 'react-native-media-query';
-import { useWindowDimensions, View } from 'react-native';
 
 interface UserContextData {
 	user: User;
@@ -31,7 +30,6 @@ function useUserContext() {
 }
 
 function UserContextProvider({ children }: { children: React.ReactNode }) {
-	const { height } = useWindowDimensions();
 	const [user, setUser] = useState<User>(initialValue);
 	const [userLoading, setUserLoading] = useState(true);
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -49,8 +47,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 				setUser(user);
 				setLoggedIn(true);
 				setToken(token);
-				// setUserLoading(false);
-				setTimeout(() => setUserLoading(false), 50000);
+				setUserLoading(false);
 				return;
 			}
 			if (isMounted && token && !user) {
@@ -59,8 +56,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 			}
 			if (isMounted && !token) {
 				localStorage.setItem('token', '');
-				setTimeout(() => setUserLoading(false), 50000);
-				// setUserLoading(false);
+				setUserLoading(false);
 				return;
 			}
 		};
@@ -78,8 +74,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 			setToken(token);
 			setUser(user);
 			!loggedIn && setLoggedIn(true);
-			// userLoading && setUserLoading(false);
-			setTimeout(() => setUserLoading(false), 50000);
+			userLoading && setUserLoading(false);
 		}
 	};
 
