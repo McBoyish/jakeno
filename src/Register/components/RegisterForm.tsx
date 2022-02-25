@@ -21,23 +21,27 @@ export default function RegisterForm() {
 	const [isValidUsername, setIsValidUsername] = useState(true);
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [isValidConfirm, setIsValidConfirm] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
 	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
+		setLoading(true);
 		const usernameValid = /^[a-zA-Z0-9]{3,12}$/.test(username);
 		const passwordValid = /^[a-zA-Z0-9]{8,20}$/.test(password);
 		const confirmValid = confirm === password;
+		setIsValidUsername(usernameValid);
+		setIsValidPassword(passwordValid);
+		setIsValidConfirm(confirmValid);
 		if (!usernameValid || !passwordValid || !confirmValid) {
-			!usernameValid && setIsValidUsername(usernameValid);
-			!passwordValid && setIsValidPassword(passwordValid);
-			!confirm && setIsValidConfirm(confirmValid);
+			setLoading(false);
 			return;
 		}
 		const userData = await register(username, password);
 		if (!userData) {
+			setLoading(false);
 			setErrorMsg('Account already exists');
 			setPassword('');
 			setConfirm('');
@@ -63,6 +67,7 @@ export default function RegisterForm() {
 						style={[styles.textInput, !isValidUsername ? styles.error : null]}
 						placeholder={'Enter username'}
 						dataSet={{ media: ids.textInput }}
+						editable={!loading}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -74,6 +79,7 @@ export default function RegisterForm() {
 						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
+						editable={!loading}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -85,13 +91,15 @@ export default function RegisterForm() {
 						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
+						editable={!loading}
 					/>
 				</View>
 				<Button
 					text={errorMsg || 'Register'}
-					disabled={!username || !password || !confirm}
+					disabled={!username || !password || !confirm || errorMsg !== ''}
 					onClick={handleOnSubmit}
 					width={isMediumScreen ? 300 : 250}
+					loading={loading}
 				/>
 				<View
 					style={styles.formHelperContainer}

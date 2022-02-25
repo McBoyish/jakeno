@@ -11,13 +11,16 @@ import { getRoom } from 'server/routers';
 export default function JoinRoomForm() {
 	const router = useRouting();
 	const [roomName, setRoomName] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
+		setLoading(true);
 		const room = await getRoom(roomName);
 		if (!room) {
+			setLoading(false);
 			setErrorMsg('Cound not find room');
 			setTimeout(() => {
 				setErrorMsg('');
@@ -34,8 +37,9 @@ export default function JoinRoomForm() {
 				<TextInput
 					onChangeText={setRoomName}
 					value={roomName}
-					style={styles.textInput}
+					style={[styles.textInput, errorMsg ? styles.error : null]}
 					placeholder={'Enter room name'}
+					editable={!loading}
 				/>
 			</View>
 			<Button
@@ -43,6 +47,7 @@ export default function JoinRoomForm() {
 				disabled={!roomName || errorMsg !== ''}
 				onClick={handleOnSubmit}
 				width={225}
+				loading={loading}
 			/>
 		</View>
 	);
@@ -83,5 +88,10 @@ const styleSheet = (color: Color, font: Font) =>
 			color: color.text,
 			height: 50,
 			width: 225,
+		},
+
+		error: {
+			borderColor: color.error,
+			borderWidth: 1,
 		},
 	});

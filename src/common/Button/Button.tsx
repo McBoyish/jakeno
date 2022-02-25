@@ -1,13 +1,15 @@
 import React from 'react';
 import StyleSheet from 'react-native-media-query';
-import { Button as PaperButton, useTheme } from 'react-native-paper';
+import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 interface ButtonProps {
 	text: string;
 	onClick: () => void;
 	disabled: boolean;
 	width?: number;
+	loading?: boolean;
 }
 
 export default function Button({
@@ -15,22 +17,24 @@ export default function Button({
 	onClick,
 	disabled,
 	width,
+	loading,
 }: ButtonProps) {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font, width);
 
 	return (
-		<PaperButton
-			mode={'text'}
-			onPress={onClick}
-			disabled={disabled}
-			style={[styles.container, disabled ? { opacity: 0.5 } : {}]}
-			labelStyle={styles.label}
-			contentStyle={styles.content}
-			uppercase={false}
+		<View
+			style={[styles.container, disabled || loading ? { opacity: 0.5 } : null]}
 		>
-			{text}
-		</PaperButton>
+			<TouchableOpacity
+				onPress={onClick}
+				disabled={disabled}
+				style={styles.content}
+			>
+				{loading && <ActivityIndicator color={color.black} />}
+				{!loading && <Text style={styles.label}>{text}</Text>}
+			</TouchableOpacity>
+		</View>
 	);
 }
 
@@ -50,12 +54,13 @@ const styleSheet = (color: Color, font: Font, width?: number) =>
 			backgroundColor: color.primary,
 			height: 50,
 			width: width,
+			justifyContent: 'center',
+			alignItems: 'center',
 		},
 
 		label: {
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.text,
-			letterSpacing: 0,
 		},
 	});

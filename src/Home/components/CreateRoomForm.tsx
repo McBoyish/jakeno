@@ -23,22 +23,35 @@ export default function RegisterForm() {
 	const [isValidRoomName, setIsValidRoomName] = useState(true);
 	const [isValidCode, setIsValidCode] = useState(true);
 	const [isValidDescription, setIsValidDescription] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
 	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
+	const handleSwitch = (value: boolean) => {
+		if (loading) return;
+		setCode('');
+		setIsValidCode(true);
+		setLocked(value);
+	};
+
 	const handleOnSubmit = async () => {
+		setLoading(true);
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
 		const codeValid = /^[0-9]{4,8}$/.test(code);
 		const descriptionValid = description !== '';
+		setIsValidRoomName(roomNameValid);
+		setIsValidCode(!locked || codeValid);
+		setIsValidDescription(descriptionValid);
 		if (!roomNameValid || (locked && !codeValid) || !descriptionValid) {
-			!roomNameValid && setIsValidRoomName(false);
-			locked && !codeValid && setIsValidCode(false);
-			!descriptionValid && setIsValidDescription(false);
+			setLoading(false);
 			return;
 		}
-		if (!user._id) return;
+		if (!user._id) {
+			setLoading(false);
+			return;
+		}
 		const room: InputRoom = {
 			userId: user._id,
 			name: roomName,
@@ -46,8 +59,10 @@ export default function RegisterForm() {
 			locked,
 			code: locked ? code : '',
 		};
+		await new Promise(r => setTimeout(r, 100000));
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
+			setLoading(false);
 			setErrorMsg('Room name already exists');
 			setTimeout(() => {
 				setErrorMsg('');
@@ -72,10 +87,10 @@ export default function RegisterForm() {
 						style={[
 							styles.textInput,
 							!isValidRoomName ? styles.error : null,
-							loggedIn ? {} : { opacity: 0.5 },
+							loggedIn ? null : { opacity: 0.5 },
 						]}
 						placeholder={'Enter room name'}
-						editable={loggedIn}
+						editable={loggedIn && !loading}
 						dataSet={{ media: ids.textInput }}
 					/>
 				</View>
@@ -83,17 +98,17 @@ export default function RegisterForm() {
 					style={styles.switchContainer}
 					dataSet={{ media: ids.switchContainer }}
 				>
-					<View style={[styles.switch, loggedIn ? {} : { opacity: 0.5 }]}>
+					<View style={[styles.switch, loggedIn ? null : { opacity: 0.5 }]}>
 						<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
 							{'Lock'}
 						</Text>
 						<View style={styles.spacing} />
 						<Switch
 							value={locked}
-							onValueChange={setLocked}
+							onValueChange={handleSwitch}
 							color={color.primary}
 							disabled={!loggedIn}
-							style={isMediumScreen ? undefined : { width: 30, height: 15 }}
+							style={isMediumScreen ? null : { width: 30, height: 15 }}
 						/>
 					</View>
 					<View style={styles.spacing} />
@@ -103,11 +118,11 @@ export default function RegisterForm() {
 						style={[
 							styles.codeInput,
 							!isValidCode ? styles.error : null,
-							!locked ? { opacity: 0.5 } : null,
+							!locked || !loggedIn ? { opacity: 0.5 } : null,
 						]}
 						placeholder={'Enter room code'}
 						textContentType={'none'}
-						editable={loggedIn && locked}
+						editable={loggedIn && locked && !loading}
 						dataSet={{ media: ids.codeInput }}
 					/>
 				</View>
@@ -119,10 +134,10 @@ export default function RegisterForm() {
 						style={[
 							styles.descriptionInput,
 							!isValidDescription ? styles.error : null,
-							loggedIn ? {} : { opacity: 0.5 },
+							loggedIn ? null : { opacity: 0.5 },
 						]}
 						placeholder={'Enter description'}
-						editable={loggedIn}
+						editable={loggedIn && !loading}
 						dataSet={{ media: ids.descriptionInput }}
 					/>
 				</View>
@@ -133,6 +148,7 @@ export default function RegisterForm() {
 					}
 					onClick={handleOnSubmit}
 					width={isMediumScreen ? 300 : 250}
+					loading={loading}
 				/>
 				<View
 					style={styles.formHelperContainer}

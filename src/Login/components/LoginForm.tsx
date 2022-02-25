@@ -17,14 +17,17 @@ export default function LoginForm() {
 	const { updateToken } = useUserContext();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
+		setLoading(true);
 		const userData = await login(username, password);
 		if (!userData) {
+			setLoading(false);
 			setErrorMessage('Could not find account');
 			setPassword('');
 			setTimeout(() => {
@@ -49,6 +52,7 @@ export default function LoginForm() {
 					style={[styles.textInput, errorMessage ? styles.error : null]}
 					placeholder={'Username'}
 					dataSet={{ media: ids.textInput }}
+					editable={!loading}
 				/>
 			</View>
 			<View style={styles.inputContainer}>
@@ -60,13 +64,15 @@ export default function LoginForm() {
 					textContentType={'password'}
 					secureTextEntry
 					dataSet={{ media: ids.textInput }}
+					editable={!loading}
 				/>
 			</View>
 			<Button
 				text={errorMessage || 'Login'}
-				disabled={!username || !password}
+				disabled={!username || !password || errorMessage !== ''}
 				onClick={handleOnSubmit}
 				width={isMediumScreen ? 300 : 250}
+				loading={loading}
 			/>
 			<View style={styles.divider} />
 			<Button
