@@ -1,15 +1,12 @@
 import type { AppProps } from 'next/app';
 import React from 'react';
-import Head from 'next/head';
 import Layout from 'src/common/Layout';
+import SEO from 'src/common/SEO';
 
 function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
-			<Head>
-				<title>{'Random Stranger'}</title>
-				<link rel='icon' href='/ufo.png' />
-			</Head>
+			<SEO />
 			<Layout>
 				<Component {...pageProps} />
 			</Layout>

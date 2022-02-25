@@ -76,7 +76,7 @@ export default function RegisterForm() {
 			<View style={styles.formContainer}>
 				<View style={styles.headingContainer}>
 					<Text style={styles.heading}>
-						{loggedIn ? 'Create a new room!' : 'Login to create rooms!'}
+						{loggedIn ? 'Create a new room' : 'Login to create rooms'}
 					</Text>
 				</View>
 				<View style={styles.inputContainer}>
