@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Color } from 'types';
 import { View } from 'react-native';
 import LoginForm from './components/LoginForm';
-import Logo from './components/Logo';
+import Title from './components/Title';
 import StyleSheet from 'react-native-media-query';
 import { useBreakPoints } from 'utils/responsive';
 
@@ -14,7 +14,7 @@ export default function Home() {
 
 	return (
 		<View style={styles.container}>
-			<Logo />
+			<Title />
 			<LoginForm />
 		</View>
 	);

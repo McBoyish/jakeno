@@ -35,15 +35,15 @@ export default function MessageBox({
 			messages[index].user._id !== messages[index + 1].user._id;
 		const shouldAddDate =
 			index === messages.length - 1 ||
-			parseDate(messages[index].date).date !==
-				parseDate(messages[index + 1].date).date;
+			parseDate(messages[index].createdAt).date !==
+				parseDate(messages[index + 1].createdAt).date;
 		if (shouldAddDate)
 			return (
 				<>
 					<MessageBubble message={item} />
 					<View style={styles.separator} />
 					<View style={styles.separator} />
-					<DateBubble date={item.date} />
+					<DateBubble date={item.createdAt} />
 					{index < messages.length - 1 && <View style={styles.separator} />}
 				</>
 			);

@@ -14,17 +14,15 @@ interface MessageBubbleProps {
 export default function MessageBubble({ message }: MessageBubbleProps) {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
-	const { user } = useUserContext();
-	const isSelf = user._id === message.user._id;
 
 	return (
-		<View style={[styles.container, isSelf ? styles.right : styles.left]}>
+		<View style={styles.container}>
 			<View style={styles.headerContainer}>
-				{!isSelf && <Text style={styles.username}>{message.user.name}</Text>}
-				{!isSelf && <View style={styles.spacing} />}
-				<Text style={styles.timestamp}>{`${
-					parseDate(message.date).time
-				}`}</Text>
+				<Text style={styles.username}>{message.user.name}</Text>
+				<View style={styles.spacing} />
+				<Text style={styles.timestamp}>
+					{parseDate(message.createdAt).time}
+				</Text>
 			</View>
 			<View style={styles.verticalSpacing} />
 			<HyperLink linkDefault linkStyle={styles.hyperlink}>
@@ -45,14 +43,7 @@ const styleSheet = (color: Color, font: Font) =>
 			minWidth: 50,
 			maxWidth: '90%',
 			justifyContent: 'center',
-		},
-
-		left: {
 			alignSelf: 'flex-start',
-		},
-
-		right: {
-			alignSelf: 'flex-end',
 		},
 
 		headerContainer: {

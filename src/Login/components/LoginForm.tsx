@@ -29,7 +29,7 @@ export default function LoginForm() {
 			return;
 		}
 		updateToken(userData.token);
-		router.navigate({ routeName: 'lobby' });
+		router.navigate({ routeName: '' });
 	};
 
 	const redirectToRegisterPage = () => {
@@ -50,7 +50,7 @@ export default function LoginForm() {
 				<TextInput
 					onChangeText={setPassword}
 					value={password}
-					style={styles.textInput}
+					style={[styles.textInput, errorMessage ? styles.error : null]}
 					placeholder={'Password'}
 					textContentType={'password'}
 					secureTextEntry
@@ -58,16 +58,16 @@ export default function LoginForm() {
 			</View>
 			<Button
 				text={errorMessage || 'Login'}
-				disabled={!username || !password || errorMessage !== ''}
+				disabled={!username || !password}
 				onClick={handleOnSubmit}
-				width={225}
+				width={300}
 			/>
 			<View style={styles.divider} />
 			<Button
 				text={'Register'}
 				disabled={false}
 				onClick={redirectToRegisterPage}
-				width={225}
+				width={300}
 			/>
 		</View>
 	);
@@ -94,8 +94,9 @@ const styleSheet = (color: Color, font: Font) =>
 			outlineStyle: 'none',
 			borderColor: color.primary,
 			backgroundColor: color.tertiary,
+			color: color.text,
 			height: 50,
-			width: 225,
+			width: 300,
 		},
 
 		error: {

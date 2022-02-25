@@ -29,15 +29,14 @@ const styleSheet = (color: Color) =>
 		container: {
 			flex: 1,
 			alignSelf: 'center',
-			alignItems: 'flex-start',
 			backgroundColor: color.background,
 			width: '100%',
 			padding: 20,
 		},
 
 		sectionContainer: {
-			justifyContent: 'center',
-			flexDirection: 'column',
+			justifyContent: 'space-around',
+			flexDirection: 'row',
 		},
 
 		formContainer: {

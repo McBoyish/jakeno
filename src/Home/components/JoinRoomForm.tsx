@@ -1,55 +1,48 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
-import { useTheme, HelperText } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
+import { getRoom } from 'server/routers';
+import { useUserContext } from 'src/common/context/UserContext';
 
-export default function CreateRoomForm() {
-	const { loggedIn } = useUserContext();
+export default function JoinRoomForm() {
 	const router = useRouting();
-	const [roomName, setRoomName] = useState<string>('');
-	const [isValidRoomName, setIsValidRoomName] = useState<boolean>(true);
+	const { token } = useUserContext();
+	const [roomName, setRoomName] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
-	useEffect(() => {
-		setIsValidRoomName(/^[a-zA-Z0-9]{1,8}$/.test(roomName) || !roomName);
-	}, [roomName]);
-
 	const handleOnSubmit = async () => {
-		// create room
-		if (loggedIn) {
-			router.navigate({ routeName: `room/${roomName}` });
+		const room = await getRoom(roomName, token);
+		if (!room) {
+			setErrorMsg('Cound not find room');
+			setTimeout(() => {
+				setErrorMsg('');
+			}, 3000);
+			return;
 		}
+		router.navigate({ routeName: `room/${roomName}` });
 	};
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.headingContainer}>
-				<Text style={styles.heading}>{'Create a room'}</Text>
-			</View>
+			<Text style={styles.heading}>{'Start chatting!'}</Text>
 			<View style={styles.inputContainer}>
 				<TextInput
 					onChangeText={setRoomName}
 					value={roomName}
-					style={[styles.textInput, !isValidRoomName ? styles.error : {}]}
+					style={styles.textInput}
 					placeholder={'Enter room name'}
 				/>
-				<HelperText
-					style={styles.helper}
-					visible={!isValidRoomName}
-					type={'error'}
-				>
-					{'Name must be between 1 to 12 numbers or letters'}
-				</HelperText>
 			</View>
 			<Button
-				text={'Create'}
-				disabled={!isValidRoomName || !roomName}
+				text={errorMsg || 'Join'}
+				disabled={!roomName || errorMsg !== ''}
 				onClick={handleOnSubmit}
 				width={225}
 			/>
@@ -67,13 +60,9 @@ const styleSheet = (color: Color, font: Font) =>
 			alignItems: 'center',
 		},
 
-		headingContainer: {
-			marginBottom: 15,
-		},
-
 		inputContainer: {
-			alignItems: 'center',
 			marginBottom: 15,
+			alignItems: 'center',
 		},
 
 		heading: {
@@ -81,6 +70,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
+			marginBottom: 15,
 		},
 
 		textInput: {
@@ -91,22 +81,8 @@ const styleSheet = (color: Color, font: Font) =>
 			outlineStyle: 'none',
 			borderColor: color.primary,
 			backgroundColor: color.tertiary,
+			color: color.text,
 			height: 50,
-			width: 225,
-		},
-
-		error: {
-			borderColor: color.error,
-			borderWidth: 1,
-		},
-
-		helper: {
-			fontSize: font.size.tertiary,
-			fontFamily: font.family.text,
-			color: color.error,
-			textAlign: 'left',
-			alignSelf: 'flex-start',
-			paddingHorizontal: 10,
 			width: 225,
 		},
 	});

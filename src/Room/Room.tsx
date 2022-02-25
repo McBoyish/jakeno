@@ -14,59 +14,51 @@ import { Socket } from 'socket.io-client';
 import { useRouting } from 'expo-next-react-navigation';
 
 export default function Room() {
-	const { user, userLoading } = useUserContext();
+	const { user } = useUserContext();
 	const router = useRouting();
 	const [socket, setSocket] = useState<Socket>();
-	const [roomData, setRoomData] = useState<RoomData>({
-		_id: '',
-		name: '',
-		messages: [],
-	});
-	const [roomExists, setRoomExists] = useState<boolean>(false);
-	const [roomLoading, setRoomLoading] = useState<boolean>(true);
-	const [messageSent, setMessageSent] = useState<boolean>(false);
-	const [scrollToStart, setScrollToStart] = useState<() => void>();
+	const [loading, setLoading] = useState(true);
+	const [roomData, setRoomData] = useState<RoomData | null>(null);
+	const [messageSent, setMessageSent] = useState(false);
+	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 	const roomName = router.getParam('roomName');
 
 	useEffect(() => {
-		setSocket(io(uri));
+		return leaveRoom;
 	}, []);
-
-	useEffect(() => {
-		let isMounted = true;
-		const handleGetRoomData = async () => {
-			const data = await getRoom(roomName as string);
-			if (data) {
-				data.messages = sortByDate(data.messages);
-				if (!isMounted) return;
-				setRoomData(data);
-				setRoomExists(true);
-			}
-			setRoomLoading(false);
-		};
-		if (roomName) handleGetRoomData();
-		return () => {
-			isMounted = false;
-		};
-	}, [roomName]);
-
-	useEffect(() => {
-		if (socket && roomExists) socket.emit('join-room', roomData._id);
-	}, [socket, roomExists]);
 
 	useEffect(() => {
 		if (!socket) return;
 		socket.on('message', (message: Message) => {
 			addMessage(message);
 		});
-		return () => {
-			socket.emit('leave-room', roomData._id as string);
-			socket.removeAllListeners();
-			socket.disconnect();
-		};
 	}, [socket]);
+
+	useEffect(() => {
+		let isMounted = true;
+		const handleGetRoomData = async () => {
+			if (!roomName) return;
+			const data = await getRoom(roomName as string);
+			if (isMounted && !data) {
+				setLoading(false);
+				return;
+			}
+			if (isMounted && data) {
+				data.messages = sortByDate(data.messages);
+				const socket = io(uri);
+				socket.emit('join-room', data._id);
+				setSocket(socket);
+				setRoomData(data);
+				setLoading(false);
+			}
+		};
+		handleGetRoomData();
+		return () => {
+			isMounted = false;
+		};
+	}, [roomName]);
 
 	useEffect(() => {
 		if (!scrollToStart || !messageSent) return;
@@ -74,19 +66,25 @@ export default function Room() {
 		setMessageSent(false);
 	}, [scrollToStart, messageSent]);
 
+	const leaveRoom = () => {
+		if (!socket || !roomData) return;
+		socket.emit('leave-room', roomData._id);
+		socket.removeAllListeners();
+		socket.disconnect();
+	};
+
 	const addMessage = (message: Message) => {
 		setRoomData(prev => {
-			const data = {
-				_id: prev._id,
-				name: prev.name,
+			if (!prev) return null;
+			return {
+				...prev,
 				messages: [message, ...prev.messages],
 			};
-			return data;
 		});
 	};
 
 	const onSubmit = (text: string) => {
-		if (!socket) return;
+		if (!socket || !roomData) return;
 		const message: InputMessage = {
 			userId: user._id,
 			roomId: roomData._id,
@@ -98,17 +96,17 @@ export default function Room() {
 		});
 	};
 
-	if (userLoading || roomLoading)
+	if (loading)
 		return (
 			<View style={styles.container}>
 				<Text style={styles.text}>{'Loading...'}</Text>
 			</View>
 		);
 
-	if (!roomExists)
+	if (!roomData)
 		return (
-			<View style={styles.errorContainer}>
-				<Text style={styles.text}>{'Page not found'}</Text>
+			<View style={styles.container}>
+				<Text style={styles.text}>{'Could not find room'}</Text>
 			</View>
 		);
 
@@ -130,7 +128,7 @@ const styleSheet = (color: Color, font: Font) =>
 		container: {
 			flex: 1,
 			alignSelf: 'center',
-			alignItems: 'flex-start',
+			alignItems: 'center',
 			width: '100%',
 			height: '100vh',
 			backgroundColor: color.background,
@@ -148,9 +146,9 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		text: {
+			fontSize: font.size.subheading,
 			fontFamily: font.family.text,
-			fontSize: font.size.primary,
 			color: color.text,
-			textAlign: 'left',
+			textAlign: 'center',
 		},
 	});

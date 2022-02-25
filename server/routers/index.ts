@@ -1,5 +1,5 @@
 import { getRoom, createRoom } from './roomRouter';
-import { getUser } from './userRouter';
 import { login, register } from './accountRouter';
+import { verify } from './authRouter';
 
-export { getRoom, createRoom, getUser, login, register };
+export { getRoom, createRoom, login, register, verify };

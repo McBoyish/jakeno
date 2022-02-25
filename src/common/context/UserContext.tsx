@@ -1,22 +1,28 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from 'types';
-import jwt_decode from 'jwt-decode';
+import { Color, User } from 'types';
+import { verify } from 'server/routers';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
+import StyleSheet from 'react-native-media-query';
 
 interface UserContextData {
 	user: User;
 	userLoading: boolean;
 	loggedIn: boolean;
+	token: string;
 	updateToken: (_: string) => void;
+	logoff: () => void;
 }
 
-const initialValue: User = { name: '', _id: '' };
+const initialValue: User = { name: 'anon', _id: 'anon' };
 
 const UserContext = createContext<UserContextData>({
 	user: initialValue,
 	userLoading: true,
 	loggedIn: false,
+	token: '',
 	updateToken: () => null,
+	logoff: () => null,
 });
 
 function useUserContext() {
@@ -28,36 +34,76 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 	const [userLoading, setUserLoading] = useState(true);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [token, setToken] = useState('');
+	const { color } = useTheme();
+	const { styles } = styleSheet(color);
 
 	useEffect(() => {
-		// retrieve token on page load
-		const localToken = localStorage.getItem('token');
-		if (localToken) {
-			const user = jwt_decode(localToken) as User;
-			setUser(user);
-			setLoggedIn(true);
-			setToken(localToken);
-		} else localStorage.setItem('token', '');
-		setUserLoading(false);
+		// retrieve and verify token on page load
+		let isMounted = true;
+		const verifyToken = async () => {
+			const token = localStorage.getItem('token');
+			const user = await verify(token);
+			if (isMounted && token && user) {
+				setUser(user);
+				setLoggedIn(true);
+				setToken(token);
+				setUserLoading(false);
+				return;
+			}
+			if (isMounted && token && !user) {
+				logoff();
+				return;
+			}
+			if (isMounted && !token) {
+				localStorage.setItem('token', '');
+				setUserLoading(false);
+				return;
+			}
+		};
+		verifyToken();
+		return () => {
+			isMounted = false;
+		};
 	}, []);
 
-	const updateToken = (new_token: string) => {
-		if (token === new_token) return;
-		if (new_token) {
-			localStorage.setItem('token', new_token);
-			const user = jwt_decode(new_token) as User;
+	const updateToken = async (token: string) => {
+		const user = await verify(token);
+		if (user) {
+			// update token if it is valid
+			localStorage.setItem('token', token);
+			setToken(token);
 			setUser(user);
-			userLoading && setUserLoading(false);
 			!loggedIn && setLoggedIn(true);
-			setToken(new_token);
+			userLoading && setUserLoading(false);
 		}
 	};
 
+	const logoff = () => {
+		localStorage.setItem('token', '');
+		setToken('');
+		setUser(initialValue);
+		loggedIn && setLoggedIn(false);
+		userLoading && setUserLoading(false);
+	};
+
+	if (userLoading) return <ActivityIndicator style={styles.container} />;
+
 	return (
-		<UserContext.Provider value={{ user, userLoading, loggedIn, updateToken }}>
+		<UserContext.Provider
+			value={{ user, userLoading, loggedIn, token, updateToken, logoff }}
+		>
 			{children}
 		</UserContext.Provider>
 	);
 }
 
 export { useUserContext, UserContextProvider };
+
+const styleSheet = (color: Color) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: color.background,
+			padding: 20,
+		},
+	});

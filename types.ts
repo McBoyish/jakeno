@@ -30,10 +30,7 @@ export interface Color {
 }
 
 /***************MONGODB INTERFACES***************/
-export interface Room {
-	_id: string;
-	name: string;
-}
+type DateTime = string;
 
 export interface User {
 	_id: string;
@@ -45,7 +42,7 @@ export interface Message {
 	roomId: string;
 	content: string;
 	user: User;
-	date: string;
+	createdAt: string;
 }
 
 /***************API INTERFACES***************/
@@ -56,7 +53,11 @@ export interface InputMessage {
 }
 
 export interface InputRoom {
+	userId: string;
 	name: string;
+	description: string;
+	locked: boolean;
+	code: string;
 }
 
 export interface InputAccount {
@@ -64,8 +65,14 @@ export interface InputAccount {
 	password: string;
 }
 
-export interface RoomData extends Room {
+export interface RoomData {
+	_id: string;
+	userId: string;
+	name: string;
+	description: string;
+	locked: boolean;
 	messages: Message[];
+	createdAt: DateTime;
 }
 
 export interface UserData extends User {

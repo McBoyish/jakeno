@@ -3,13 +3,15 @@ import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import { Text, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
+import { useBreakPoints } from 'utils/responsive';
 
-export default function Logo() {
+export default function Title() {
+	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font);
+	const { styles } = styleSheet(color, font, isMediumScreen);
 
 	return (
-		<View style={styles.container}>
+		<View>
 			<View style={styles.headingContainer}>
 				<Text style={styles.heading}>{'Random Stranger'}</Text>
 			</View>
@@ -20,12 +22,8 @@ export default function Logo() {
 	);
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
-		container: {
-			alignItems: 'center',
-		},
-
 		headingContainer: {
 			marginBottom: 15,
 		},
@@ -34,7 +32,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.heading,
 			fontFamily: font.family.heading,
 			color: color.text,
-			textAlign: 'center',
+			textAlign: isMediumScreen ? 'left' : 'center',
 		},
 
 		description: {

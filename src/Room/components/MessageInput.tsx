@@ -18,7 +18,7 @@ type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
-	const [text, setText] = useState<string>('');
+	const [text, setText] = useState('');
 	const { color, font } = useTheme();
 	const { isSmallScreen } = useBreakPoints();
 	const { styles } = styleSheet(color, font, isSmallScreen);
@@ -78,6 +78,7 @@ const styleSheet = (color: Color, font: Font, isSmallScreen: boolean) =>
 			outlineStyle: 'none',
 			borderColor: color.primary,
 			backgroundColor: color.tertiary,
+			color: color.text,
 		},
 
 		separator: {

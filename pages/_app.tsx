@@ -12,7 +12,7 @@ function App({ Component, pageProps }: AppProps) {
 		<PaperProvider theme={theme}>
 			<Head>
 				<title>{'Random Stranger'}</title>
-				<link rel='icon' href='/icon.png' />
+				<link rel='icon' href='/ufo.png' />
 			</Head>
 			<UserContextProvider>
 				<NavBar />

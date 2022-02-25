@@ -24,7 +24,7 @@ export default function RegisterForm() {
 
 	const handleOnSubmit = async () => {
 		const usernameValid = /^[a-zA-Z0-9]{3,12}$/.test(username);
-		const passwordValid = /^[a-zA-Z0-9!@#$%^&*]{8,20}$/.test(password);
+		const passwordValid = /^[a-zA-Z0-9]{8,20}$/.test(password);
 		const confirmValid = confirm === password;
 		if (!usernameValid || !passwordValid || !confirmValid) {
 			setIsValidUsername(usernameValid);
@@ -39,11 +39,11 @@ export default function RegisterForm() {
 			setConfirm('');
 			setTimeout(() => {
 				setErrorMsg('');
-			}, 5000);
+			}, 3000);
 			return;
 		}
 		updateToken(userData.token);
-		router.navigate({ routeName: 'lobby' });
+		router.navigate({ routeName: '' });
 	};
 
 	return (
@@ -82,21 +82,19 @@ export default function RegisterForm() {
 				</View>
 				<Button
 					text={errorMsg || 'Register'}
-					disabled={!username || !password}
+					disabled={!username || !password || !confirm}
 					onClick={handleOnSubmit}
-					width={225}
+					width={300}
 				/>
+				<View style={styles.formHelperContainer}>
+					<Text style={styles.formHelperText}>
+						{'Username should be between 3 to 12 numbers or letters'}
+					</Text>
+					<Text style={styles.formHelperText}>
+						{'Password should be between 8 to 20 numbers or letters'}
+					</Text>
+				</View>
 			</View>
-			<Text style={styles.formHelperText}>
-				{
-					'Username should be between 3 to 12 characters and can contain numbers and letters.'
-				}
-			</Text>
-			<Text style={styles.formHelperText}>
-				{
-					'Password should be between 8 to 20 characters and can contain numbers, letters and special characters.'
-				}
-			</Text>
 		</View>
 	);
 }
@@ -138,8 +136,9 @@ const styleSheet = (color: Color, font: Font) =>
 			outlineStyle: 'none',
 			borderColor: color.primary,
 			backgroundColor: color.tertiary,
+			color: color.text,
 			height: 50,
-			width: 225,
+			width: 300,
 		},
 
 		error: {
@@ -154,7 +153,11 @@ const styleSheet = (color: Color, font: Font) =>
 			textAlign: 'center',
 			alignSelf: 'center',
 			paddingHorizontal: 10,
-			marginVertical: 2.5,
+			lineHeight: 15,
 			width: 300,
+		},
+
+		formHelperContainer: {
+			marginTop: 15,
 		},
 	});

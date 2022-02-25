@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouting } from 'expo-next-react-navigation';
 import { useUserContext } from '../context/UserContext';
 
 export default function NavBar() {
 	const router = useRouting();
-	const { loggedIn, user } = useUserContext();
+	const { loggedIn, user, logoff } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
@@ -16,21 +16,39 @@ export default function NavBar() {
 		router.navigate({ routeName: '' });
 	};
 
-	const logoff = () => {
-		// logoff
+	const redirectToLoginPage = () => {
+		router.navigate({ routeName: 'login' });
+	};
+
+	const redirectToRegisterPage = () => {
+		router.navigate({ routeName: 'register' });
 	};
 
 	return (
 		<View style={styles.container}>
 			<Pressable style={styles.leftContainer} onPress={redirectToHomePage}>
-				<Text style={styles.heading}>{'RS'}</Text>
+				<img src={'/ufo.png'} />
 			</Pressable>
 			<View style={styles.rightContainer}>
-				{loggedIn && <Text style={styles.text}>{user.name}</Text>}
+				{loggedIn && (
+					<>
+						<Text style={styles.text}>{user.name}</Text>
+						<View style={styles.separator} />
+						<Pressable onPress={logoff}>
+							<Text style={styles.text}>{'Logout'}</Text>
+						</Pressable>
+					</>
+				)}
 				{!loggedIn && (
-					<Pressable>
-						<Text style={styles.text}>{'Not logged in'}</Text>
-					</Pressable>
+					<>
+						<Pressable onPress={redirectToLoginPage}>
+							<Text style={styles.text}>{'Login'}</Text>
+						</Pressable>
+						<View style={styles.separator} />
+						<Pressable onPress={redirectToRegisterPage}>
+							<Text style={styles.text}>{'Register'}</Text>
+						</Pressable>
+					</>
 				)}
 			</View>
 		</View>
@@ -51,6 +69,8 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		leftContainer: {
+			flexDirection: 'row',
+			alignItems: 'center',
 			padding: 5,
 			borderRadius: 10,
 		},
@@ -62,7 +82,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		separator: {
-			width: 10,
+			width: 20,
 		},
 
 		heading: {
