@@ -81,7 +81,6 @@ const styleSheet = (color: Color) =>
 			flexDirection: 'column',
 			flexGrow: 1,
 			width: '100%',
-			height: '10vh', // it will grow to full size because of flex grow
 			marginVertical: 5,
 			padding: 10,
 			borderRadius: 5,
