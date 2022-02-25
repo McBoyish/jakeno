@@ -12,7 +12,7 @@ interface ButtonProps {
 	height?: number;
 	loading?: boolean;
 	dataSet?: {
-		[key: string]: string;
+		media: string;
 	};
 }
 
@@ -59,10 +59,11 @@ const styleSheet = (
 			borderRadius: 5,
 			backgroundColor: 'transparent',
 			height: height || 50,
-			width: width || 250,
+			width: width,
 		},
 
 		content: {
+			padding: 10,
 			borderRadius: 5,
 			borderStyle: 'solid',
 			borderColor: color.primary,

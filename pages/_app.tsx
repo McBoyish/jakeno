@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 function App({ Component, pageProps }: AppProps) {
 	return (
-		<View style={{ overflow: 'scroll', flex: 1 }}>
+		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			<Head>
 				<title>{'Random Stranger'}</title>
 				<link rel='icon' href='/ufo.png' />

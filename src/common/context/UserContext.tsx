@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
 import { verify } from 'server/routers';
+import Blank from '../Blank';
 
 interface UserContextData {
 	user: User;
@@ -81,6 +82,8 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		loggedIn && setLoggedIn(false);
 		userLoading && setUserLoading(false);
 	};
+
+	if (userLoading) return <Blank />;
 
 	return (
 		<UserContext.Provider

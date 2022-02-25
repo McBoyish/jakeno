@@ -40,7 +40,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} dataSet={{ media: ids.container }}>
 			<TextInput
 				onChangeText={setText}
 				value={text}
