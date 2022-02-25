@@ -1,26 +1,20 @@
 import type { AppProps } from 'next/app';
 import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
-import theme from 'theme';
 import Head from 'next/head';
-import { UserContextProvider } from 'src/common/context/UserContext';
-import NavBar from 'src/common/NavBar';
-import { ScrollView } from 'react-native';
+import Layout from 'src/common/Layout';
+import { View } from 'react-native';
 
 function App({ Component, pageProps }: AppProps) {
 	return (
-		<PaperProvider theme={theme}>
+		<View style={{ overflow: 'scroll', flex: 1 }}>
 			<Head>
 				<title>{'Random Stranger'}</title>
 				<link rel='icon' href='/ufo.png' />
 			</Head>
-			<UserContextProvider>
-				<NavBar />
-				<ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-					<Component {...pageProps} />
-				</ScrollView>
-			</UserContextProvider>
-		</PaperProvider>
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+		</View>
 	);
 }
 
