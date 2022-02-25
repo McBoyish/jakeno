@@ -9,6 +9,9 @@ import { useRouting } from 'expo-next-react-navigation';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
+import { useMediaQueries, useBreakPoints } from 'utils/responsive';
+
+const { md } = useMediaQueries();
 
 export default function RegisterForm() {
 	const { user, token, loggedIn } = useUserContext();
@@ -21,8 +24,9 @@ export default function RegisterForm() {
 	const [isValidCode, setIsValidCode] = useState(true);
 	const [isValidDescription, setIsValidDescription] = useState(true);
 	const [errorMsg, setErrorMsg] = useState('');
+	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font);
+	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
@@ -30,7 +34,7 @@ export default function RegisterForm() {
 		const descriptionValid = description !== '';
 		if (!roomNameValid || (locked && !codeValid) || !descriptionValid) {
 			!roomNameValid && setIsValidRoomName(false);
-			!codeValid && locked && setIsValidCode(false);
+			locked && !codeValid && setIsValidCode(false);
 			!descriptionValid && setIsValidDescription(false);
 			return;
 		}
@@ -72,17 +76,24 @@ export default function RegisterForm() {
 						]}
 						placeholder={'Enter room name'}
 						editable={loggedIn}
+						dataSet={{ media: ids.textInput }}
 					/>
 				</View>
-				<View style={styles.switchContainer}>
+				<View
+					style={styles.switchContainer}
+					dataSet={{ media: ids.switchContainer }}
+				>
 					<View style={[styles.switch, loggedIn ? {} : { opacity: 0.5 }]}>
-						<Text style={styles.text}>{'Private'}</Text>
+						<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
+							{'Lock'}
+						</Text>
 						<View style={styles.spacing} />
 						<Switch
 							value={locked}
 							onValueChange={setLocked}
 							color={color.primary}
 							disabled={!loggedIn}
+							style={isMediumScreen ? undefined : { width: 30, height: 15 }}
 						/>
 					</View>
 					<View style={styles.spacing} />
@@ -97,6 +108,7 @@ export default function RegisterForm() {
 						placeholder={'Enter room code'}
 						textContentType={'none'}
 						editable={loggedIn && locked}
+						dataSet={{ media: ids.codeInput }}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -111,6 +123,7 @@ export default function RegisterForm() {
 						]}
 						placeholder={'Enter description'}
 						editable={loggedIn}
+						dataSet={{ media: ids.descriptionInput }}
 					/>
 				</View>
 				<Button
@@ -119,15 +132,18 @@ export default function RegisterForm() {
 						!roomName || (locked && !code) || !description || errorMsg !== ''
 					}
 					onClick={handleOnSubmit}
-					width={300}
+					width={isMediumScreen ? 300 : 250}
 				/>
-				<View style={styles.formHelperContainer}>
+				<View
+					style={styles.formHelperContainer}
+					dataSet={{ media: ids.formHelperContainer }}
+				>
 					<Text style={styles.formHelperText}>
-						{'Room name can be between 1 to 12 numbers or letters'}
+						{'Room name can be 1 to 12 numbers or letters'}
 					</Text>
 					{locked && (
 						<Text style={styles.formHelperText}>
-							{'Room code can be between 4 to 8 numbers'}
+							{'Room code can be 4 to 8 numbers'}
 						</Text>
 					)}
 				</View>
@@ -140,6 +156,7 @@ const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			marginVertical: 5,
+			alignSelf: 'center',
 		},
 
 		formContainer: {
@@ -159,11 +176,15 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		switchContainer: {
-			width: 300,
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			marginBottom: 15,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
 		switch: {
@@ -177,7 +198,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		spacing: {
-			width: 5,
+			width: 10,
 		},
 
 		heading: {
@@ -197,7 +218,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 175,
+			width: 150,
+
+			[md]: {
+				width: 200,
+			},
 		},
 
 		textInput: {
@@ -210,7 +235,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 300,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
 		descriptionInput: {
@@ -223,7 +252,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 100,
-			width: 300,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
 		error: {
@@ -239,16 +272,24 @@ const styleSheet = (color: Color, font: Font) =>
 			alignSelf: 'center',
 			paddingHorizontal: 10,
 			lineHeight: 15,
-			width: 300,
 		},
 
 		formHelperContainer: {
 			marginTop: 15,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
-		text: {
-			fontSize: font.size.primary,
+		smallText: {
+			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.text,
+
+			[md]: {
+				fontSize: font.size.primary,
+			},
 		},
 	});

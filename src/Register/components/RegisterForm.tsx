@@ -8,6 +8,9 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
 import { register } from 'server/routers';
+import { useBreakPoints, useMediaQueries } from 'utils/responsive';
+
+const { md } = useMediaQueries();
 
 export default function RegisterForm() {
 	const router = useRouting();
@@ -19,17 +22,18 @@ export default function RegisterForm() {
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [isValidConfirm, setIsValidConfirm] = useState(true);
 	const [errorMsg, setErrorMsg] = useState('');
+	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font);
+	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
 		const usernameValid = /^[a-zA-Z0-9]{3,12}$/.test(username);
 		const passwordValid = /^[a-zA-Z0-9]{8,20}$/.test(password);
 		const confirmValid = confirm === password;
 		if (!usernameValid || !passwordValid || !confirmValid) {
-			setIsValidUsername(usernameValid);
-			setIsValidPassword(passwordValid);
-			setIsValidConfirm(passwordValid && confirmValid);
+			!usernameValid && setIsValidUsername(usernameValid);
+			!passwordValid && setIsValidPassword(passwordValid);
+			!confirm && setIsValidConfirm(confirmValid);
 			return;
 		}
 		const userData = await register(username, password);
@@ -58,6 +62,7 @@ export default function RegisterForm() {
 						value={username}
 						style={[styles.textInput, !isValidUsername ? styles.error : null]}
 						placeholder={'Enter username'}
+						dataSet={{ media: ids.textInput }}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -68,6 +73,7 @@ export default function RegisterForm() {
 						placeholder={'Enter password'}
 						textContentType={'password'}
 						secureTextEntry
+						dataSet={{ media: ids.textInput }}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -78,20 +84,24 @@ export default function RegisterForm() {
 						placeholder={'Confirm password'}
 						textContentType={'password'}
 						secureTextEntry
+						dataSet={{ media: ids.textInput }}
 					/>
 				</View>
 				<Button
 					text={errorMsg || 'Register'}
 					disabled={!username || !password || !confirm}
 					onClick={handleOnSubmit}
-					width={300}
+					width={isMediumScreen ? 300 : 250}
 				/>
-				<View style={styles.formHelperContainer}>
+				<View
+					style={styles.formHelperContainer}
+					dataSet={{ media: ids.formHelperContainer }}
+				>
 					<Text style={styles.formHelperText}>
-						{'Username should be between 3 to 12 numbers or letters'}
+						{'Username can be 3 to 12 numbers or letters'}
 					</Text>
 					<Text style={styles.formHelperText}>
-						{'Password should be between 8 to 20 numbers or letters'}
+						{'Password can be 8 to 20 numbers or letters'}
 					</Text>
 				</View>
 			</View>
@@ -138,7 +148,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 300,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
 		error: {
@@ -154,10 +168,14 @@ const styleSheet = (color: Color, font: Font) =>
 			alignSelf: 'center',
 			paddingHorizontal: 10,
 			lineHeight: 15,
-			width: 300,
 		},
 
 		formHelperContainer: {
 			marginTop: 15,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 	});

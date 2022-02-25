@@ -8,6 +8,9 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouting } from 'expo-next-react-navigation';
 import { login } from 'server/routers';
+import { useMediaQueries, useBreakPoints } from 'utils/responsive';
+
+const { md } = useMediaQueries();
 
 export default function LoginForm() {
 	const router = useRouting();
@@ -15,8 +18,9 @@ export default function LoginForm() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	const { isMediumScreen } = useBreakPoints();
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font);
+	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
 		const userData = await login(username, password);
@@ -44,6 +48,7 @@ export default function LoginForm() {
 					value={username}
 					style={[styles.textInput, errorMessage ? styles.error : null]}
 					placeholder={'Username'}
+					dataSet={{ media: ids.textInput }}
 				/>
 			</View>
 			<View style={styles.inputContainer}>
@@ -54,20 +59,21 @@ export default function LoginForm() {
 					placeholder={'Password'}
 					textContentType={'password'}
 					secureTextEntry
+					dataSet={{ media: ids.textInput }}
 				/>
 			</View>
 			<Button
 				text={errorMessage || 'Login'}
 				disabled={!username || !password}
 				onClick={handleOnSubmit}
-				width={300}
+				width={isMediumScreen ? 300 : 250}
 			/>
 			<View style={styles.divider} />
 			<Button
 				text={'Register'}
 				disabled={false}
 				onClick={redirectToRegisterPage}
-				width={300}
+				width={isMediumScreen ? 300 : 250}
 			/>
 		</View>
 	);
@@ -96,7 +102,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 300,
+			width: 250,
+
+			[md]: {
+				width: 300,
+			},
 		},
 
 		error: {

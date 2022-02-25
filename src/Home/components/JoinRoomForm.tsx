@@ -56,6 +56,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.secondary,
 			borderRadius: 5,
 			alignItems: 'center',
+			alignSelf: 'center',
 		},
 
 		inputContainer: {
