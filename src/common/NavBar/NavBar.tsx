@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
-import { Text, View, Pressable, Image } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouting } from 'expo-next-react-navigation';
 import { useUserContext } from '../context/UserContext';

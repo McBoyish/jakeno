@@ -5,7 +5,6 @@ import { Color, Font, Message } from 'types';
 import { useTheme } from 'react-native-paper';
 import { parseDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import { useUserContext } from 'src/common/context/UserContext';
 
 interface MessageBubbleProps {
 	message: Message;

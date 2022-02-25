@@ -7,18 +7,16 @@ import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouting } from 'expo-next-react-navigation';
 import { getRoom } from 'server/routers';
-import { useUserContext } from 'src/common/context/UserContext';
 
 export default function JoinRoomForm() {
 	const router = useRouting();
-	const { token } = useUserContext();
 	const [roomName, setRoomName] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
-		const room = await getRoom(roomName, token);
+		const room = await getRoom(roomName);
 		if (!room) {
 			setErrorMsg('Cound not find room');
 			setTimeout(() => {
