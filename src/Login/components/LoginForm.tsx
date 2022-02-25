@@ -49,7 +49,7 @@ export default function LoginForm() {
 				<TextInput
 					onChangeText={setUsername}
 					value={username}
-					style={[styles.textInput, errorMessage ? styles.error : null]}
+					style={[styles.textInput, errorMessage ? styles.error : undefined]}
 					placeholder={'Username'}
 					dataSet={{ media: ids.textInput }}
 					editable={!loading}
@@ -59,7 +59,7 @@ export default function LoginForm() {
 				<TextInput
 					onChangeText={setPassword}
 					value={password}
-					style={[styles.textInput, errorMessage ? styles.error : null]}
+					style={[styles.textInput, errorMessage ? styles.error : undefined]}
 					placeholder={'Password'}
 					textContentType={'password'}
 					secureTextEntry

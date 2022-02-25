@@ -64,7 +64,10 @@ export default function RegisterForm() {
 					<TextInput
 						onChangeText={setUsername}
 						value={username}
-						style={[styles.textInput, !isValidUsername ? styles.error : null]}
+						style={[
+							styles.textInput,
+							!isValidUsername ? styles.error : undefined,
+						]}
 						placeholder={'Enter username'}
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
@@ -74,7 +77,10 @@ export default function RegisterForm() {
 					<TextInput
 						onChangeText={setPassword}
 						value={password}
-						style={[styles.textInput, !isValidPassword ? styles.error : null]}
+						style={[
+							styles.textInput,
+							!isValidPassword ? styles.error : undefined,
+						]}
 						placeholder={'Enter password'}
 						textContentType={'password'}
 						secureTextEntry
@@ -86,7 +92,10 @@ export default function RegisterForm() {
 					<TextInput
 						onChangeText={setConfirm}
 						value={confirm}
-						style={[styles.textInput, !isValidConfirm ? styles.error : null]}
+						style={[
+							styles.textInput,
+							!isValidConfirm ? styles.error : undefined,
+						]}
 						placeholder={'Confirm password'}
 						textContentType={'password'}
 						secureTextEntry

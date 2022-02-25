@@ -86,8 +86,8 @@ export default function RegisterForm() {
 						value={roomName}
 						style={[
 							styles.textInput,
-							!isValidRoomName ? styles.error : null,
-							loggedIn ? null : { opacity: 0.5 },
+							!isValidRoomName ? styles.error : undefined,
+							loggedIn ? undefined : { opacity: 0.5 },
 						]}
 						placeholder={'Enter room name'}
 						editable={loggedIn && !loading}
@@ -98,7 +98,9 @@ export default function RegisterForm() {
 					style={styles.switchContainer}
 					dataSet={{ media: ids.switchContainer }}
 				>
-					<View style={[styles.switch, loggedIn ? null : { opacity: 0.5 }]}>
+					<View
+						style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
+					>
 						<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
 							{'Lock'}
 						</Text>
@@ -108,7 +110,7 @@ export default function RegisterForm() {
 							onValueChange={handleSwitch}
 							color={color.primary}
 							disabled={!loggedIn}
-							style={isMediumScreen ? null : { width: 30, height: 15 }}
+							style={isMediumScreen ? undefined : { width: 30, height: 15 }}
 						/>
 					</View>
 					<View style={styles.spacing} />
@@ -117,8 +119,8 @@ export default function RegisterForm() {
 						value={code}
 						style={[
 							styles.codeInput,
-							!isValidCode ? styles.error : null,
-							!locked || !loggedIn ? { opacity: 0.5 } : null,
+							!isValidCode ? styles.error : undefined,
+							!locked || !loggedIn ? { opacity: 0.5 } : undefined,
 						]}
 						placeholder={'Enter room code'}
 						textContentType={'none'}
@@ -133,8 +135,8 @@ export default function RegisterForm() {
 						multiline
 						style={[
 							styles.descriptionInput,
-							!isValidDescription ? styles.error : null,
-							loggedIn ? null : { opacity: 0.5 },
+							!isValidDescription ? styles.error : undefined,
+							loggedIn ? undefined : { opacity: 0.5 },
 						]}
 						placeholder={'Enter description'}
 						editable={loggedIn && !loading}

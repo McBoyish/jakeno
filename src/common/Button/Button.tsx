@@ -24,7 +24,10 @@ export default function Button({
 
 	return (
 		<View
-			style={[styles.container, disabled || loading ? { opacity: 0.5 } : null]}
+			style={[
+				styles.container,
+				disabled || loading ? { opacity: 0.5 } : undefined,
+			]}
 		>
 			<TouchableOpacity
 				onPress={onClick}

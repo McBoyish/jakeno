@@ -37,7 +37,7 @@ export default function JoinRoomForm() {
 				<TextInput
 					onChangeText={setRoomName}
 					value={roomName}
-					style={[styles.textInput, errorMsg ? styles.error : null]}
+					style={[styles.textInput, errorMsg ? styles.error : undefined]}
 					placeholder={'Enter room name'}
 					editable={!loading}
 				/>

@@ -4,6 +4,7 @@ import { Color, User } from 'types';
 import { verify } from 'server/routers';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 import StyleSheet from 'react-native-media-query';
+import { useWindowDimensions, View } from 'react-native';
 
 interface UserContextData {
 	user: User;
@@ -30,6 +31,7 @@ function useUserContext() {
 }
 
 function UserContextProvider({ children }: { children: React.ReactNode }) {
+	const { height } = useWindowDimensions();
 	const [user, setUser] = useState<User>(initialValue);
 	const [userLoading, setUserLoading] = useState(true);
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -86,7 +88,12 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		userLoading && setUserLoading(false);
 	};
 
-	if (userLoading) return <ActivityIndicator style={styles.container} />;
+	if (userLoading)
+		return (
+			<View style={{ height }}>
+				<ActivityIndicator style={styles.container} />
+			</View>
+		);
 
 	return (
 		<UserContext.Provider
