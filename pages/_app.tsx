@@ -5,9 +5,11 @@ import theme from 'theme';
 import Head from 'next/head';
 import { UserContextProvider } from 'src/common/context/UserContext';
 import NavBar from 'src/common/NavBar';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 function App({ Component, pageProps }: AppProps) {
+	const { height } = useWindowDimensions();
 	return (
 		<PaperProvider theme={theme}>
 			<Head>
@@ -15,10 +17,15 @@ function App({ Component, pageProps }: AppProps) {
 				<link rel='icon' href='/ufo.png' />
 			</Head>
 			<UserContextProvider>
-				<NavBar />
-				<ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-					<Component {...pageProps} />
-				</ScrollView>
+				<View style={{ height }}>
+					<NavBar />
+					<ScrollView
+						style={{ flex: 1 }}
+						contentContainerStyle={{ flexGrow: 1 }}
+					>
+						<Component {...pageProps} />
+					</ScrollView>
+				</View>
 			</UserContextProvider>
 		</PaperProvider>
 	);
