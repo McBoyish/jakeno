@@ -14,7 +14,7 @@ import { useMediaQueries } from 'utils/responsive';
 const { md } = useMediaQueries();
 
 export default function RegisterForm() {
-	const { user, token, loggedIn } = useUserContext();
+	const { user, token, loggedIn, userLoading } = useUserContext();
 	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
@@ -76,7 +76,11 @@ export default function RegisterForm() {
 			<View style={styles.formContainer}>
 				<View style={styles.headingContainer}>
 					<Text style={styles.heading}>
-						{loggedIn ? 'Create a new room' : 'Login to create rooms'}
+						{userLoading
+							? 'Loading'
+							: loggedIn
+							? 'Create a new room'
+							: 'Login to create rooms'}
 					</Text>
 				</View>
 				<View style={styles.inputContainer}>

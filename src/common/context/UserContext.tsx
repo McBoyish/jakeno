@@ -83,8 +83,6 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		userLoading && setUserLoading(false);
 	};
 
-	if (userLoading) return <Loading />;
-
 	return (
 		<UserContext.Provider
 			value={{ user, userLoading, loggedIn, token, updateToken, logoff }}

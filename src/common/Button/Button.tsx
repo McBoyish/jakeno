@@ -2,6 +2,7 @@ import React from 'react';
 import StyleSheet from 'react-native-media-query';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
+import { useUserContext } from '../context/UserContext';
 import {
 	View,
 	TouchableOpacity,
@@ -33,6 +34,7 @@ export default function Button({
 	style,
 	dataSet,
 }: ButtonProps) {
+	const { userLoading } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font, width, height);
 
@@ -40,14 +42,14 @@ export default function Button({
 		<View
 			style={[
 				styles.container,
-				disabled || loading ? { opacity: 0.5 } : undefined,
+				disabled || loading || userLoading ? { opacity: 0.5 } : undefined,
 				style,
 			]}
 			dataSet={dataSet}
 		>
 			<TouchableOpacity
 				onPress={onClick}
-				disabled={disabled}
+				disabled={disabled || loading || userLoading}
 				style={styles.content}
 			>
 				{loading && <ActivityIndicator color={color.black} />}

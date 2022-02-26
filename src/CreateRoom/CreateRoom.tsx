@@ -2,13 +2,13 @@ import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Color } from 'types';
 import { View } from 'react-native';
-import JoinRoomForm from './components/JoinRoomForm';
+import CreateRoomForm from './components/CreateRoomForm';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
-export default function Home() {
+export default function CreateRoom() {
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
@@ -19,7 +19,7 @@ export default function Home() {
 				dataSet={{ media: ids.sectionContainer }}
 			>
 				<View style={styles.formContainer}>
-					<JoinRoomForm />
+					<CreateRoomForm />
 				</View>
 			</View>
 		</View>

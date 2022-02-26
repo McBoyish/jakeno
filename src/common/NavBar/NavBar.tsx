@@ -5,10 +5,11 @@ import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
+import ImageComponent from 'next/image';
 
 export default function NavBar() {
 	const router = useRouter();
-	const { loggedIn, user, logoff } = useUserContext();
+	const { loggedIn, user, logoff, userLoading } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
@@ -24,13 +25,21 @@ export default function NavBar() {
 		router.push('/register');
 	};
 
+	const redirectToCreateRoomPage = () => {
+		router.push('/create-room');
+	};
+
 	return (
 		<View style={styles.container}>
-			<Pressable style={styles.leftContainer} onPress={redirectToHomePage}>
-				<img src={'/ufo.png'} />
+			<Pressable style={styles.navContainer} onPress={redirectToHomePage}>
+				<ImageComponent src='/ufo.png' width={60} height={40} />
 			</Pressable>
-			<View style={styles.rightContainer}>
-				{loggedIn && (
+			<Pressable style={styles.navContainer} onPress={redirectToCreateRoomPage}>
+				<Text style={styles.text}>{'Create a room'}</Text>
+			</Pressable>
+			<View style={styles.navContainer}>
+				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}
+				{!userLoading && loggedIn && (
 					<>
 						<Text style={styles.text}>{user.name}</Text>
 						<View style={styles.separator} />
@@ -39,7 +48,7 @@ export default function NavBar() {
 						</Pressable>
 					</>
 				)}
-				{!loggedIn && (
+				{!userLoading && !loggedIn && (
 					<>
 						<Pressable onPress={redirectToLoginPage}>
 							<Text style={styles.text}>{'Login'}</Text>
@@ -68,17 +77,9 @@ const styleSheet = (color: Color, font: Font) =>
 			padding: 20,
 		},
 
-		leftContainer: {
-			flexDirection: 'row',
-			alignItems: 'center',
-			padding: 5,
-			borderRadius: 10,
-		},
-
-		rightContainer: {
+		navContainer: {
 			flexDirection: 'row',
 			padding: 5,
-			borderRadius: 10,
 		},
 
 		separator: {
