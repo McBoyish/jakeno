@@ -5229,21 +5229,6 @@ expo-modules-core@0.6.5:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
-expo-navigation-core@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/expo-navigation-core/-/expo-navigation-core-2.0.0.tgz#47cdc70388c526a97e85632c125c72676123b7dd"
-  integrity sha512-Vt3yn/pWZcKMMiQpjny3lNjSofzZG+MSgJlo7Er41IJYKD+SvsahP+fe8qU+jnpc60ug2lb0yo6Ptl3N6ainOA==
-  dependencies:
-    lodash.get "^4.4.2"
-
-expo-next-react-navigation@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/expo-next-react-navigation/-/expo-next-react-navigation-2.0.2.tgz#90239d69540ff5a986f5c41287233d5cd1af2f07"
-  integrity sha512-ic/HogBNGPkeebSwzAslGnwzZr7eZP6a76nMNbaiUSKaR2zmuhFbpa5DjKOwXMPFLOm8RmI1FdjmU7/A2EG2gQ==
-  dependencies:
-    expo-navigation-core "^2.0.0"
-    lodash.get "^4.4.2"
-
 expo-pwa@0.0.88:
   version "0.0.88"
   resolved "https://registry.yarnpkg.com/expo-pwa/-/expo-pwa-0.0.88.tgz#40b5daac20ebaaa5b37239e7cc0dd8e98fac4220"
@@ -7085,11 +7070,6 @@ lodash.frompairs@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.frompairs/-/lodash.frompairs-4.0.1.tgz#bc4e5207fa2757c136e573614e9664506b2b1bd2"
   integrity sha1-vE5SB/onV8E25XNhTpZkUGsrG9I=
-
-lodash.get@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
 lodash.isequal@^4.5.0:
   version "4.5.0"
