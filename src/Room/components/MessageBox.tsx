@@ -20,7 +20,7 @@ export default function MessageBox({
 	messages,
 	setScrollToStart,
 }: MessageBoxProps) {
-	const { scrollRef, scrollToStart } = useVerticalScroll(0.75, true);
+	const { scrollRef, scrollToStart } = useVerticalScroll(true);
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
@@ -66,10 +66,9 @@ export default function MessageBox({
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={separator}
 				scrollEnabled
-				showsVerticalScrollIndicator={false}
 				ref={scrollRef}
 				inverted
-				disableVirtualization // this makes inverted work lol
+				disableVirtualization
 			/>
 		</View>
 	);

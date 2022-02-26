@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
 
-export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
+export function useVerticalScroll(inverted?: boolean) {
 	const scrollRef = useRef<FlatList>(null);
 
 	const scrollToStart = () => {
@@ -16,8 +16,7 @@ export function useVerticalScroll(scrollFriction: number, inverted?: boolean) {
 		const reverse = inverted ? -1 : 1;
 		scrollRef.current.scrollToOffset({
 			offset:
-				scrollRef.current.getScrollableNode().scrollTop +
-				reverse * ((1 - scrollFriction) * e.deltaY),
+				scrollRef.current.getScrollableNode().scrollTop + reverse * e.deltaY,
 			animated: false,
 		});
 	};
