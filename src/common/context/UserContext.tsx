@@ -39,15 +39,12 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		let isMounted = true;
 		const verifyToken = async () => {
 			const token = localStorage.getItem('token');
-			console.log('fetching');
 			const user = await verify(token);
-			console.log('done fetching');
 			if (isMounted && token && user) {
 				setUser(user);
 				setLoggedIn(true);
 				setToken(token);
 				setUserLoading(false);
-				console.log('done loading user');
 				return;
 			}
 			if (isMounted && token && !user) {
@@ -60,7 +57,6 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 				return;
 			}
 		};
-		console.log('useeffect fired');
 		verifyToken();
 		return () => {
 			isMounted = false;

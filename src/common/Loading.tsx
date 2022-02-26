@@ -1,12 +1,15 @@
 import React from 'react';
-import { View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { useTheme, ActivityIndicator } from 'react-native-paper';
 
 function Loading() {
 	const { color } = useTheme();
 	return (
-		<View
-			style={{ backgroundColor: color.background, flex: 1, height: '100%' }}
+		<ActivityIndicator
+			color={color.primary}
+			style={{
+				backgroundColor: color.background,
+				flex: 1,
+			}}
 		/>
 	);
 }
