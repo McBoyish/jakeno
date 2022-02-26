@@ -6,59 +6,38 @@ import { io, uri } from 'server/socket';
 import { InputMessage, Message, RoomData } from 'types';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
-import { sortByDate } from 'utils/date';
 import StyleSheet from 'react-native-media-query';
-import { getRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
 import { Socket } from 'socket.io-client';
-import { useRouting } from 'expo-next-react-navigation';
 
-export default function Room() {
+interface RoomProps {
+	initialRoomData: RoomData | null;
+}
+
+export default function Room({ initialRoomData }: RoomProps) {
 	const { user } = useUserContext();
-	const router = useRouting();
 	const [socket, setSocket] = useState<Socket>();
 	const [loading, setLoading] = useState(true);
-	const [roomData, setRoomData] = useState<RoomData | null>(null);
+	const [roomData, setRoomData] = useState<RoomData | null>(initialRoomData);
 	const [messageSent, setMessageSent] = useState(false);
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
-	const roomName = router.getParam('roomName');
 
 	useEffect(() => {
-		return leaveRoom;
-	}, []);
-
-	useEffect(() => {
-		if (!socket) return;
+		if (!initialRoomData) {
+			setLoading(false);
+			return;
+		}
+		const socket = io(uri);
+		socket.emit('join-room', initialRoomData._id);
 		socket.on('message', (message: Message) => {
 			addMessage(message);
 		});
-	}, [socket]);
-
-	useEffect(() => {
-		let isMounted = true;
-		const handleGetRoomData = async () => {
-			if (!roomName) return;
-			const data = await getRoom(roomName as string);
-			if (isMounted && !data) {
-				setLoading(false);
-				return;
-			}
-			if (isMounted && data) {
-				data.messages = sortByDate(data.messages);
-				const socket = io(uri);
-				socket.emit('join-room', data._id);
-				setSocket(socket);
-				setRoomData(data);
-				setLoading(false);
-			}
-		};
-		handleGetRoomData();
-		return () => {
-			isMounted = false;
-		};
-	}, [roomName]);
+		setSocket(socket);
+		setLoading(false);
+		return leaveRoom;
+	}, []);
 
 	useEffect(() => {
 		if (!scrollToStart || !messageSent) return;
