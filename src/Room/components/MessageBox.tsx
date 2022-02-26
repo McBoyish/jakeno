@@ -81,6 +81,7 @@ const styleSheet = (color: Color) =>
 			flexDirection: 'column',
 			flexGrow: 1,
 			width: '100%',
+			height: 1, // hack
 			marginVertical: 5,
 			padding: 10,
 			borderRadius: 5,

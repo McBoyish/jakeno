@@ -113,16 +113,6 @@ const styleSheet = (color: Color, font: Font) =>
 			padding: 20,
 		},
 
-		errorContainer: {
-			flex: 1,
-			alignSelf: 'center',
-			alignItems: 'center',
-			width: '100%',
-			height: '100vh',
-			backgroundColor: color.background,
-			padding: 20,
-		},
-
 		text: {
 			fontSize: font.size.subheading,
 			fontFamily: font.family.text,

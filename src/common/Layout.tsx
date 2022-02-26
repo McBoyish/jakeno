@@ -3,7 +3,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import theme from 'theme';
 import { UserContextProvider } from 'src/common/context/UserContext';
 import NavBar from 'src/common/NavBar';
-import { ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -13,10 +13,10 @@ function Layout({ children }: LayoutProps) {
 	return (
 		<PaperProvider theme={theme}>
 			<UserContextProvider>
-				<NavBar />
-				<ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+				<View style={{ flexGrow: 1 }}>
+					<NavBar />
 					{children}
-				</ScrollView>
+				</View>
 			</UserContextProvider>
 		</PaperProvider>
 	);
