@@ -1,12 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import {
-	useTheme,
-	Switch,
-	Portal,
-	Modal,
-	IconButton,
-} from 'react-native-paper';
+import { useTheme, Switch, Portal, Modal } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
@@ -18,10 +12,10 @@ import { useUserContext } from 'src/common/context/UserContext';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
 import { useMediaQueries } from 'utils/responsive';
 
-const { md, sm } = useMediaQueries();
+const { md } = useMediaQueries();
 
 export default function CreateRoomModal() {
-	const { user, token, loggedIn, userLoading } = useUserContext();
+	const { user, token, loggedIn } = useUserContext();
 	const { isVisible, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const [roomName, setRoomName] = useState('');

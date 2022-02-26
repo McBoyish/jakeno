@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
 import { verify } from 'server/routers';
-import Loading from '../Loading';
 
 interface UserContextData {
 	user: User;

@@ -5,11 +5,9 @@ import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
-import { useCreateRoomModalContext } from '../context/CreateRoomModalContext';
 import ImageComponent from 'next/image';
 
 export default function NavBar() {
-	const { showModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const { loggedIn, user, logoff, userLoading } = useUserContext();
 	const { color, font } = useTheme();
