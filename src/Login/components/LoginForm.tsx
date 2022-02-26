@@ -27,7 +27,7 @@ export default function LoginForm() {
 		const userData = await login(username, password);
 		if (!userData) {
 			setLoading(false);
-			setErrorMessage('Could not find account');
+			setErrorMessage('Invalid name or password');
 			setPassword('');
 			setTimeout(() => {
 				setErrorMessage('');
@@ -109,7 +109,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -117,7 +117,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		button: {
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,

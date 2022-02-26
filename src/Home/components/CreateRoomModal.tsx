@@ -1,6 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import { useTheme, Switch } from 'react-native-paper';
+import {
+	useTheme,
+	Switch,
+	Portal,
+	Modal,
+	IconButton,
+} from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
@@ -9,12 +15,14 @@ import { useRouter } from 'next/router';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
+import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
 import { useMediaQueries } from 'utils/responsive';
 
-const { md } = useMediaQueries();
+const { md, sm } = useMediaQueries();
 
-export default function RegisterForm() {
+export default function CreateRoomModal() {
 	const { user, token, loggedIn, userLoading } = useUserContext();
+	const { isVisible, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
@@ -72,125 +80,124 @@ export default function RegisterForm() {
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.formContainer}>
-				<View style={styles.headingContainer}>
-					<Text style={styles.heading}>
-						{userLoading
-							? 'Loading'
-							: loggedIn
-							? 'Create a new room'
-							: 'Login to create rooms'}
-					</Text>
-				</View>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setRoomName}
-						value={roomName}
-						style={[
-							styles.textInput,
-							!isValidRoomName ? styles.error : undefined,
-							loggedIn ? undefined : { opacity: 0.5 },
-						]}
-						placeholder={'Enter room name'}
-						editable={loggedIn && !loading}
-						dataSet={{ media: ids.textInput }}
-					/>
-				</View>
+		<Portal>
+			<Modal
+				visible={isVisible}
+				contentContainerStyle={styles.container}
+				onDismiss={hideModal}
+			>
 				<View
-					style={styles.switchContainer}
-					dataSet={{ media: ids.switchContainer }}
+					style={styles.formContainer}
+					dataSet={{ media: ids.formContainer }}
 				>
-					<View
-						style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
-					>
-						<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
-							{'Lock'}
-						</Text>
-						<View style={styles.spacing} />
-						<Switch
-							value={locked}
-							onValueChange={handleSwitch}
-							color={color.primary}
-							disabled={!loggedIn}
-							style={{ width: 30, height: 15 }}
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setRoomName}
+							value={roomName}
+							style={[
+								styles.textInput,
+								!isValidRoomName ? styles.error : undefined,
+								loggedIn ? undefined : { opacity: 0.5 },
+							]}
+							placeholder={'Enter room name'}
+							editable={loggedIn && !loading}
+							dataSet={{ media: ids.textInput }}
 						/>
 					</View>
-					<View style={styles.spacing} />
-					<TextInput
-						onChangeText={setCode}
-						value={code}
-						style={[
-							styles.codeInput,
-							!isValidCode ? styles.error : undefined,
-							!locked || !loggedIn ? { opacity: 0.5 } : undefined,
-						]}
-						placeholder={'Enter room code'}
-						textContentType={'none'}
-						editable={loggedIn && locked && !loading}
-						dataSet={{ media: ids.codeInput }}
+					<View
+						style={styles.switchContainer}
+						dataSet={{ media: ids.switchContainer }}
+					>
+						<View
+							style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
+						>
+							<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
+								{'Lock'}
+							</Text>
+							<View style={styles.spacing} />
+							<Switch
+								value={locked}
+								onValueChange={handleSwitch}
+								color={color.primary}
+								disabled={!loggedIn}
+								style={{ width: 30, height: 15 }}
+							/>
+						</View>
+						<View style={styles.spacing} />
+						<TextInput
+							onChangeText={setCode}
+							value={code}
+							style={[
+								styles.codeInput,
+								!isValidCode ? styles.error : undefined,
+								!locked || !loggedIn ? { opacity: 0.5 } : undefined,
+							]}
+							placeholder={'Enter code'}
+							textContentType={'none'}
+							editable={loggedIn && locked && !loading}
+							dataSet={{ media: ids.codeInput }}
+						/>
+					</View>
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setDescription}
+							value={description}
+							multiline
+							style={[
+								styles.descriptionInput,
+								!isValidDescription ? styles.error : undefined,
+								loggedIn ? undefined : { opacity: 0.5 },
+							]}
+							placeholder={'Enter description'}
+							editable={loggedIn && !loading}
+							dataSet={{ media: ids.descriptionInput }}
+						/>
+					</View>
+					<Button
+						text={errorMsg || 'Create'}
+						disabled={
+							!roomName || (locked && !code) || !description || errorMsg !== ''
+						}
+						onClick={handleOnSubmit}
+						loading={loading}
+						dataSet={{ media: ids.button }}
+						style={styles.button}
 					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setDescription}
-						value={description}
-						multiline
-						style={[
-							styles.descriptionInput,
-							!isValidDescription ? styles.error : undefined,
-							loggedIn ? undefined : { opacity: 0.5 },
-						]}
-						placeholder={'Enter description'}
-						editable={loggedIn && !loading}
-						dataSet={{ media: ids.descriptionInput }}
-					/>
-				</View>
-				<Button
-					text={errorMsg || 'Create'}
-					disabled={
-						!roomName || (locked && !code) || !description || errorMsg !== ''
-					}
-					onClick={handleOnSubmit}
-					loading={loading}
-					dataSet={{ media: ids.button }}
-					style={styles.button}
-				/>
-				<View
-					style={styles.formHelperContainer}
-					dataSet={{ media: ids.formHelperContainer }}
-				>
-					<Text style={styles.formHelperText}>
-						{'Room name can be 1 to 12 numbers or letters'}
-					</Text>
-					{locked && (
+					<View
+						style={styles.formHelperContainer}
+						dataSet={{ media: ids.formHelperContainer }}
+					>
 						<Text style={styles.formHelperText}>
-							{'Room code can be 4 to 8 numbers'}
+							{'Name should be 1-12 numbers/letters'}
 						</Text>
-					)}
+						<Text style={styles.formHelperText}>
+							{'Code should be 4-8 numbers'}
+						</Text>
+					</View>
 				</View>
-			</View>
-		</View>
+			</Modal>
+		</Portal>
 	);
 }
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
-			marginVertical: 5,
 			alignSelf: 'center',
+			backgroundColor: color.secondary,
+			borderRadius: 5,
+		},
+
+		icon: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			zIndex: 1,
 		},
 
 		formContainer: {
-			marginVertical: 5,
 			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
-		},
-
-		headingContainer: {
-			marginBottom: 15,
 		},
 
 		inputContainer: {
@@ -202,7 +209,7 @@ const styleSheet = (color: Color, font: Font) =>
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			marginBottom: 15,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -210,7 +217,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		button: {
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -248,7 +255,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 150,
+			width: 125,
 
 			[md]: {
 				width: 200,
@@ -265,7 +272,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -282,7 +289,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 100,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -306,7 +313,7 @@ const styleSheet = (color: Color, font: Font) =>
 
 		formHelperContainer: {
 			marginTop: 15,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,

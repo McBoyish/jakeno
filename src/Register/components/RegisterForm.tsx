@@ -56,7 +56,7 @@ export default function RegisterForm() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.headingContainer}>
-				<Text style={styles.heading}>{'Create a new account'}</Text>
+				<Text style={styles.heading}>{'Create an account'}</Text>
 			</View>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
@@ -115,10 +115,10 @@ export default function RegisterForm() {
 					dataSet={{ media: ids.formHelperContainer }}
 				>
 					<Text style={styles.formHelperText}>
-						{'Username can be 3 to 12 numbers or letters'}
+						{'Username should be 3-12 numbers/letters'}
 					</Text>
 					<Text style={styles.formHelperText}>
-						{'Password can be 8 to 20 numbers or letters'}
+						{'Password should be 8-20 numbers/letters'}
 					</Text>
 				</View>
 			</View>
@@ -165,7 +165,7 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.tertiary,
 			color: color.text,
 			height: 50,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -173,7 +173,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		button: {
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,
@@ -197,7 +197,7 @@ const styleSheet = (color: Color, font: Font) =>
 
 		formHelperContainer: {
 			marginTop: 15,
-			width: 250,
+			width: 225,
 
 			[md]: {
 				width: 300,

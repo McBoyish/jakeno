@@ -7,8 +7,12 @@ import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { getRoom } from 'server/routers';
+import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
+import { useUserContext } from 'src/common/context/UserContext';
 
 export default function JoinRoomForm() {
+	const { userLoading, loggedIn } = useUserContext();
+	const { showModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -49,6 +53,20 @@ export default function JoinRoomForm() {
 				width={225}
 				height={50}
 				loading={loading}
+			/>
+			<View style={{ height: 15 }} />
+			<Button
+				text={
+					userLoading
+						? 'Loading'
+						: loggedIn
+						? 'Create a room'
+						: 'Login to create room'
+				}
+				disabled={!loggedIn}
+				onClick={showModal}
+				width={225}
+				height={50}
 			/>
 		</View>
 	);

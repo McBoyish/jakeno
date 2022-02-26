@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
+import CreateRoomModal from './components/CreateRoomModal';
 
 const { md } = useMediaQueries();
 
@@ -22,6 +23,7 @@ export default function Home() {
 					<JoinRoomForm />
 				</View>
 			</View>
+			<CreateRoomModal />
 		</View>
 	);
 }

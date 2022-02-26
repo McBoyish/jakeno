@@ -5,9 +5,11 @@ import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
+import { useCreateRoomModalContext } from '../context/CreateRoomModalContext';
 import ImageComponent from 'next/image';
 
 export default function NavBar() {
+	const { showModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const { loggedIn, user, logoff, userLoading } = useUserContext();
 	const { color, font } = useTheme();
@@ -25,17 +27,10 @@ export default function NavBar() {
 		router.push('/register');
 	};
 
-	const redirectToCreateRoomPage = () => {
-		router.push('/create-room');
-	};
-
 	return (
 		<View style={styles.container}>
 			<Pressable style={styles.navContainer} onPress={redirectToHomePage}>
 				<ImageComponent src='/ufo.png' width={60} height={40} />
-			</Pressable>
-			<Pressable style={styles.navContainer} onPress={redirectToCreateRoomPage}>
-				<Text style={styles.text}>{'Create a room'}</Text>
 			</Pressable>
 			<View style={styles.navContainer}>
 				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}
@@ -44,14 +39,14 @@ export default function NavBar() {
 						<Text style={styles.text}>{user.name}</Text>
 						<View style={styles.separator} />
 						<Pressable onPress={logoff}>
-							<Text style={styles.text}>{'Logout'}</Text>
+							<Text style={styles.text}>{'Log out'}</Text>
 						</Pressable>
 					</>
 				)}
 				{!userLoading && !loggedIn && (
 					<>
 						<Pressable onPress={redirectToLoginPage}>
-							<Text style={styles.text}>{'Login'}</Text>
+							<Text style={styles.text}>{'Log in'}</Text>
 						</Pressable>
 						<View style={styles.separator} />
 						<Pressable onPress={redirectToRegisterPage}>
