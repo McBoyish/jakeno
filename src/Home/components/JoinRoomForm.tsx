@@ -5,11 +5,11 @@ import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import { useRouting } from 'expo-next-react-navigation';
+import { useRouter } from 'next/router';
 import { getRoom } from 'server/routers';
 
 export default function JoinRoomForm() {
-	const router = useRouting();
+	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
@@ -27,7 +27,7 @@ export default function JoinRoomForm() {
 			}, 3000);
 			return;
 		}
-		router.navigate({ routeName: `room/${roomName}` });
+		router.push('/room/[roomName]', `/room/${roomName}`);
 	};
 
 	return (

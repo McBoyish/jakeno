@@ -2,15 +2,15 @@ import type { NextPage } from 'next';
 import React from 'react';
 import Login from 'src/Login';
 import { useUserContext } from 'src/common/context/UserContext';
-import { useRouting } from 'expo-next-react-navigation';
+import { useRouter } from 'next/router';
 import Loading from 'src/common/Loading';
 
 const LoginPage: NextPage = () => {
 	const { loggedIn } = useUserContext();
-	const { navigate } = useRouting();
+	const router = useRouter();
 
 	if (loggedIn) {
-		navigate({ routeName: '' });
+		router.push('/');
 		return <Loading />;
 	}
 

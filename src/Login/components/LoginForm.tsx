@@ -6,14 +6,14 @@ import { Color, Font } from 'types';
 import { TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
-import { useRouting } from 'expo-next-react-navigation';
+import { useRouter } from 'next/router';
 import { login } from 'server/routers';
 import { useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
 export default function LoginForm() {
-	const router = useRouting();
+	const router = useRouter();
 	const { updateToken } = useUserContext();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -35,11 +35,11 @@ export default function LoginForm() {
 			return;
 		}
 		updateToken(userData.token);
-		router.navigate({ routeName: '' });
+		router.push('/');
 	};
 
 	const redirectToRegisterPage = () => {
-		router.navigate({ routeName: 'register' });
+		router.push('/register');
 	};
 
 	return (

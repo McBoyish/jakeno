@@ -3,25 +3,25 @@ import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import { useRouting } from 'expo-next-react-navigation';
+import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
 
 export default function NavBar() {
-	const router = useRouting();
+	const router = useRouter();
 	const { loggedIn, user, logoff } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	const redirectToHomePage = () => {
-		router.navigate({ routeName: '' });
+		router.push('/');
 	};
 
 	const redirectToLoginPage = () => {
-		router.navigate({ routeName: 'login' });
+		router.push('/login');
 	};
 
 	const redirectToRegisterPage = () => {
-		router.navigate({ routeName: 'register' });
+		router.push('/register');
 	};
 
 	return (

@@ -5,7 +5,7 @@ import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import { useRouting } from 'expo-next-react-navigation';
+import { useRouter } from 'next/router';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
@@ -15,7 +15,7 @@ const { md } = useMediaQueries();
 
 export default function RegisterForm() {
 	const { user, token, loggedIn } = useUserContext();
-	const router = useRouting();
+	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
 	const [locked, setLocked] = useState(false);
@@ -68,7 +68,7 @@ export default function RegisterForm() {
 			}, 3000);
 			return;
 		}
-		router.navigate({ routeName: `room/${roomData.name}` });
+		router.push('/room/[roomName]', `/room/${roomName}`);
 	};
 
 	return (
