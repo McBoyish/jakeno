@@ -8,19 +8,16 @@ const withImages = require('next-images');
 const withPlugins = require('next-compose-plugins');
 const withTM = require('next-transpile-modules');
 
+const nextConfig = {
+  webpack5: false,
+}
+
 module.exports = withPlugins(
   [
-    [
-      withTM,
-      {
-        transpileModules: ['expo-next-react-navigation'],
-      },
-    ],
+    withTM,
     withFonts,
     withImages,
     [withExpo, { projectRoot: __dirname }],
   ],
-  {
-    webpack5: false,
-  }
+  nextConfig
 );

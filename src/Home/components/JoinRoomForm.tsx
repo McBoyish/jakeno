@@ -27,7 +27,7 @@ export default function JoinRoomForm() {
 			}, 3000);
 			return;
 		}
-		router.push('/room/[roomName]', `/room/${roomName}`);
+		router.push(`/room/${roomName}`);
 	};
 
 	return (

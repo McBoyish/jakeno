@@ -68,7 +68,7 @@ export default function RegisterForm() {
 			}, 3000);
 			return;
 		}
-		router.push('/room/[roomName]', `/room/${roomName}`);
+		router.push(`/room/${roomName}`);
 	};
 
 	return (
