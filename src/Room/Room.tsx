@@ -17,7 +17,6 @@ interface RoomProps {
 export default function Room({ initialRoomData }: RoomProps) {
 	const { user } = useUserContext();
 	const [socket, setSocket] = useState<Socket>();
-	const [loading, setLoading] = useState(true);
 	const [roomData, setRoomData] = useState<RoomData | null>(initialRoomData);
 	const [messageSent, setMessageSent] = useState(false);
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
@@ -25,17 +24,13 @@ export default function Room({ initialRoomData }: RoomProps) {
 	const { styles } = styleSheet(color, font);
 
 	useEffect(() => {
-		if (!initialRoomData) {
-			setLoading(false);
-			return;
-		}
+		if (!initialRoomData) return;
 		const socket = io(uri);
 		socket.emit('join-room', initialRoomData._id);
 		socket.on('message', (message: Message) => {
 			addMessage(message);
 		});
 		setSocket(socket);
-		setLoading(false);
 		return leaveRoom;
 	}, []);
 
@@ -74,13 +69,6 @@ export default function Room({ initialRoomData }: RoomProps) {
 			setMessageSent(true);
 		});
 	};
-
-	if (loading)
-		return (
-			<View style={styles.container}>
-				<Text style={styles.text}>{'Loading...'}</Text>
-			</View>
-		);
 
 	if (!roomData)
 		return (
