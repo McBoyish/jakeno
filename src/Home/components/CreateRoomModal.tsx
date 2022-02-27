@@ -60,7 +60,6 @@ export default function CreateRoomModal() {
 			locked,
 			code: locked ? code : '',
 		};
-		await new Promise(r => setTimeout(r, 100000));
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
 			setLoading(false);
