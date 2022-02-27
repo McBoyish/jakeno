@@ -82,7 +82,7 @@ const styleSheet = (
 		content: {
 			padding: 10,
 			borderRadius: 5,
-			backgroundColor: color.secondary,
+			backgroundColor: color.primary,
 			height: '100%',
 			width: '100%',
 			justifyContent: 'center',
@@ -92,6 +92,6 @@ const styleSheet = (
 		label: {
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
-			color: color.text,
+			color: color.secondary,
 		},
 	});

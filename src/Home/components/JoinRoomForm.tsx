@@ -83,7 +83,7 @@ const styleSheet = (color: Color, font: Font) =>
 		formContainer: {
 			marginVertical: 5,
 			padding: 20,
-			backgroundColor: color.primary,
+			backgroundColor: color.secondary,
 			borderRadius: 5,
 			alignItems: 'center',
 			alignSelf: 'center',
@@ -108,7 +108,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			color: color.text,
 			height: 50,
 			width: 225,

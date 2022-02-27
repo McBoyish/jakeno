@@ -181,7 +181,7 @@ const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			backgroundColor: color.primary,
+			backgroundColor: color.secondary,
 			borderRadius: 5,
 		},
 
@@ -224,7 +224,7 @@ const styleSheet = (color: Color, font: Font) =>
 		switch: {
 			flexDirection: 'row',
 			alignItems: 'center',
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			height: 50,
 			borderRadius: 5,
 			paddingHorizontal: 10,
@@ -248,7 +248,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			color: color.text,
 			height: 50,
 			width: 125,
@@ -264,7 +264,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			color: color.text,
 			height: 50,
 			width: 225,
@@ -280,7 +280,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			color: color.text,
 			height: 100,
 			width: 225,
@@ -298,7 +298,7 @@ const styleSheet = (color: Color, font: Font) =>
 		formHelperText: {
 			fontSize: font.size.small,
 			fontFamily: font.family.text,
-			color: color.secondary,
+			color: color.primary,
 			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',
