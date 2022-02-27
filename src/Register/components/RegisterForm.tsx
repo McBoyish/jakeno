@@ -55,9 +55,7 @@ export default function RegisterForm() {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.headingContainer}>
-				<Text style={styles.heading}>{'Create an account'}</Text>
-			</View>
+			<Text style={styles.heading}>{'Create an account'}</Text>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
 					<TextInput
@@ -146,10 +144,6 @@ const styleSheet = (color: Color, font: Font) =>
 			alignItems: 'center',
 		},
 
-		headingContainer: {
-			marginBottom: 15,
-		},
-
 		inputContainer: {
 			marginBottom: 15,
 		},
@@ -159,6 +153,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
+			marginBottom: 15,
 		},
 
 		textInput: {

@@ -37,37 +37,39 @@ export default function JoinRoomForm() {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.heading}>{'Start chatting!'}</Text>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setRoomName}
-					value={roomName}
-					style={[styles.textInput, errorMsg ? styles.error : undefined]}
-					placeholder={'Enter room name'}
-					editable={!loading}
+			<View style={styles.formContainer}>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setRoomName}
+						value={roomName}
+						style={[styles.textInput, errorMsg ? styles.error : undefined]}
+						placeholder={'Enter room name'}
+						editable={!loading}
+					/>
+				</View>
+				<Button
+					text={errorMsg || 'Join'}
+					disabled={!roomName || errorMsg !== ''}
+					onClick={handleOnSubmit}
+					width={225}
+					height={50}
+					loading={loading}
+				/>
+				<View style={{ height: 15 }} />
+				<Button
+					text={
+						userLoading
+							? 'Loading'
+							: loggedIn
+							? 'Create a room'
+							: 'Login to create room'
+					}
+					disabled={!loggedIn}
+					onClick={showModal}
+					width={225}
+					height={50}
 				/>
 			</View>
-			<Button
-				text={errorMsg || 'Join'}
-				disabled={!roomName || errorMsg !== ''}
-				onClick={handleOnSubmit}
-				width={225}
-				height={50}
-				loading={loading}
-			/>
-			<View style={{ height: 15 }} />
-			<Button
-				text={
-					userLoading
-						? 'Loading'
-						: loggedIn
-						? 'Create a room'
-						: 'Login to create room'
-				}
-				disabled={!loggedIn}
-				onClick={showModal}
-				width={225}
-				height={50}
-			/>
 		</View>
 	);
 }
@@ -75,6 +77,10 @@ export default function JoinRoomForm() {
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
+			marginVertical: 5,
+		},
+
+		formContainer: {
 			marginVertical: 5,
 			padding: 20,
 			backgroundColor: color.primary,
