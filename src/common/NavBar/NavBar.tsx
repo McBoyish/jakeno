@@ -64,7 +64,7 @@ const styleSheet = (color: Color, font: Font) =>
 			alignSelf: 'center',
 			alignItems: 'center',
 			justifyContent: 'space-between',
-			backgroundColor: color.tertiary,
+			backgroundColor: `${color.secondary}`,
 			height: 60,
 			width: '100%',
 			padding: 20,

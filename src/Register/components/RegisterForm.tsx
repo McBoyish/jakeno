@@ -114,10 +114,16 @@ export default function RegisterForm() {
 					style={styles.formHelperContainer}
 					dataSet={{ media: ids.formHelperContainer }}
 				>
-					<Text style={styles.formHelperText}>
+					<Text
+						style={styles.formHelperText}
+						dataSet={{ media: ids.formHelperText }}
+					>
 						{'Username should be 3-12 numbers/letters'}
 					</Text>
-					<Text style={styles.formHelperText}>
+					<Text
+						style={styles.formHelperText}
+						dataSet={{ media: ids.formHelperText }}
+					>
 						{'Password should be 8-20 numbers/letters'}
 					</Text>
 				</View>
@@ -135,7 +141,7 @@ const styleSheet = (color: Color, font: Font) =>
 		formContainer: {
 			marginVertical: 5,
 			padding: 20,
-			backgroundColor: color.secondary,
+			backgroundColor: color.primary,
 			borderRadius: 5,
 			alignItems: 'center',
 		},
@@ -161,8 +167,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			color: color.text,
 			height: 50,
 			width: 225,
@@ -186,13 +191,18 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		formHelperText: {
-			fontSize: font.size.tertiary,
+			fontSize: font.size.small,
 			fontFamily: font.family.text,
-			color: color.text,
+			color: color.secondary,
+			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',
 			paddingHorizontal: 10,
-			lineHeight: 15,
+			marginVertical: 1,
+
+			[md]: {
+				fontSize: font.size.secondary,
+			},
 		},
 
 		formHelperContainer: {

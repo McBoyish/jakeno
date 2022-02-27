@@ -90,7 +90,7 @@ const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			padding: 20,
-			backgroundColor: color.secondary,
+			backgroundColor: color.primary,
 			borderRadius: 5,
 			alignItems: 'center',
 		},
@@ -105,8 +105,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			color: color.text,
 			height: 50,
 			width: 225,

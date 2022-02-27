@@ -84,8 +84,7 @@ const styleSheet = (color: Color) =>
 			marginVertical: 5,
 			padding: 10,
 			borderRadius: 5,
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.primary,
 
 			[sm]: {
 				width: 385,

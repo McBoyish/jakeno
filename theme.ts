@@ -14,10 +14,9 @@ declare global {
 const theme = {
 	...DefaultTheme,
 	color: {
-		primary: '#F38181',
-		secondary: '#FCE38A',
-		tertiary: '#EAFFD0',
-		background: '#95E1D3',
+		primary: '#3F72AF',
+		secondary: '#DBE2EF',
+		background: '#F9F7F7',
 		text: '#000000',
 		black: '#000000',
 		white: '#FFFFFF',
@@ -30,7 +29,7 @@ const theme = {
 			subheading: 20,
 			primary: 16,
 			secondary: 14,
-			tertiary: 10,
+			small: 10,
 		},
 		family: {
 			text: 'Roboto',

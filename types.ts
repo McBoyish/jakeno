@@ -4,7 +4,7 @@ interface FontSize {
 	subheading: number;
 	primary: number;
 	secondary: number;
-	tertiary: number;
+	small: number;
 }
 
 interface FontFamily {
@@ -22,7 +22,6 @@ export interface Color {
 	text: string;
 	background: string;
 	secondary: string;
-	tertiary: string;
 	black: string;
 	white: string;
 	hyperlink: string;

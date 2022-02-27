@@ -49,6 +49,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onKeyPress={handleOnKeyPress}
 				blurOnSubmit={false}
 				ref={textInputRef}
+				placeholderTextColor={color.secondary}
 			/>
 			<View style={styles.separator} />
 			<Button
@@ -57,6 +58,8 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onClick={handleOnButtonPress}
 				width={75}
 				height={50}
+				backgroundColor={color.primary}
+				textColor={color.secondary}
 			/>
 		</View>
 	);
@@ -83,9 +86,8 @@ const styleSheet = (color: Color, font: Font) =>
 			height: 50,
 			width: '100%',
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
+			backgroundColor: color.primary,
+			color: color.secondary,
 		},
 
 		separator: {

@@ -34,7 +34,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
-			backgroundColor: color.secondary,
+			backgroundColor: `${color.secondary}`,
 			borderRadius: 5,
 			paddingVertical: 5,
 			paddingHorizontal: 7.5,
@@ -66,8 +66,9 @@ const styleSheet = (color: Color, font: Font) =>
 
 		timestamp: {
 			fontFamily: font.family.text,
-			fontSize: font.size.tertiary,
+			fontSize: font.size.small,
 			opacity: 0.5,
+			color: color.primary,
 		},
 
 		hyperlink: {

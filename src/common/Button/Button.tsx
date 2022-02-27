@@ -22,6 +22,8 @@ interface ButtonProps {
 	dataSet?: {
 		media: string;
 	};
+	backgroundColor?: string;
+	textColor?: string;
 }
 
 export default function Button({
@@ -33,27 +35,31 @@ export default function Button({
 	loading,
 	style,
 	dataSet,
+	backgroundColor,
+	textColor,
 }: ButtonProps) {
 	const { userLoading } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font, width, height);
 
 	return (
-		<View
-			style={[
-				styles.container,
-				disabled || loading || userLoading ? { opacity: 0.5 } : undefined,
-				style,
-			]}
-			dataSet={dataSet}
-		>
+		<View style={[styles.container, style]} dataSet={dataSet}>
 			<TouchableOpacity
 				onPress={onClick}
 				disabled={disabled || loading || userLoading}
-				style={styles.content}
+				style={[
+					styles.content,
+					backgroundColor ? { backgroundColor } : undefined,
+				]}
 			>
 				{loading && <ActivityIndicator color={color.black} />}
-				{!loading && <Text style={styles.label}>{text}</Text>}
+				{!loading && (
+					<Text
+						style={[styles.label, textColor ? { color: textColor } : undefined]}
+					>
+						{text}
+					</Text>
+				)}
 			</TouchableOpacity>
 		</View>
 	);
@@ -76,9 +82,7 @@ const styleSheet = (
 		content: {
 			padding: 10,
 			borderRadius: 5,
-			borderStyle: 'solid',
-			borderColor: color.primary,
-			backgroundColor: color.primary,
+			backgroundColor: color.secondary,
 			height: '100%',
 			width: '100%',
 			justifyContent: 'center',

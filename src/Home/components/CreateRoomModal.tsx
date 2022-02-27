@@ -104,9 +104,7 @@ export default function CreateRoomModal() {
 						<View
 							style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
 						>
-							<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
-								{'Lock'}
-							</Text>
+							<Text style={styles.smallText}>{'Lock'}</Text>
 							<View style={styles.spacing} />
 							<Switch
 								value={locked}
@@ -160,10 +158,16 @@ export default function CreateRoomModal() {
 						style={styles.formHelperContainer}
 						dataSet={{ media: ids.formHelperContainer }}
 					>
-						<Text style={styles.formHelperText}>
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
 							{'Name should be 1-12 numbers/letters'}
 						</Text>
-						<Text style={styles.formHelperText}>
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
 							{'Code should be 4-8 numbers'}
 						</Text>
 					</View>
@@ -177,7 +181,7 @@ const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			backgroundColor: color.secondary,
+			backgroundColor: color.primary,
 			borderRadius: 5,
 		},
 
@@ -220,7 +224,7 @@ const styleSheet = (color: Color, font: Font) =>
 		switch: {
 			flexDirection: 'row',
 			alignItems: 'center',
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			height: 50,
 			borderRadius: 5,
 			paddingHorizontal: 10,
@@ -244,8 +248,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			color: color.text,
 			height: 50,
 			width: 125,
@@ -261,8 +264,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			color: color.text,
 			height: 50,
 			width: 225,
@@ -278,8 +280,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
+			backgroundColor: color.secondary,
 			color: color.text,
 			height: 100,
 			width: 225,
@@ -295,13 +296,18 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		formHelperText: {
-			fontSize: font.size.tertiary,
+			fontSize: font.size.small,
 			fontFamily: font.family.text,
-			color: color.text,
+			color: color.secondary,
+			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',
 			paddingHorizontal: 10,
-			lineHeight: 15,
+			marginVertical: 1,
+
+			[md]: {
+				fontSize: font.size.secondary,
+			},
 		},
 
 		formHelperContainer: {
@@ -317,9 +323,5 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.text,
-
-			[md]: {
-				fontSize: font.size.primary,
-			},
 		},
 	});
