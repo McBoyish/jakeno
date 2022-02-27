@@ -52,7 +52,9 @@ export default function Button({
 					backgroundColor ? { backgroundColor } : undefined,
 				]}
 			>
-				{loading && <ActivityIndicator color={color.black} size={'small'} />}
+				{loading && (
+					<ActivityIndicator color={color.secondary} size={'small'} />
+				)}
 				{!loading && (
 					<Text
 						style={[styles.label, textColor ? { color: textColor } : undefined]}
