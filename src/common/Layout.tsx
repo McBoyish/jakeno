@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import theme from 'theme';
 import { UserContextProvider } from 'src/common/context/UserContext';
 import { CreateRoomModalContextProvider } from './context/CreateRoomModalContext';
@@ -15,10 +15,12 @@ function Layout({ children }: LayoutProps) {
 		<PaperProvider theme={theme}>
 			<CreateRoomModalContextProvider>
 				<UserContextProvider>
-					<View style={{ flexGrow: 1 }}>
-						<NavBar />
-						{children}
-					</View>
+					<Portal.Host>
+						<View style={{ flexGrow: 1 }}>
+							<NavBar />
+							{children}
+						</View>
+					</Portal.Host>
 				</UserContextProvider>
 			</CreateRoomModalContextProvider>
 		</PaperProvider>
