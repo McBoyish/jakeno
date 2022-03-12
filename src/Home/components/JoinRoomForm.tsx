@@ -12,7 +12,7 @@ import { useUserContext } from 'src/common/context/UserContext';
 
 export default function JoinRoomForm() {
 	const { userLoading, loggedIn } = useUserContext();
-	const { showModal } = useCreateRoomModalContext();
+	const { showModal, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
 	const [roomName, setRoomName] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -31,6 +31,7 @@ export default function JoinRoomForm() {
 			}, 3000);
 			return;
 		}
+		hideModal();
 		router.push(`/room/${roomName}`);
 	};
 
