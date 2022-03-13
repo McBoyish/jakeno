@@ -124,7 +124,6 @@ export default function CreateRoomModal() {
 								!locked || !loggedIn ? { opacity: 0.5 } : undefined,
 							]}
 							placeholder={'Enter code'}
-							textContentType={'none'}
 							editable={loggedIn && locked && !loading}
 							dataSet={{ media: ids.codeInput }}
 						/>

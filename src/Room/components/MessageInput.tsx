@@ -49,11 +49,10 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onKeyPress={handleOnKeyPress}
 				blurOnSubmit={false}
 				ref={textInputRef}
-				textContentType={'none'}
 			/>
 			<View style={styles.separator} />
 			<Button
-				text={'Send'}
+				text={'e'}
 				disabled={text === ''}
 				onClick={handleOnButtonPress}
 				width={75}

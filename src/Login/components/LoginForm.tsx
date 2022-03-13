@@ -60,7 +60,6 @@ export default function LoginForm() {
 					value={password}
 					style={[styles.textInput, errorMessage ? styles.error : undefined]}
 					placeholder={'Password'}
-					textContentType={'password'}
 					secureTextEntry
 					dataSet={{ media: ids.textInput }}
 					editable={!loading}

@@ -79,7 +79,6 @@ export default function RegisterForm() {
 							!isValidPassword ? styles.error : undefined,
 						]}
 						placeholder={'Enter password'}
-						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
@@ -94,7 +93,6 @@ export default function RegisterForm() {
 							!isValidConfirm ? styles.error : undefined,
 						]}
 						placeholder={'Confirm password'}
-						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
