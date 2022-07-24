@@ -74,7 +74,7 @@ export default function JoinRoomForm() {
 				<Button
 					text={
 						userLoading
-							? '...'
+							? 'Loading'
 							: loggedIn
 							? 'Create a room'
 							: 'Login to create room'
