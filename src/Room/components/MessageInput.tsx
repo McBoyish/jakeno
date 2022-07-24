@@ -52,7 +52,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 			/>
 			<View style={styles.separator} />
 			<Button
-				text={'e'}
+				text={'Send'}
 				disabled={text === ''}
 				onClick={handleOnButtonPress}
 				width={75}

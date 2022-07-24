@@ -14,7 +14,7 @@ import {
 interface ButtonProps {
 	text: string;
 	onClick: () => void;
-	disabled: boolean;
+	disabled?: boolean;
 	width?: number;
 	height?: number;
 	loading?: boolean;

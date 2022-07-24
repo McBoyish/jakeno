@@ -6,7 +6,7 @@ import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
-import { getRoom } from 'server/routers';
+import { isLocked, verifyCode } from 'server/routers';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
 import { useUserContext } from 'src/common/context/UserContext';
 
@@ -14,25 +14,55 @@ export default function JoinRoomForm() {
 	const { userLoading, loggedIn } = useUserContext();
 	const { showModal, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
+
 	const [roomName, setRoomName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
+	const [code, setCode] = useState('');
+	const [requireCode, setRequireCode] = useState(false);
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
-	const handleOnSubmit = async () => {
+	const showError = (msg: string) => {
+		setErrorMsg(msg);
+		setTimeout(() => {
+			setErrorMsg('');
+		}, 3000);
+	};
+
+	const handleOnSubmitWithCode = async () => {
 		setLoading(true);
-		const room = await getRoom(roomName);
-		if (!room) {
+		const res = await verifyCode(roomName, code);
+		if (!res) {
 			setLoading(false);
-			setErrorMsg('Cound not find room');
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 3000);
+			showError('Cound not find room');
+			return;
+		}
+		if (!res.valid) {
+			setLoading(false);
+			showError('Invalid code');
 			return;
 		}
 		hideModal();
-		router.push(`/room/${roomName}`);
+		router.push(`/room/${roomName}?code=${code}`);
+	};
+
+	const handleOnSubmit = async () => {
+		setLoading(true);
+		const res = await isLocked(roomName);
+		if (res === null) {
+			setLoading(false);
+			showError('Cound not find room');
+			return;
+		}
+		if (res.locked) {
+			setLoading(false);
+			setRequireCode(true);
+		} else {
+			hideModal();
+			router.push(`/room/${roomName}`);
+		}
 	};
 
 	return (
@@ -45,31 +75,55 @@ export default function JoinRoomForm() {
 						value={roomName}
 						style={[styles.textInput, errorMsg ? styles.error : undefined]}
 						placeholder={'Enter room name'}
-						editable={!loading}
+						editable={!loading && !requireCode}
 					/>
+					{requireCode && <View style={{ height: 15 }} />}
+					{requireCode && (
+						<TextInput
+							onChangeText={setCode}
+							value={code}
+							style={[styles.textInput, errorMsg ? styles.error : undefined]}
+							placeholder={'Enter code'}
+							editable={!loading}
+						/>
+					)}
 				</View>
 				<Button
 					text={errorMsg || 'Join'}
-					disabled={!roomName || errorMsg !== ''}
-					onClick={handleOnSubmit}
+					disabled={!roomName || (requireCode && !code) || errorMsg !== ''}
+					onClick={requireCode ? handleOnSubmitWithCode : handleOnSubmit}
 					width={225}
 					height={50}
 					loading={loading}
 				/>
 				<View style={{ height: 15 }} />
-				<Button
-					text={
-						userLoading
-							? 'Loading'
-							: loggedIn
-							? 'Create a room'
-							: 'Login to create room'
-					}
-					disabled={!loggedIn}
-					onClick={showModal}
-					width={225}
-					height={50}
-				/>
+				{!requireCode && (
+					<Button
+						text={
+							userLoading
+								? '...'
+								: loggedIn
+								? 'Create a room'
+								: 'Login to create room'
+						}
+						disabled={!loggedIn}
+						onClick={showModal}
+						width={225}
+						height={50}
+					/>
+				)}
+				{requireCode && (
+					<Button
+						text={'Back'}
+						onClick={() => {
+							setRequireCode(false);
+							setCode('');
+							setErrorMsg('');
+						}}
+						width={225}
+						height={50}
+					/>
+				)}
 			</View>
 		</View>
 	);

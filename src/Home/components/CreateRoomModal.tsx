@@ -60,6 +60,7 @@ export default function CreateRoomModal() {
 			locked,
 			code: locked ? code : '',
 		};
+
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
 			setLoading(false);
@@ -69,7 +70,9 @@ export default function CreateRoomModal() {
 			}, 3000);
 			return;
 		}
-		router.push(`/room/${roomName}`);
+		const url =
+			room.code === '' ? `/room/${roomName}` : `/room/${roomName}?code=${code}`;
+		router.push(url);
 	};
 
 	return (
