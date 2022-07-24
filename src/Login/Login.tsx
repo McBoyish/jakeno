@@ -15,11 +15,9 @@ export default function Home() {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<View>
-				<Title />
-				<View style={styles.separator} dataSet={{ media: ids.separator }} />
-				<LoginForm />
-			</View>
+			<Title />
+			<View style={styles.separator} dataSet={{ media: ids.separator }} />
+			<LoginForm />
 		</View>
 	);
 }
