@@ -1,7 +1,7 @@
 import {
 	getRoom,
 	createRoom,
-	isLocked,
+	isPrivate,
 	verifyCode,
 	exists,
 } from './roomRouter';
@@ -14,7 +14,7 @@ export {
 	login,
 	register,
 	verify,
-	isLocked,
+	isPrivate,
 	verifyCode,
 	exists,
 };

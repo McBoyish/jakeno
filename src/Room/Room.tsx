@@ -6,7 +6,7 @@ import { useTheme } from 'react-native-paper';
 import { io, uri } from 'server/socket';
 import { InputMessage, Message, RoomData } from 'types';
 import { sortByDate } from 'utils/date';
-import { getRoom, isLocked } from 'server/routers';
+import { getRoom, isPrivate } from 'server/routers';
 import Loading from 'src/common/Loading';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
@@ -74,7 +74,7 @@ export default function Room() {
 		setRoomName(roomName);
 
 		const setup = async () => {
-			const res = await isLocked(roomName);
+			const res = await isPrivate(roomName);
 			if (!res) {
 				// room does not exist
 				setLoading(false);
@@ -89,13 +89,13 @@ export default function Room() {
 				return;
 			}
 
-			if (res.locked) {
-				// room exists and is locked
+			if (res.private) {
+				// room exists and is private
 				setRequireCode(true);
 				setLoading(false);
 				return;
 			} else {
-				// room exists and not locked
+				// room exists and not private
 				getInitialData(roomName, code);
 			}
 		};
@@ -204,7 +204,7 @@ export default function Room() {
 	if (roomData)
 		return (
 			<View style={styles.container}>
-				<View>
+				<View style={{ flex: 1 }}>
 					<MessageBox
 						messages={roomData.messages}
 						setScrollToStart={setScrollToStart}

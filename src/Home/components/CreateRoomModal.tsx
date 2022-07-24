@@ -21,7 +21,6 @@ export default function CreateRoomModal() {
 
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
-	const [locked, setLocked] = useState(false);
 	const [description, setDescription] = useState('');
 
 	const [isValidRoomName, setIsValidRoomName] = useState(true);
@@ -34,13 +33,6 @@ export default function CreateRoomModal() {
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
-	const handleSwitch = (value: boolean) => {
-		if (loading) return;
-		setCode('');
-		setIsValidCode(true);
-		setLocked(value);
-	};
-
 	const showError = (msg: string) => {
 		setErrorMsg(msg);
 		setTimeout(() => {
@@ -52,14 +44,14 @@ export default function CreateRoomModal() {
 		setLoading(true);
 
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
-		const codeValid = /^[0-9]{4,8}$/.test(code);
+		const codeValid = /^[0-9]{4,}$/.test(code) || code === '';
 		const descriptionValid = description !== '';
 
 		setIsValidRoomName(roomNameValid);
-		setIsValidCode(!locked || codeValid);
+		setIsValidCode(codeValid);
 		setIsValidDescription(descriptionValid);
 
-		if (!roomNameValid || (locked && !codeValid) || !descriptionValid) {
+		if (!roomNameValid || !codeValid || !descriptionValid) {
 			setLoading(false);
 			return;
 		}
@@ -73,8 +65,7 @@ export default function CreateRoomModal() {
 			userId: user._id,
 			name: roomName,
 			description,
-			locked,
-			code: locked ? code : '',
+			code,
 		};
 
 		const roomData = await createRoom(room, token);
@@ -114,35 +105,18 @@ export default function CreateRoomModal() {
 							dataSet={{ media: ids.textInput }}
 						/>
 					</View>
-					<View
-						style={styles.switchContainer}
-						dataSet={{ media: ids.switchContainer }}
-					>
-						<View
-							style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
-						>
-							<Text style={styles.smallText}>{'Lock'}</Text>
-							<View style={styles.spacing} />
-							<Switch
-								value={locked}
-								onValueChange={handleSwitch}
-								color={color.primary}
-								disabled={!loggedIn}
-								style={{ width: 30, height: 15 }}
-							/>
-						</View>
-						<View style={styles.spacing} />
+					<View style={styles.inputContainer}>
 						<TextInput
 							onChangeText={setCode}
 							value={code}
 							style={[
-								styles.codeInput,
+								styles.textInput,
 								!isValidCode ? styles.error : undefined,
-								!locked || !loggedIn ? { opacity: 0.5 } : undefined,
+								loggedIn ? undefined : { opacity: 0.5 },
 							]}
-							placeholder={'Enter code'}
-							editable={loggedIn && locked && !loading}
-							dataSet={{ media: ids.codeInput }}
+							placeholder={'Enter code (optional)'}
+							editable={loggedIn && !loading}
+							dataSet={{ media: ids.textInput }}
 						/>
 					</View>
 					<View style={styles.inputContainer}>
@@ -162,9 +136,7 @@ export default function CreateRoomModal() {
 					</View>
 					<Button
 						text={errorMsg || 'Create'}
-						disabled={
-							!roomName || (locked && !code) || !description || errorMsg !== ''
-						}
+						disabled={!roomName || !description || errorMsg !== ''}
 						onClick={handleOnSubmit}
 						loading={loading}
 						dataSet={{ media: ids.button }}
@@ -184,7 +156,7 @@ export default function CreateRoomModal() {
 							style={styles.formHelperText}
 							dataSet={{ media: ids.formHelperText }}
 						>
-							{'Code should be 4-8 numbers'}
+							{'Code should be at least 4 numbers'}
 						</Text>
 					</View>
 				</View>
@@ -217,18 +189,6 @@ const styleSheet = (color: Color, font: Font) =>
 			marginBottom: 15,
 		},
 
-		switchContainer: {
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			marginBottom: 15,
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
-		},
-
 		button: {
 			width: 225,
 
@@ -237,41 +197,11 @@ const styleSheet = (color: Color, font: Font) =>
 			},
 		},
 
-		switch: {
-			flexDirection: 'row',
-			alignItems: 'center',
-			backgroundColor: color.background,
-			height: 50,
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			justifyContent: 'space-evenly',
-		},
-
-		spacing: {
-			width: 10,
-		},
-
 		heading: {
 			fontSize: font.size.heading,
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
-		},
-
-		codeInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
-			height: 50,
-			width: 125,
-
-			[md]: {
-				width: 200,
-			},
 		},
 
 		textInput: {

@@ -55,7 +55,6 @@ export interface InputRoom {
 	userId: string;
 	name: string;
 	description: string;
-	locked: boolean;
 	code: string;
 }
 
@@ -69,7 +68,6 @@ export interface RoomData {
 	userId: string;
 	name: string;
 	description: string;
-	locked: boolean;
 	messages: Message[];
 	createdAt: DateTime;
 }

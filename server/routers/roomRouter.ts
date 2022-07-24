@@ -12,10 +12,10 @@ export const exists = async (name: string) => {
 	}
 };
 
-export const isLocked = async (name: string) => {
+export const isPrivate = async (name: string) => {
 	try {
-		const res = await axios.get<{ locked: boolean } | null>(
-			`${uri}/is-locked/${name}`
+		const res = await axios.get<{ private: boolean } | null>(
+			`${uri}/is-private/${name}`
 		);
 		return res.data;
 	} catch (e) {
