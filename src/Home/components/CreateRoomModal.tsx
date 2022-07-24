@@ -87,6 +87,7 @@ export default function CreateRoomModal() {
 		const url =
 			room.code === '' ? `/room/${roomName}` : `/room/${roomName}?code=${code}`;
 		router.push(url);
+		hideModal();
 	};
 
 	return (
