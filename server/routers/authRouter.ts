@@ -3,7 +3,7 @@ import { User } from 'types';
 
 const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/auth`;
 
-const verify = async (token: string | null) => {
+export const verify = async (token: string | null) => {
 	try {
 		if (!token) return null;
 		const headers = { 'x-access-token': token };
@@ -15,5 +15,3 @@ const verify = async (token: string | null) => {
 		return null;
 	}
 };
-
-export { verify };

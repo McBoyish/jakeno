@@ -3,7 +3,7 @@ import { UserData, InputAccount } from 'types';
 
 const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/account`;
 
-const register = async (name: string, password: string) => {
+export const register = async (name: string, password: string) => {
 	try {
 		const account: InputAccount = { name, password };
 		const res = await axios.post<UserData | null>(`${uri}/register`, account);
@@ -13,7 +13,7 @@ const register = async (name: string, password: string) => {
 	}
 };
 
-const login = async (name: string, password: string) => {
+export const login = async (name: string, password: string) => {
 	try {
 		const account: InputAccount = { name, password };
 		const res = await axios.post<UserData | null>(`${uri}/login`, account);
@@ -22,5 +22,3 @@ const login = async (name: string, password: string) => {
 		return null;
 	}
 };
-
-export { register, login };

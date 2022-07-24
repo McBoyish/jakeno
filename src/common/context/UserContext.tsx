@@ -35,31 +35,23 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		// retrieve and verify token on page load
-		let isMounted = true;
 		const verifyToken = async () => {
 			const token = localStorage.getItem('token');
+			if (!token) {
+				localStorage.removeItem('token');
+				setUserLoading(false);
+				return;
+			}
+
 			const user = await verify(token);
-			if (isMounted && token && user) {
-				setUser(user);
-				setLoggedIn(true);
-				setToken(token);
-				setUserLoading(false);
+			if (user) {
+				updateStates(token, user);
 				return;
 			}
-			if (isMounted && token && !user) {
-				logoff();
-				return;
-			}
-			if (isMounted && !token) {
-				localStorage.setItem('token', '');
-				setUserLoading(false);
-				return;
-			}
+
+			logoff();
 		};
 		verifyToken();
-		return () => {
-			isMounted = false;
-		};
 	}, []);
 
 	const updateToken = async (token: string) => {
@@ -67,19 +59,27 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		if (user) {
 			// update token if it is valid
 			localStorage.setItem('token', token);
-			setToken(token);
-			setUser(user);
-			!loggedIn && setLoggedIn(true);
-			userLoading && setUserLoading(false);
+			updateStates(token, user);
 		}
 	};
 
 	const logoff = () => {
-		localStorage.setItem('token', '');
+		localStorage.removeItem('token');
+		clearStates();
+	};
+
+	const updateStates = (token: string, user: User) => {
+		setToken(token);
+		setUser(user);
+		setLoggedIn(true);
+		setUserLoading(false);
+	};
+
+	const clearStates = () => {
 		setToken('');
 		setUser(initialValue);
-		loggedIn && setLoggedIn(false);
-		userLoading && setUserLoading(false);
+		setLoggedIn(false);
+		setUserLoading(false);
 	};
 
 	return (

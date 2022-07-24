@@ -24,12 +24,13 @@ const styleSheet = (color: Color, font: Font) =>
 			flex: 1,
 			alignSelf: 'center',
 			width: '100%',
+			justifyContent: 'center',
 			backgroundColor: color.background,
 			padding: 20,
 		},
 
 		text: {
-			fontSize: font.size.subheading,
+			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			color: color.text,
 			textAlign: 'center',

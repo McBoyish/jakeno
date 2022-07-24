@@ -15,15 +15,18 @@ const { md } = useMediaQueries();
 export default function LoginForm() {
 	const router = useRouter();
 	const { updateToken } = useUserContext();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
+
 		const userData = await login(username, password);
 		if (!userData) {
 			setLoading(false);
@@ -34,6 +37,7 @@ export default function LoginForm() {
 			}, 3000);
 			return;
 		}
+
 		updateToken(userData.token);
 		router.push('/');
 	};
