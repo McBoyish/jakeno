@@ -111,17 +111,18 @@ export default function Room() {
 	}, [verified]);
 
 	useEffect(() => {
-		if (!roomData) return;
+		if (!roomData || socket) return;
 
-		const socket = io(uri);
-		socket.emit('join-room', roomData._id);
-		socket.on('message', (message: Message) => {
+		const socket_ = io(uri);
+		socket_.emit('join-room', roomData._id);
+
+		socket_.on('message', (message: Message) => {
 			addMessage(message);
 		});
-		setSocket(socket);
+		setSocket(socket_);
 
 		return leaveRoom;
-	}, [roomData]);
+	}, [roomData, socket]);
 
 	useEffect(() => {
 		if (!scrollToStart || !messageSent) return;
