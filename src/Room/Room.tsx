@@ -213,6 +213,12 @@ export default function Room() {
 				</View>
 			</View>
 		);
+
+	return (
+		<View style={styles.container}>
+			<Text style={styles.text}>{'An unknown error has occurred'}</Text>
+		</View>
+	);
 }
 
 const styleSheet = (color: Color, font: Font) =>
