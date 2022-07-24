@@ -10,6 +10,7 @@ import ImageComponent from 'next/image';
 export default function NavBar() {
 	const router = useRouter();
 	const { loggedIn, user, logoff, userLoading } = useUserContext();
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 

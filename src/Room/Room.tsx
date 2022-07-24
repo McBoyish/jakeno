@@ -21,17 +21,18 @@ export default function Room() {
 
 	const [requireCode, setRequireCode] = useState(false);
 	const [code, setCode] = useState<string>('');
-	const [invalidCode, setInvalidCode] = useState(false);
 	const [verified, setVerified] = useState(false);
 
-	const [loading, setLoading] = useState(true);
-	const [roomName, setRoomName] = useState<string>('');
 	const [roomData, setRoomData] = useState<RoomData | null>(null);
+	const [roomName, setRoomName] = useState<string>('');
 
+	const [loading, setLoading] = useState(true);
+	const [invalidCode, setInvalidCode] = useState(false);
 	const [unknownError, setUnknownError] = useState(false);
 
 	const [socket, setSocket] = useState<Socket | null>(null);
 	const [messageSent, setMessageSent] = useState(false);
+
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 
 	const { color, font } = useTheme();

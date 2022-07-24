@@ -21,6 +21,7 @@ export default function MessageBox({
 	setScrollToStart,
 }: MessageBoxProps) {
 	const { scrollRef, scrollToStart } = useVerticalScroll(true);
+
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
@@ -34,10 +35,12 @@ export default function MessageBox({
 		const shouldAddSpacing =
 			index < messages.length - 1 &&
 			messages[index].user._id !== messages[index + 1].user._id;
+
 		const shouldAddDate =
 			index === messages.length - 1 ||
 			parseDate(messages[index].createdAt).date !==
 				parseDate(messages[index + 1].createdAt).date;
+
 		if (shouldAddDate)
 			return (
 				<>
@@ -48,6 +51,7 @@ export default function MessageBox({
 					{index < messages.length - 1 && <View style={styles.separator} />}
 				</>
 			);
+
 		if (shouldAddSpacing)
 			return (
 				<>
@@ -55,6 +59,7 @@ export default function MessageBox({
 					<View style={styles.separator} />
 				</>
 			);
+
 		return <MessageBubble message={item} />;
 	};
 

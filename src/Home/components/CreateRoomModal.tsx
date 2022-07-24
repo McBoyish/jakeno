@@ -18,15 +18,19 @@ export default function CreateRoomModal() {
 	const { user, token, loggedIn } = useUserContext();
 	const { isVisible, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
+
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
 	const [locked, setLocked] = useState(false);
 	const [description, setDescription] = useState('');
+
 	const [isValidRoomName, setIsValidRoomName] = useState(true);
 	const [isValidCode, setIsValidCode] = useState(true);
 	const [isValidDescription, setIsValidDescription] = useState(true);
+
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 

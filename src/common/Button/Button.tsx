@@ -39,6 +39,7 @@ export default function Button({
 	textColor,
 }: ButtonProps) {
 	const { userLoading } = useUserContext();
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font, width, height);
 

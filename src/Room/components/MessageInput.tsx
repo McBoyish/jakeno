@@ -20,7 +20,9 @@ const { sm } = useMediaQueries();
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
+
 	const [text, setText] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 

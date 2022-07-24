@@ -15,14 +15,18 @@ const { md } = useMediaQueries();
 export default function RegisterForm() {
 	const router = useRouter();
 	const { updateToken } = useUserContext();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirm, setConfirm] = useState('');
+
 	const [isValidUsername, setIsValidUsername] = useState(true);
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [isValidConfirm, setIsValidConfirm] = useState(true);
+
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
@@ -54,6 +58,7 @@ export default function RegisterForm() {
 			return;
 		}
 		updateToken(userData.token);
+
 		router.push('/');
 	};
 
