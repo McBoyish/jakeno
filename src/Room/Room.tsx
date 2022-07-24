@@ -80,7 +80,17 @@ export default function Room() {
 				setLoading(false);
 				return;
 			}
+
+			// user created the room and was redirected to the page
+			const codeFromSession = sessionStorage.getItem(roomName);
+			sessionStorage.removeItem(roomName);
+			if (codeFromSession) {
+				getInitialData(roomName, codeFromSession);
+				return;
+			}
+
 			if (res.locked) {
+				// room exists and is locked
 				setRequireCode(true);
 				setLoading(false);
 				return;
@@ -162,6 +172,7 @@ export default function Room() {
 			</View>
 		);
 
+	// ideally invalid code error will never happen
 	if (invalidCode)
 		return (
 			<View style={styles.container}>
@@ -190,17 +201,18 @@ export default function Room() {
 			</View>
 		);
 
-	return (
-		<View style={styles.container}>
-			<>
-				<MessageBox
-					messages={roomData.messages}
-					setScrollToStart={setScrollToStart}
-				/>
-				<MessageInput onSubmit={onSubmit} />
-			</>
-		</View>
-	);
+	if (roomData)
+		return (
+			<View style={styles.container}>
+				<View>
+					<MessageBox
+						messages={roomData.messages}
+						setScrollToStart={setScrollToStart}
+					/>
+					<MessageInput onSubmit={onSubmit} />
+				</View>
+			</View>
+		);
 }
 
 const styleSheet = (color: Color, font: Font) =>

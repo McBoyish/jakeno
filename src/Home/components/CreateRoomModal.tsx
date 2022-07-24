@@ -79,14 +79,13 @@ export default function CreateRoomModal() {
 
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
-			showError('Room name already exists');
+			showError('Room already exists');
 			setLoading(false);
 			return;
 		}
 
-		const url =
-			room.code === '' ? `/room/${roomName}` : `/room/${roomName}?code=${code}`;
-		router.push(url);
+		sessionStorage.setItem(roomName, code);
+		router.push(`/room/${roomName}`);
 		hideModal();
 	};
 
