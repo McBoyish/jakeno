@@ -15,9 +15,11 @@ export default function Home() {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<Title />
-			<View style={styles.separator} dataSet={{ media: ids.separator }} />
-			<LoginForm />
+			<View>
+				<Title />
+				<View style={styles.separator} dataSet={{ media: ids.separator }} />
+				<LoginForm />
+			</View>
 		</View>
 	);
 }
@@ -41,7 +43,7 @@ const styleSheet = (color: Color) =>
 		},
 
 		separator: {
-			height: 50,
+			height: 15,
 
 			[md]: {
 				height: 0,

@@ -139,12 +139,9 @@ export default function RegisterForm() {
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
-		container: {
-			marginVertical: 5,
-		},
+		container: {},
 
 		formContainer: {
-			marginVertical: 5,
 			padding: 20,
 			backgroundColor: color.secondary,
 			borderRadius: 5,
