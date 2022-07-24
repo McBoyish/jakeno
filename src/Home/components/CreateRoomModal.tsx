@@ -37,22 +37,34 @@ export default function CreateRoomModal() {
 		setLocked(value);
 	};
 
+	const showError = (msg: string) => {
+		setErrorMsg(msg);
+		setTimeout(() => {
+			setErrorMsg('');
+		}, 3000);
+	};
+
 	const handleOnSubmit = async () => {
 		setLoading(true);
+
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
 		const codeValid = /^[0-9]{4,8}$/.test(code);
 		const descriptionValid = description !== '';
+
 		setIsValidRoomName(roomNameValid);
 		setIsValidCode(!locked || codeValid);
 		setIsValidDescription(descriptionValid);
+
 		if (!roomNameValid || (locked && !codeValid) || !descriptionValid) {
 			setLoading(false);
 			return;
 		}
+
 		if (!user._id) {
 			setLoading(false);
 			return;
 		}
+
 		const room: InputRoom = {
 			userId: user._id,
 			name: roomName,
@@ -63,13 +75,11 @@ export default function CreateRoomModal() {
 
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
+			showError('Room name already exists');
 			setLoading(false);
-			setErrorMsg('Room name already exists');
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 3000);
 			return;
 		}
+
 		const url =
 			room.code === '' ? `/room/${roomName}` : `/room/${roomName}?code=${code}`;
 		router.push(url);
