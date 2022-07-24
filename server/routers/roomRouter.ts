@@ -35,7 +35,7 @@ export const verifyCode = async (name: string, code: string) => {
 	}
 };
 
-export const getRoom = async (name: string, code: string | null) => {
+export const getRoom = async (name: string, code: string) => {
 	const res = await axios.post<RoomData | null>(`${uri}/${name}`, { code });
 	return res.data;
 };

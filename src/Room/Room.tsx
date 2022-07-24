@@ -5,59 +5,112 @@ import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
 import { io, uri } from 'server/socket';
 import { InputMessage, Message, RoomData } from 'types';
+import { sortByDate } from 'utils/date';
+import { getRoom, isLocked } from 'server/routers';
+import Loading from 'src/common/Loading';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
+import CodeForm from './components/CodeForm';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { Socket } from 'socket.io-client';
 
-interface RoomProps {
-	initialRoomData: RoomData | null;
-	invalidCode?: boolean;
-	unknownError?: boolean;
-}
-
-export default function Room({
-	initialRoomData,
-	invalidCode,
-	unknownError,
-}: RoomProps) {
+export default function Room() {
 	const { user } = useUserContext();
 	const router = useRouter();
 
-	const [socket, setSocket] = useState<Socket>();
-	const [roomData, setRoomData] = useState<RoomData | null>(initialRoomData);
+	const [requireCode, setRequireCode] = useState(false);
+	const [code, setCode] = useState<string>('');
+	const [invalidCode, setInvalidCode] = useState(false);
+	const [verified, setVerified] = useState(false);
+
+	const [loading, setLoading] = useState(true);
+	const [roomName, setRoomName] = useState<string>('');
+	const [roomData, setRoomData] = useState<RoomData | null>(null);
+
+	const [unknownError, setUnknownError] = useState(false);
+
+	const [socket, setSocket] = useState<Socket | null>(null);
 	const [messageSent, setMessageSent] = useState(false);
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
+	const getInitialData = async (roomName: string, code: string) => {
+		try {
+			const data = await getRoom(roomName, code);
+			if (!data) {
+				setLoading(false);
+				return;
+			}
+			data.messages = sortByDate(data.messages);
+			data && setRoomData(data);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (e: any) {
+			if (e.response && e.response.data.message === 'invalid-room-code') {
+				setInvalidCode(true);
+			} else {
+				setUnknownError(true);
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	useEffect(() => {
+		if (!router.isReady) return;
+
 		const { pathname, query } = router;
-		const filteredQuery: Record<string, string> = {};
-		query.roomName && (filteredQuery.roomName = query.roomName as string);
-		query.code && (filteredQuery.code = query.code as string);
+		// remove any unwanted params
 		router.replace(
-			{
-				pathname,
-				query: filteredQuery,
-			},
+			{ pathname, query: { roomName: query.roomName } },
 			undefined,
 			{ shallow: true }
 		);
 
-		if (invalidCode || unknownError || !initialRoomData) return;
+		const roomName = query.roomName as string;
+		setRoomName(roomName);
+
+		const setup = async () => {
+			const res = await isLocked(roomName);
+			if (!res) {
+				// room does not exist
+				setLoading(false);
+				return;
+			}
+			if (res.locked) {
+				setRequireCode(true);
+				setLoading(false);
+				return;
+			} else {
+				// room exists and not locked
+				getInitialData(roomName, code);
+			}
+		};
+
+		setup();
+	}, [router.isReady]);
+
+	useEffect(() => {
+		if (!verified) return;
+		setLoading(true);
+		setRequireCode(false);
+		getInitialData(roomName, code);
+	}, [verified]);
+
+	useEffect(() => {
+		if (!roomData) return;
 
 		const socket = io(uri);
-		socket.emit('join-room', initialRoomData._id);
+		socket.emit('join-room', roomData._id);
 		socket.on('message', (message: Message) => {
 			addMessage(message);
 		});
 		setSocket(socket);
 
 		return leaveRoom;
-	}, []);
+	}, [roomData]);
 
 	useEffect(() => {
 		if (!scrollToStart || !messageSent) return;
@@ -99,12 +152,7 @@ export default function Room({
 		});
 	};
 
-	if (invalidCode)
-		return (
-			<View style={styles.container}>
-				<Text style={styles.text}>{'Invalid code'}</Text>
-			</View>
-		);
+	if (loading) return <Loading />;
 
 	if (unknownError)
 		return (
@@ -113,10 +161,31 @@ export default function Room({
 			</View>
 		);
 
+	if (invalidCode)
+		return (
+			<View style={styles.container}>
+				<Text style={styles.text}>{'Code is invalid'}</Text>
+			</View>
+		);
+
+	if (requireCode)
+		return (
+			<View style={styles.container}>
+				<CodeForm
+					roomName={roomName}
+					code={code}
+					setCode={setCode}
+					setVerified={setVerified}
+				/>
+			</View>
+		);
+
 	if (!roomData)
 		return (
 			<View style={styles.container}>
-				<Text style={styles.text}>{'Could not find room'}</Text>
+				<Text
+					style={styles.text}
+				>{`Room ${router.query.roomName} does not exist`}</Text>
 			</View>
 		);
 

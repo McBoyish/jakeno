@@ -2,20 +2,24 @@ import React from 'react';
 import { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
-import { exists } from 'server/routers';
 import { Color, Font } from 'types';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
-import { useRouter } from 'next/router';
-import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
-import { useUserContext } from 'src/common/context/UserContext';
+import { verifyCode } from 'server/routers';
 
-export default function JoinRoomForm() {
-	const { userLoading, loggedIn } = useUserContext();
-	const { showModal, hideModal } = useCreateRoomModalContext();
-	const router = useRouter();
+interface CodeFormProps {
+	roomName: string;
+	code: string;
+	setCode: (_: string) => void;
+	setVerified: (_: boolean) => void;
+}
 
-	const [roomName, setRoomName] = useState('');
+export default function CodeForm({
+	roomName,
+	code,
+	setCode,
+	setVerified,
+}: CodeFormProps) {
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -32,57 +36,41 @@ export default function JoinRoomForm() {
 	const handleOnSubmit = async () => {
 		setLoading(true);
 
-		const res = await exists(roomName);
+		const res = await verifyCode(roomName, code);
 		if (!res) {
-			showError('An error has occurred');
-			setLoading(false);
-			return;
-		}
-
-		if (!res.exists) {
 			showError('Room not found');
 			setLoading(false);
 			return;
 		}
 
-		router.push(`/room/${roomName}`);
-		hideModal();
+		setVerified(res.valid);
+		if (!res.valid) {
+			showError('Invalid code');
+			setLoading(false);
+		} else {
+			setLoading(false);
+		}
 	};
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.heading}>{'Start chatting!'}</Text>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
 					<TextInput
-						onChangeText={setRoomName}
-						value={roomName}
+						onChangeText={setCode}
+						value={code}
 						style={[styles.textInput, errorMsg ? styles.error : undefined]}
-						placeholder={'Enter room name'}
+						placeholder={'Enter code'}
 						editable={!loading}
 					/>
 				</View>
 				<Button
 					text={errorMsg || 'Join'}
-					disabled={!roomName || errorMsg !== ''}
+					disabled={!code || errorMsg !== ''}
 					onClick={handleOnSubmit}
 					width={225}
 					height={50}
 					loading={loading}
-				/>
-				<View style={{ height: 15 }} />
-				<Button
-					text={
-						userLoading
-							? '...'
-							: loggedIn
-							? 'Create a room'
-							: 'Login to create room'
-					}
-					disabled={!loggedIn}
-					onClick={showModal}
-					width={225}
-					height={50}
 				/>
 			</View>
 		</View>
@@ -107,14 +95,6 @@ const styleSheet = (color: Color, font: Font) =>
 		inputContainer: {
 			marginBottom: 15,
 			alignItems: 'center',
-		},
-
-		heading: {
-			fontSize: font.size.heading,
-			fontFamily: font.family.heading,
-			color: color.text,
-			textAlign: 'center',
-			marginBottom: 15,
 		},
 
 		textInput: {
