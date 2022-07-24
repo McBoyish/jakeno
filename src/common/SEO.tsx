@@ -4,7 +4,7 @@ import Head from 'next/head';
 function SEO() {
 	return (
 		<Head>
-			<title>{'Random Stranger'}</title>
+			<title>{'Jakeno'}</title>
 			<link rel='icon' href='/ufo.png' />
 			<meta
 				name='description'
