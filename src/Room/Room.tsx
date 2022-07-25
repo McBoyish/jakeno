@@ -13,6 +13,7 @@ import Users from './components/Users';
 import CodeForm from './components/CodeForm';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
+import { Socket } from 'socket.io-client';
 
 export default function Room() {
 	const { user, socket } = useUserContext();
@@ -58,17 +59,6 @@ export default function Room() {
 		const roomName = query.roomName as string;
 		setRoomName(roomName);
 		setup(roomName);
-
-		socket.emit('join-room', roomName, user, (users: User[]) => {
-			setUsers(users);
-		});
-		socket.on('join-room', (users: User[]) => {
-			setUsers(users);
-		});
-		socket.on('leave-room', (users: User[]) => {
-			setUsers(users);
-		});
-		socket.on('message', addMessage);
 	}, [router.isReady]);
 
 	useEffect(() => {
@@ -85,6 +75,19 @@ export default function Room() {
 		setMessageSent(false);
 	}, [scrollToStart, messageSent]);
 
+	const attachListeners = (roomName: string) => {
+		socket.emit('join-room', roomName, user, (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('join-room', (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('leave-room', (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('message', addMessage);
+	};
+
 	const getInitialData = async (roomName: string, code: string) => {
 		try {
 			const data = await getRoom(roomName, code);
@@ -94,6 +97,8 @@ export default function Room() {
 			}
 			data.messages = sortByDate(data.messages);
 			data && setRoomData(data);
+
+			attachListeners(roomName);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			if (e.response && e.response.data.message === 'invalid-room-code') {
