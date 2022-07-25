@@ -13,7 +13,6 @@ import Users from './components/Users';
 import CodeForm from './components/CodeForm';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
-import { Socket } from 'socket.io-client';
 
 export default function Room() {
 	const { user, socket } = useUserContext();
