@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useTheme, Switch, Portal, Modal } from 'react-native-paper';
+import { useTheme, Portal, Modal } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
@@ -10,7 +10,7 @@ import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
-import { useMediaQueries } from 'utils/responsive';
+import { useMediaQueries, useBreakPoints } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
@@ -31,7 +31,8 @@ export default function CreateRoomModal() {
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const { color, font } = useTheme();
-	const { styles, ids } = styleSheet(color, font);
+	const { isMediumScreen } = useBreakPoints();
+	const { styles, ids } = styleSheet(color, font, isMediumScreen);
 
 	const showError = (msg: string) => {
 		setErrorMsg(msg);
@@ -139,8 +140,7 @@ export default function CreateRoomModal() {
 						disabled={!roomName || !description || errorMsg !== ''}
 						onClick={handleOnSubmit}
 						loading={loading}
-						dataSet={{ media: ids.button }}
-						style={styles.button}
+						containerStyle={styles.button}
 					/>
 					<View
 						style={styles.formHelperContainer}
@@ -165,7 +165,7 @@ export default function CreateRoomModal() {
 	);
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		container: {
 			alignSelf: 'center',
@@ -190,11 +190,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		button: {
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		heading: {

@@ -86,9 +86,9 @@ const styleSheet = (color: Color) =>
 			flexGrow: 1,
 			width: '100%',
 			height: 1, // hack
-			marginVertical: 5,
 			padding: 10,
-			borderRadius: 5,
+			borderTopLeftRadius: 5,
+			borderTopRightRadius: 5,
 			backgroundColor: color.secondary,
 
 			[sm]: {

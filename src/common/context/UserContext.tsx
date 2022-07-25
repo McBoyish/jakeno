@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
+import { uri, io } from 'server/socket';
 import { verify } from 'server/routers';
+import { Socket } from 'socket.io-client';
 
 interface UserContextData {
 	user: User;
@@ -10,9 +12,11 @@ interface UserContextData {
 	token: string;
 	updateToken: (_: string) => void;
 	logoff: () => void;
+	socket: Socket;
 }
 
 const initialValue: User = { name: 'anon', _id: 'anon' };
+const socket = io(uri);
 
 const UserContext = createContext<UserContextData>({
 	user: initialValue,
@@ -21,6 +25,7 @@ const UserContext = createContext<UserContextData>({
 	token: '',
 	updateToken: () => null,
 	logoff: () => null,
+	socket,
 });
 
 function useUserContext() {
@@ -38,18 +43,16 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		const verifyToken = async () => {
 			const token = localStorage.getItem('token');
 			if (!token) {
-				localStorage.removeItem('token');
-				setUserLoading(false);
+				logoff();
 				return;
 			}
 
 			const user = await verify(token);
 			if (user) {
 				updateStates(token, user);
-				return;
+			} else {
+				logoff();
 			}
-
-			logoff();
 		};
 		verifyToken();
 	}, []);
@@ -84,7 +87,15 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 
 	return (
 		<UserContext.Provider
-			value={{ user, userLoading, loggedIn, token, updateToken, logoff }}
+			value={{
+				user,
+				userLoading,
+				loggedIn,
+				token,
+				updateToken,
+				logoff,
+				socket,
+			}}
 		>
 			{children}
 		</UserContext.Provider>

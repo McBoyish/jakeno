@@ -66,8 +66,7 @@ export default function JoinRoomForm() {
 					text={errorMsg || 'Join'}
 					disabled={!roomName || errorMsg !== ''}
 					onClick={handleOnSubmit}
-					width={225}
-					height={50}
+					containerStyle={{ width: 225, height: 50 }}
 					loading={loading}
 				/>
 				<View style={{ height: 15 }} />
@@ -81,8 +80,7 @@ export default function JoinRoomForm() {
 					}
 					disabled={!loggedIn}
 					onClick={showModal}
-					width={225}
-					height={50}
+					containerStyle={{ width: 225, height: 50 }}
 				/>
 			</View>
 		</View>

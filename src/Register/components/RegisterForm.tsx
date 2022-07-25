@@ -8,7 +8,7 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouter } from 'next/router';
 import { register } from 'server/routers';
-import { useMediaQueries } from 'utils/responsive';
+import { useBreakPoints, useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
@@ -28,7 +28,8 @@ export default function RegisterForm() {
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const { color, font } = useTheme();
-	const { styles, ids } = styleSheet(color, font);
+	const { isMediumScreen } = useBreakPoints();
+	const { styles, ids } = styleSheet(color, font, isMediumScreen);
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
@@ -112,8 +113,7 @@ export default function RegisterForm() {
 					disabled={!username || !password || !confirm || errorMsg !== ''}
 					onClick={handleOnSubmit}
 					loading={loading}
-					dataSet={{ media: ids.button }}
-					style={styles.button}
+					containerStyle={styles.button}
 				/>
 				<View
 					style={styles.formHelperContainer}
@@ -137,7 +137,7 @@ export default function RegisterForm() {
 	);
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		container: {},
 
@@ -169,19 +169,11 @@ const styleSheet = (color: Color, font: Font) =>
 			backgroundColor: color.background,
 			color: color.text,
 			height: 50,
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		button: {
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		error: {

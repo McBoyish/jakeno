@@ -3,20 +3,19 @@ import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import { io, uri } from 'server/socket';
-import { InputMessage, Message, RoomData } from 'types';
+import { InputMessage, Message, RoomData, User } from 'types';
 import { sortByDate } from 'utils/date';
 import { getRoom, isPrivate } from 'server/routers';
 import Loading from 'src/common/Loading';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
+import Users from './components/Users';
 import CodeForm from './components/CodeForm';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
-import { Socket } from 'socket.io-client';
 
 export default function Room() {
-	const { user } = useUserContext();
+	const { user, socket } = useUserContext();
 	const router = useRouter();
 
 	const [requireCode, setRequireCode] = useState(false);
@@ -25,18 +24,66 @@ export default function Room() {
 
 	const [roomData, setRoomData] = useState<RoomData | null>(null);
 	const [roomName, setRoomName] = useState<string>('');
+	const [users, setUsers] = useState<User[] | null>(null);
+	const [usersVisible, setUsersVisible] = useState(false);
 
 	const [loading, setLoading] = useState(true);
 	const [invalidCode, setInvalidCode] = useState(false);
 	const [unknownError, setUnknownError] = useState(false);
 
-	const [socket, setSocket] = useState<Socket | null>(null);
 	const [messageSent, setMessageSent] = useState(false);
-
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
+
+	useEffect(() => {
+		socket.connect();
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!router.isReady) return;
+
+		const { pathname, query } = router;
+		// remove any unwanted params
+		router.replace(
+			{ pathname, query: { roomName: query.roomName } },
+			undefined,
+			{ shallow: true }
+		);
+
+		const roomName = query.roomName as string;
+		setRoomName(roomName);
+		setup(roomName);
+
+		socket.emit('join-room', roomName, user, (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('join-room', (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('leave-room', (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('message', addMessage);
+	}, [router.isReady]);
+
+	useEffect(() => {
+		if (!verified) return;
+		setLoading(true);
+		setRequireCode(false);
+		getInitialData(roomName, code);
+	}, [verified]);
+
+	useEffect(() => {
+		if (!scrollToStart || !messageSent) return;
+
+		scrollToStart();
+		setMessageSent(false);
+	}, [scrollToStart, messageSent]);
 
 	const getInitialData = async (roomName: string, code: string) => {
 		try {
@@ -59,84 +106,28 @@ export default function Room() {
 		}
 	};
 
-	useEffect(() => {
-		if (!router.isReady) return;
+	const setup = async (roomName: string) => {
+		const res = await isPrivate(roomName);
+		if (!res) {
+			// room does not exist
+			setLoading(false);
+			return;
+		}
 
-		const { pathname, query } = router;
-		// remove any unwanted params
-		router.replace(
-			{ pathname, query: { roomName: query.roomName } },
-			undefined,
-			{ shallow: true }
-		);
-
-		const roomName = query.roomName as string;
-		setRoomName(roomName);
-
-		const setup = async () => {
-			const res = await isPrivate(roomName);
-			if (!res) {
-				// room does not exist
-				setLoading(false);
-				return;
-			}
-
-			// user created the room and was redirected to the page
+		if (res.private) {
+			// room exists and is private
 			const codeFromSession = sessionStorage.getItem(roomName);
 			sessionStorage.removeItem(roomName);
 			if (codeFromSession) {
 				getInitialData(roomName, codeFromSession);
-				return;
-			}
-
-			if (res.private) {
-				// room exists and is private
+			} else {
 				setRequireCode(true);
 				setLoading(false);
-				return;
-			} else {
-				// room exists and not private
-				getInitialData(roomName, code);
 			}
-		};
-
-		setup();
-	}, [router.isReady]);
-
-	useEffect(() => {
-		if (!verified) return;
-		setLoading(true);
-		setRequireCode(false);
-		getInitialData(roomName, code);
-	}, [verified]);
-
-	useEffect(() => {
-		if (!roomData || socket) return;
-
-		const socket_ = io(uri);
-		socket_.emit('join-room', roomData._id);
-
-		socket_.on('message', (message: Message) => {
-			addMessage(message);
-		});
-		setSocket(socket_);
-
-		return leaveRoom;
-	}, [roomData, socket]);
-
-	useEffect(() => {
-		if (!scrollToStart || !messageSent) return;
-
-		scrollToStart();
-		setMessageSent(false);
-	}, [scrollToStart, messageSent]);
-
-	const leaveRoom = () => {
-		if (!socket || !roomData) return;
-
-		socket.emit('leave-room', roomData._id);
-		socket.removeAllListeners();
-		socket.disconnect();
+		} else {
+			// room exists and not private
+			getInitialData(roomName, '');
+		}
 	};
 
 	const addMessage = (message: Message) => {
@@ -150,7 +141,7 @@ export default function Room() {
 	};
 
 	const onSubmit = (text: string) => {
-		if (!socket || !roomData) return;
+		if (!roomData) return;
 
 		const message: InputMessage = {
 			userId: user._id,
@@ -202,10 +193,19 @@ export default function Room() {
 			</View>
 		);
 
-	if (roomData)
+	if (roomData && users)
 		return (
 			<View style={styles.container}>
-				<View style={{ flex: 1 }}>
+				<View
+					style={{
+						flex: 1,
+					}}
+				>
+					<Users
+						users={users}
+						usersVisible={usersVisible}
+						setUsersVisible={setUsersVisible}
+					/>
 					<MessageBox
 						messages={roomData.messages}
 						setScrollToStart={setScrollToStart}
@@ -215,11 +215,7 @@ export default function Room() {
 			</View>
 		);
 
-	return (
-		<View style={styles.container}>
-			<Text style={styles.text}>{'An unknown error has occurred'}</Text>
-		</View>
-	);
+	return <Loading />;
 }
 
 const styleSheet = (color: Color, font: Font) =>

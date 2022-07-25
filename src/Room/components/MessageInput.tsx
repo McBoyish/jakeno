@@ -52,15 +52,12 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				blurOnSubmit={false}
 				ref={textInputRef}
 			/>
-			<View style={styles.separator} />
 			<Button
 				text={'Send'}
 				disabled={text === ''}
 				onClick={handleOnButtonPress}
-				width={75}
-				height={50}
-				backgroundColor={color.primary}
-				textColor={color.secondary}
+				containerStyle={styles.button}
+				textStyle={styles.buttonText}
 			/>
 		</View>
 	);
@@ -72,7 +69,6 @@ const styleSheet = (color: Color, font: Font) =>
 			flexDirection: 'row',
 			flexGrow: 0,
 			width: '100%',
-			marginVertical: 5,
 
 			[sm]: {
 				width: 385,
@@ -80,7 +76,9 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
+			borderBottomLeftRadius: 5,
+			borderTopWidth: 2,
+			borderColor: color.background,
 			paddingHorizontal: 10,
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
@@ -91,7 +89,18 @@ const styleSheet = (color: Color, font: Font) =>
 			color: color.text,
 		},
 
-		separator: {
-			width: 5,
+		button: {
+			borderRadius: 0,
+			borderBottomRightRadius: 5,
+			borderTopWidth: 2,
+			borderLeftWidth: 2,
+			borderColor: color.background,
+			backgroundColor: color.secondary,
+			height: 50,
+			width: 75,
+		},
+
+		buttonText: {
+			color: color.primary,
 		},
 	});

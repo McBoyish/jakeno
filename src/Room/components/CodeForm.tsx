@@ -68,8 +68,7 @@ export default function CodeForm({
 					text={errorMsg || 'Join'}
 					disabled={!code || errorMsg !== ''}
 					onClick={handleOnSubmit}
-					width={225}
-					height={50}
+					containerStyle={{ width: 225, height: 50 }}
 					loading={loading}
 				/>
 			</View>
