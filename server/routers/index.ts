@@ -4,6 +4,7 @@ import {
 	isPrivate,
 	verifyCode,
 	exists,
+	getPublicRooms,
 } from './roomRouter';
 import { login, register } from './accountRouter';
 import { verify } from './authRouter';
@@ -17,4 +18,5 @@ export {
 	isPrivate,
 	verifyCode,
 	exists,
+	getPublicRooms,
 };

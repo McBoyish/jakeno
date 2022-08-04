@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from 'react-native-paper';
-import { Color } from 'types';
+import { Color, Room } from 'types';
 import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
+import { getPublicRooms } from 'server/routers';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
 import CreateRoomModal from './components/CreateRoomModal';
@@ -10,8 +11,23 @@ import CreateRoomModal from './components/CreateRoomModal';
 const { md } = useMediaQueries();
 
 export default function Home() {
+	const [rooms, setRooms] = useState<Room[]>([]);
+	const [error, setError] = useState(false);
+
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
+
+	useEffect(() => {
+		const init = async () => {
+			const res = await getPublicRooms();
+			if (!res) {
+				setError(true);
+				return;
+			}
+			setRooms(res);
+		};
+		init().catch(console.error);
+	}, []);
 
 	return (
 		<View style={styles.container}>

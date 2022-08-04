@@ -63,13 +63,16 @@ export interface InputAccount {
 	password: string;
 }
 
-export interface RoomData {
+export interface Room {
 	_id: string;
 	userId: string;
 	name: string;
 	description: string;
-	messages: Message[];
 	createdAt: DateTime;
+}
+
+export interface RoomData extends Room {
+	messages: Message[];
 }
 
 export interface UserData extends User {
