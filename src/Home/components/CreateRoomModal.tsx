@@ -62,8 +62,8 @@ export default function CreateRoomModal() {
 			description,
 			code,
 		};
-		const roomData = await createRoom(room, token);
-		if (!roomData) {
+		const res = await createRoom(room, token);
+		if (!res) {
 			showError('Room already exists');
 			setLoading(false);
 			return;

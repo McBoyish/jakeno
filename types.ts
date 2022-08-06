@@ -63,7 +63,7 @@ export interface InputAccount {
 	password: string;
 }
 
-export interface RoomNoCode {
+export interface Room {
 	_id: string;
 	name: string;
 	description: string;
@@ -72,12 +72,8 @@ export interface RoomNoCode {
 	createdAt: DateTime;
 }
 
-export interface LiveRoom extends RoomNoCode {
+export interface LiveRoom extends Room {
 	activeUsers: number;
-}
-
-export interface RoomData extends RoomNoCode {
-	messages: Message[];
 }
 
 export interface UserData extends User {

@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { RoomData, InputRoom, RoomNoCode } from 'types';
+import { InputRoom, Room } from 'types';
 
-const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/rooms`;
+const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/room`;
 
 export const getPublicRooms = async () => {
 	try {
-		const res = await axios.get<RoomNoCode[]>(`${uri}`);
+		const res = await axios.get<Room[]>(`${uri}`);
 		return res.data;
 	} catch (e) {
 		return null;
@@ -45,14 +45,16 @@ export const verifyCode = async (name: string, code: string) => {
 };
 
 export const getRoom = async (name: string, code: string) => {
-	const res = await axios.post<RoomData | null>(`${uri}/${name}`, { code });
+	const res = await axios.post<Room | null>(`${uri}/${name}`, { code });
 	return res.data;
 };
 
 export const createRoom = async (room: InputRoom, token: string) => {
 	const headers = { 'x-access-token': token };
 	try {
-		const res = await axios.post<RoomData | null>(`${uri}`, room, { headers });
+		const res = await axios.post<Room | null>(`${uri}`, room, {
+			headers,
+		});
 		return res.data;
 	} catch (e) {
 		return null;

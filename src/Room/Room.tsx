@@ -3,9 +3,8 @@ import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import { InputMessage, Message, RoomNoCode, RoomData, User } from 'types';
-import { sortByDate } from 'utils/date';
-import { getRoom, isPrivate } from 'server/routers';
+import { InputMessage, Message, Room as Room_, User } from 'types';
+import { getRoom, isPrivate, getMessages } from 'server/routers';
 import Loading from 'src/common/Loading';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
@@ -22,7 +21,8 @@ export default function Room() {
 	const [code, setCode] = useState<string>('');
 	const [verified, setVerified] = useState(false);
 
-	const [roomData, setRoomData] = useState<RoomData | null>(null);
+	const [room, setRoom] = useState<Room_ | null>(null);
+	const [messages, setMessages] = useState<Message[]>([]);
 	const [roomName, setRoomName] = useState<string>('');
 	const [users, setUsers] = useState<User[] | null>(null);
 	const [usersVisible, setUsersVisible] = useState(false);
@@ -64,7 +64,7 @@ export default function Room() {
 		getInitialData(roomName, code);
 	}, [verified]);
 
-	const attachListeners = (room: RoomNoCode) => {
+	const attachRoomListeners = (room: Room_) => {
 		socket.emit('join-room', room, (users: User[]) => {
 			setUsers(users);
 		});
@@ -74,7 +74,6 @@ export default function Room() {
 		socket.on('leave-room', (users: User[]) => {
 			setUsers(users);
 		});
-		socket.on('message', addMessage);
 	};
 
 	const getInitialData = async (roomName: string, code: string) => {
@@ -84,13 +83,16 @@ export default function Room() {
 				setLoading(false);
 				return;
 			}
-			data.messages = sortByDate(data.messages);
-			data && setRoomData(data);
-			const room = {
-				...data,
-				messages: undefined,
-			} as RoomNoCode;
-			attachListeners(room);
+			setRoom(data);
+			attachRoomListeners(data);
+			const messages = await getMessages(roomName, code);
+			if (!messages) {
+				setLoading(false);
+				setInvalidCode(true);
+				return;
+			}
+			setMessages(messages);
+			socket.on('message', addMessage);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			if (e.response && e.response.data.message === 'invalid-room-code') {
@@ -127,24 +129,20 @@ export default function Room() {
 	};
 
 	const addMessage = (message: Message) => {
-		setRoomData(prev => {
-			if (!prev) return null;
-			return {
-				...prev,
-				messages: [message, ...prev.messages],
-			};
+		setMessages(prev => {
+			return [message, ...prev];
 		});
 	};
 
 	const onSubmit = (text: string) => {
-		if (!roomData) return;
-		const message: InputMessage = {
-			roomId: roomData._id,
-			roomName: roomData.name,
+		if (!room) return;
+		const input: InputMessage = {
+			roomId: room._id,
+			roomName: room.name,
 			user,
 			content: text,
 		};
-		socket.emit('message', message, (res: Message) => {
+		socket.emit('message', input, (res: Message) => {
 			addMessage(res);
 			scrollToStart && scrollToStart();
 		});
@@ -159,7 +157,7 @@ export default function Room() {
 			</View>
 		);
 
-	// ideally invalid code error will never happen
+	// invalid code error should never happen normally
 	if (invalidCode)
 		return (
 			<View style={styles.container}>
@@ -179,7 +177,7 @@ export default function Room() {
 			</View>
 		);
 
-	if (!roomData)
+	if (!room)
 		return (
 			<View style={styles.container}>
 				<Text
@@ -188,7 +186,7 @@ export default function Room() {
 			</View>
 		);
 
-	if (roomData && users)
+	if (room && users)
 		return (
 			<View style={styles.container}>
 				<View
@@ -201,10 +199,7 @@ export default function Room() {
 						usersVisible={usersVisible}
 						setUsersVisible={setUsersVisible}
 					/>
-					<MessageBox
-						messages={roomData.messages}
-						setScrollToStart={setScrollToStart}
-					/>
+					<MessageBox messages={messages} setScrollToStart={setScrollToStart} />
 					<MessageInput onSubmit={onSubmit} />
 				</View>
 			</View>
