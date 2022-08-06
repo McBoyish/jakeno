@@ -68,6 +68,7 @@ export interface RoomNoCode {
 	name: string;
 	description: string;
 	user: User;
+	isPrivate: boolean;
 	createdAt: DateTime;
 }
 
@@ -77,7 +78,6 @@ export interface LiveRoom extends RoomNoCode {
 
 export interface RoomData extends RoomNoCode {
 	messages: Message[];
-	isPrivate: boolean;
 }
 
 export interface UserData extends User {

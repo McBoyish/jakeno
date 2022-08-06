@@ -89,7 +89,6 @@ export default function Room() {
 			const room = {
 				...data,
 				messages: undefined,
-				isPrivate: undefined,
 			} as RoomNoCode;
 			attachListeners(room);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any

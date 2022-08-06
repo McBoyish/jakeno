@@ -49,10 +49,13 @@ export default function LiveRooms({ liveRooms }: LiveRoomsProps) {
 					contentContainerStyle={styles.content}
 					showsVerticalScrollIndicator={false}
 				>
-					{liveRooms &&
+					{liveRooms.length > 0 &&
 						liveRooms.map((liveRoom, index) => {
 							return renderItem(liveRoom, index === liveRooms.length - 1);
 						})}
+					{liveRooms.length === 0 && (
+						<Text style={styles.cardText}>{'No active rooms'}</Text>
+					)}
 				</ScrollView>
 			</View>
 		</View>
@@ -75,7 +78,7 @@ const styleSheet = (
 
 		listContainer: {
 			width: isMediumScreen ? 350 : isSmallScreen ? 300 : '100%',
-			height: 395,
+			maxHeight: 395,
 		},
 
 		content: {
@@ -98,6 +101,13 @@ const styleSheet = (
 			backgroundColor: color.secondary,
 			borderRadius: 5,
 			padding: 10,
+		},
+
+		cardText: {
+			height: isMediumScreen ? 300 : isSmallScreen ? 250 : 200,
+			fontSize: font.size.primary,
+			fontFamily: font.family.text,
+			color: color.background,
 		},
 
 		header: {
