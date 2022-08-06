@@ -24,16 +24,18 @@ export default function LiveRooms({ liveRooms }: LiveRoomsProps) {
 				onPress={() => router.push(`/room/${liveRoom.name}`)}
 				key={liveRoom._id}
 			>
-				<View style={styles.cardHeaderContainer}>
-					<Text style={styles.header}>{liveRoom.name}</Text>
-					<Text style={styles.smallText}>
-						{`Users: ${liveRoom.activeUsers}`}
+				<View>
+					<View style={styles.cardHeaderContainer}>
+						<Text style={styles.header}>{liveRoom.name}</Text>
+						<Text style={styles.smallText}>
+							{`Users: ${liveRoom.activeUsers}`}
+						</Text>
+					</View>
+					<Text style={styles.text} numberOfLines={5}>
+						{liveRoom.description}
 					</Text>
 				</View>
-				<Text style={styles.text} numberOfLines={5}>
-					{liveRoom.description}
-				</Text>
-				<Text style={styles.text} numberOfLines={5}>
+				<Text style={[styles.smallText, { alignSelf: 'flex-end' }]}>
 					{`Created by: ${liveRoom.user.name}`}
 				</Text>
 			</TouchableOpacity>
@@ -42,7 +44,7 @@ export default function LiveRooms({ liveRooms }: LiveRoomsProps) {
 
 	return (
 		<View>
-			<Text style={styles.heading}>{'Press a room to join'}</Text>
+			<Text style={styles.heading}>{'Join a room'}</Text>
 			<View style={styles.container}>
 				<ScrollView
 					style={styles.listContainer}
@@ -77,7 +79,7 @@ const styleSheet = (
 		},
 
 		listContainer: {
-			width: isMediumScreen ? 350 : isSmallScreen ? 300 : '100%',
+			width: isMediumScreen ? 350 : isSmallScreen ? 300 : 225,
 			maxHeight: 395,
 		},
 
@@ -101,6 +103,7 @@ const styleSheet = (
 			backgroundColor: color.secondary,
 			borderRadius: 5,
 			padding: 10,
+			justifyContent: 'space-between',
 		},
 
 		cardText: {
@@ -111,20 +114,20 @@ const styleSheet = (
 		},
 
 		header: {
-			fontSize: font.size.heading,
-			fontFamily: font.family.heading,
+			fontSize: font.size.subheading,
+			fontFamily: font.family.text,
 			color: color.text,
-			lineHeight: 28,
+			lineHeight: 20,
 		},
 
 		text: {
-			fontSize: font.size.primary,
+			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.text,
 		},
 
 		smallText: {
-			fontSize: font.size.secondary,
+			fontSize: font.size.small,
 			fontFamily: font.family.text,
 			color: color.text,
 		},
