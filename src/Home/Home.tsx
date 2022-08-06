@@ -41,10 +41,13 @@ export default function Home() {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<View style={styles.formContainer}>
+			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
 				<JoinRoomForm />
 			</View>
-			<View style={styles.roomsContainer}>
+			<View
+				style={styles.roomsContainer}
+				dataSet={{ media: ids.roomsContainer }}
+			>
 				<LiveRooms liveRooms={liveRooms} />
 			</View>
 			<CreateRoomModal />
@@ -57,23 +60,30 @@ const styleSheet = (color: Color) =>
 		container: {
 			flex: 1,
 			backgroundColor: color.background,
-			alignContent: 'space-around',
 			width: '100%',
-			padding: 20,
+			padding: 10,
 			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'space-around',
 
 			[md]: {
 				flexDirection: 'row',
-				alignItems: 'flex-start',
-				justifyContent: 'space-around',
 			},
 		},
 
 		formContainer: {
-			margin: 20,
+			marginVertical: 20,
+
+			[md]: {
+				marginHorizontal: 20,
+			},
 		},
 
 		roomsContainer: {
-			margin: 20,
+			marginVertical: 20,
+
+			[md]: {
+				marginHorizontal: 20,
+			},
 		},
 	});

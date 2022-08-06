@@ -59,7 +59,7 @@ export default function RegisterForm() {
 	};
 
 	return (
-		<View style={styles.container}>
+		<View>
 			<Text style={styles.heading}>{'Create an account'}</Text>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
@@ -134,8 +134,6 @@ export default function RegisterForm() {
 
 const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
-		container: {},
-
 		formContainer: {
 			padding: 20,
 			backgroundColor: color.secondary,

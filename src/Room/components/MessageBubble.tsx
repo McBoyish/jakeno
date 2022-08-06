@@ -38,7 +38,7 @@ const styleSheet = (color: Color, font: Font) =>
 			borderRadius: 5,
 			paddingVertical: 5,
 			paddingHorizontal: 7.5,
-			minHeight: 50,
+			minHeight: 45,
 			minWidth: 50,
 			maxWidth: '90%',
 			justifyContent: 'center',
@@ -55,6 +55,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.text,
 			fontSize: font.size.secondary,
 			color: color.primary,
+			lineHeight: 14,
 		},
 
 		content: {
@@ -62,6 +63,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			color: color.text,
 			textAlign: 'left',
+			lineHeight: 16,
 		},
 
 		timestamp: {
@@ -69,6 +71,7 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.small,
 			opacity: 0.5,
 			color: color.primary,
+			lineHeight: 10,
 		},
 
 		hyperlink: {

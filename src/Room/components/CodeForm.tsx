@@ -51,37 +51,30 @@ export default function CodeForm({
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.formContainer}>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setCode}
-						value={code}
-						style={[styles.textInput, errorMsg ? styles.error : undefined]}
-						placeholder={'Enter code'}
-						editable={!loading}
-					/>
-				</View>
-				<Button
-					text={errorMsg || 'Join'}
-					disabled={!code || errorMsg !== ''}
-					onClick={handleOnSubmit}
-					containerStyle={{ width: 225, height: 50 }}
-					loading={loading}
+		<View style={styles.formContainer}>
+			<View style={styles.inputContainer}>
+				<TextInput
+					onChangeText={setCode}
+					value={code}
+					style={[styles.textInput, errorMsg ? styles.error : undefined]}
+					placeholder={'Enter code'}
+					editable={!loading}
 				/>
 			</View>
+			<Button
+				text={errorMsg || 'Join'}
+				disabled={!code || errorMsg !== ''}
+				onClick={handleOnSubmit}
+				containerStyle={{ width: 225, height: 50 }}
+				loading={loading}
+			/>
 		</View>
 	);
 }
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
-		container: {
-			marginVertical: 5,
-		},
-
 		formContainer: {
-			marginVertical: 5,
 			padding: 20,
 			backgroundColor: color.secondary,
 			borderRadius: 5,

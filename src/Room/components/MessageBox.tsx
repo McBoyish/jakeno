@@ -70,6 +70,7 @@ export default function MessageBox({
 				keyExtractor={item => item._id}
 				ItemSeparatorComponent={separator}
 				scrollEnabled
+				showsVerticalScrollIndicator={false}
 				ref={scrollRef}
 				inverted
 				disableVirtualization

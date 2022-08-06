@@ -32,7 +32,7 @@ const styleSheet = (color: Color) =>
 			justifyContent: 'center',
 			backgroundColor: color.background,
 			width: '100%',
-			padding: 20,
+			padding: 10,
 
 			[md]: {
 				flexDirection: 'row',
