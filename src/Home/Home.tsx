@@ -18,9 +18,7 @@ export default function Home() {
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
-	useEffect(() => {
-		console.log(liveRooms);
-	}, [liveRooms]);
+	useEffect(() => {}, [liveRooms]);
 
 	useEffect(() => {
 		socket.emit('join-home', (liveRooms: LiveRoom[]) => {
@@ -28,15 +26,12 @@ export default function Home() {
 		});
 
 		socket.on('joined-room', (roomName: string) => {
-			console.log('someone joined', roomName);
 			socket.emit('update-live-rooms', (liveRooms: LiveRoom[]) => {
-				console.log('updated', liveRooms);
 				setLiveRooms(liveRooms);
 			});
 		});
 
 		socket.on('left-room', (roomName: string) => {
-			console.log('someone left', roomName);
 			socket.emit('update-live-rooms', (liveRooms: LiveRoom[]) => {
 				setLiveRooms(liveRooms);
 			});
