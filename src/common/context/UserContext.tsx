@@ -76,6 +76,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		setUser(user);
 		setLoggedIn(true);
 		setUserLoading(false);
+		socket.emit('login', user);
 	};
 
 	const clearStates = () => {
@@ -83,6 +84,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		setUser(initialValue);
 		setLoggedIn(false);
 		setUserLoading(false);
+		socket.emit('logout');
 	};
 
 	return (

@@ -71,6 +71,10 @@ export interface Room {
 	createdAt: DateTime;
 }
 
+export interface LiveRoom extends Room {
+	activeUsers: number;
+}
+
 export interface RoomData extends Room {
 	messages: Message[];
 }

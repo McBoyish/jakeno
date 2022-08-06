@@ -3,7 +3,7 @@ import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import { InputMessage, Message, RoomData, User } from 'types';
+import { InputMessage, Message, Room as Room_, RoomData, User } from 'types';
 import { sortByDate } from 'utils/date';
 import { getRoom, isPrivate } from 'server/routers';
 import Loading from 'src/common/Loading';
@@ -31,16 +31,15 @@ export default function Room() {
 	const [invalidCode, setInvalidCode] = useState(false);
 	const [unknownError, setUnknownError] = useState(false);
 
-	const [messageSent, setMessageSent] = useState(false);
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	useEffect(() => {
-		socket.connect();
 		return () => {
-			socket.disconnect();
+			socket.removeAllListeners();
+			socket.emit('leave-room');
 		};
 	}, []);
 
@@ -67,15 +66,8 @@ export default function Room() {
 		getInitialData(roomName, code);
 	}, [verified]);
 
-	useEffect(() => {
-		if (!scrollToStart || !messageSent) return;
-
-		scrollToStart();
-		setMessageSent(false);
-	}, [scrollToStart, messageSent]);
-
-	const attachListeners = (roomName: string) => {
-		socket.emit('join-room', roomName, user, (users: User[]) => {
+	const attachListeners = (room: Room_) => {
+		socket.emit('join-room', room, (users: User[]) => {
 			setUsers(users);
 		});
 		socket.on('join-room', (users: User[]) => {
@@ -97,7 +89,8 @@ export default function Room() {
 			data.messages = sortByDate(data.messages);
 			data && setRoomData(data);
 
-			attachListeners(roomName);
+			const room = { ...data, messages: undefined } as Room_;
+			attachListeners(room);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			if (e.response && e.response.data.message === 'invalid-room-code') {
@@ -155,7 +148,7 @@ export default function Room() {
 
 		socket.emit('message', message, (res: Message) => {
 			addMessage(res);
-			setMessageSent(true);
+			scrollToStart && scrollToStart();
 		});
 	};
 

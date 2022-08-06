@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'react-native-paper';
-import { Color, Room } from 'types';
+import { Color, LiveRoom } from 'types';
 import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
-import { getPublicRooms } from 'server/routers';
+import { useUserContext } from 'src/common/context/UserContext';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
 import CreateRoomModal from './components/CreateRoomModal';
@@ -11,22 +11,41 @@ import CreateRoomModal from './components/CreateRoomModal';
 const { md } = useMediaQueries();
 
 export default function Home() {
-	const [rooms, setRooms] = useState<Room[]>([]);
-	const [error, setError] = useState(false);
+	const [liveRooms, setLiveRooms] = useState<LiveRoom[]>([]);
+
+	const { socket } = useUserContext();
 
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
 	useEffect(() => {
-		const init = async () => {
-			const res = await getPublicRooms();
-			if (!res) {
-				setError(true);
-				return;
-			}
-			setRooms(res);
+		console.log(liveRooms);
+	}, [liveRooms]);
+
+	useEffect(() => {
+		socket.emit('join-home', (liveRooms: LiveRoom[]) => {
+			setLiveRooms(liveRooms);
+		});
+
+		socket.on('joined-room', (roomName: string) => {
+			console.log('someone joined', roomName);
+			socket.emit('update-live-rooms', (liveRooms: LiveRoom[]) => {
+				console.log('updated', liveRooms);
+				setLiveRooms(liveRooms);
+			});
+		});
+
+		socket.on('left-room', (roomName: string) => {
+			console.log('someone left', roomName);
+			socket.emit('update-live-rooms', (liveRooms: LiveRoom[]) => {
+				setLiveRooms(liveRooms);
+			});
+		});
+
+		return () => {
+			socket.removeAllListeners();
+			socket.emit('leave-home');
 		};
-		init().catch(console.error);
 	}, []);
 
 	return (
