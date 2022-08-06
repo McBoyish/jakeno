@@ -66,19 +66,15 @@ export default function JoinRoomForm() {
 					containerStyle={{ width: 225, height: 50 }}
 					loading={loading}
 				/>
-				<View style={{ height: 15 }} />
-				<Button
-					text={
-						userLoading
-							? 'Loading...'
-							: loggedIn
-							? 'Create a room'
-							: 'Login to create room'
-					}
-					disabled={!loggedIn}
-					onClick={showModal}
-					containerStyle={{ width: 225, height: 50 }}
-				/>
+				{loggedIn && <View style={{ height: 15 }} />}
+				{loggedIn && (
+					<Button
+						text={'Create a room'}
+						disabled={!loggedIn}
+						onClick={showModal}
+						containerStyle={{ width: 225, height: 50 }}
+					/>
+				)}
 			</View>
 		</View>
 	);
