@@ -222,7 +222,7 @@ const styleSheet = (color: Color, font: Font) =>
 			justifyContent: 'center',
 			width: '100%',
 			backgroundColor: color.background,
-			padding: 20,
+			padding: 10,
 		},
 
 		text: {
