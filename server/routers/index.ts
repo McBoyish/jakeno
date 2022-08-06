@@ -1,4 +1,4 @@
-import {
+export {
 	getRoom,
 	createRoom,
 	isPrivate,
@@ -6,17 +6,5 @@ import {
 	exists,
 	getPublicRooms,
 } from './roomRouter';
-import { login, register } from './accountRouter';
-import { verify } from './authRouter';
-
-export {
-	getRoom,
-	createRoom,
-	login,
-	register,
-	verify,
-	isPrivate,
-	verifyCode,
-	exists,
-	getPublicRooms,
-};
+export { login, register } from './accountRouter';
+export { verify } from './authRouter';

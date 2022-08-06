@@ -11,20 +11,19 @@ interface UserContextData {
 	loggedIn: boolean;
 	token: string;
 	updateToken: (_: string) => void;
-	logoff: () => void;
+	logout: () => void;
 	socket: Socket;
 }
 
 const initialValue: User = { name: 'anon', _id: 'anon' };
 const socket = io(uri);
-
 const UserContext = createContext<UserContextData>({
 	user: initialValue,
 	userLoading: true,
 	loggedIn: false,
 	token: '',
 	updateToken: () => null,
-	logoff: () => null,
+	logout: () => null,
 	socket,
 });
 
@@ -43,15 +42,14 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		const verifyToken = async () => {
 			const token = localStorage.getItem('token');
 			if (!token) {
-				logoff();
+				logout();
 				return;
 			}
-
 			const user = await verify(token);
 			if (user) {
 				updateStates(token, user);
 			} else {
-				logoff();
+				logout();
 			}
 		};
 		verifyToken();
@@ -66,7 +64,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		}
 	};
 
-	const logoff = () => {
+	const logout = () => {
 		localStorage.removeItem('token');
 		clearStates();
 	};
@@ -95,7 +93,7 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 				loggedIn,
 				token,
 				updateToken,
-				logoff,
+				logout,
 				socket,
 			}}
 		>

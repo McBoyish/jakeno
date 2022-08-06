@@ -33,20 +33,16 @@ export default function RegisterForm() {
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
-
 		const usernameValid = /^[a-zA-Z0-9]{3,12}$/.test(username);
 		const passwordValid = /^[a-zA-Z0-9]{8,20}$/.test(password);
 		const confirmValid = confirm === password;
-
 		setIsValidUsername(usernameValid);
 		setIsValidPassword(passwordValid);
 		setIsValidConfirm(confirmValid);
-
 		if (!usernameValid || !passwordValid || !confirmValid) {
 			setLoading(false);
 			return;
 		}
-
 		const userData = await register(username, password);
 		if (!userData) {
 			setLoading(false);
@@ -59,7 +55,6 @@ export default function RegisterForm() {
 			return;
 		}
 		updateToken(userData.token);
-
 		router.push('/');
 	};
 

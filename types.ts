@@ -47,12 +47,12 @@ export interface Message {
 /***************API INTERFACES***************/
 export interface InputMessage {
 	roomId: string;
+	roomName: string;
+	user: User;
 	content: string;
-	userId: string;
 }
 
 export interface InputRoom {
-	userId: string;
 	name: string;
 	description: string;
 	code: string;
@@ -63,20 +63,21 @@ export interface InputAccount {
 	password: string;
 }
 
-export interface Room {
+export interface RoomNoCode {
 	_id: string;
-	userId: string;
 	name: string;
 	description: string;
+	user: User;
 	createdAt: DateTime;
 }
 
-export interface LiveRoom extends Room {
+export interface LiveRoom extends RoomNoCode {
 	activeUsers: number;
 }
 
-export interface RoomData extends Room {
+export interface RoomData extends RoomNoCode {
 	messages: Message[];
+	isPrivate: boolean;
 }
 
 export interface UserData extends User {

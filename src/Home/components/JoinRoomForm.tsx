@@ -31,26 +31,23 @@ export default function JoinRoomForm() {
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
-
 		const res = await exists(roomName);
 		if (!res) {
 			showError('An error has occurred');
 			setLoading(false);
 			return;
 		}
-
 		if (!res.exists) {
 			showError('Room not found');
 			setLoading(false);
 			return;
 		}
-
 		router.push(`/room/${roomName}`);
 		hideModal();
 	};
 
 	return (
-		<View style={styles.container}>
+		<View>
 			<Text style={styles.heading}>{'Start chatting!'}</Text>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
@@ -89,12 +86,7 @@ export default function JoinRoomForm() {
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
-		container: {
-			marginVertical: 5,
-		},
-
 		formContainer: {
-			marginVertical: 5,
 			padding: 20,
 			backgroundColor: color.secondary,
 			borderRadius: 5,

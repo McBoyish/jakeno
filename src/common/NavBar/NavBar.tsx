@@ -9,10 +9,15 @@ import ImageComponent from 'next/image';
 
 export default function NavBar() {
 	const router = useRouter();
-	const { loggedIn, user, logoff, userLoading } = useUserContext();
+	const { loggedIn, user, logout, userLoading } = useUserContext();
 
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
+
+	const handleLogout = () => {
+		logout();
+		router.push('/');
+	};
 
 	const redirectToHomePage = () => {
 		router.push('/');
@@ -37,7 +42,7 @@ export default function NavBar() {
 					<>
 						<Text style={styles.text}>{user.name}</Text>
 						<View style={styles.separator} />
-						<Pressable onPress={logoff}>
+						<Pressable onPress={handleLogout}>
 							<Text style={styles.text}>{'Log out'}</Text>
 						</Pressable>
 					</>

@@ -3,7 +3,7 @@ import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import { InputMessage, Message, Room as Room_, RoomData, User } from 'types';
+import { InputMessage, Message, RoomNoCode, RoomData, User } from 'types';
 import { sortByDate } from 'utils/date';
 import { getRoom, isPrivate } from 'server/routers';
 import Loading from 'src/common/Loading';
@@ -45,7 +45,6 @@ export default function Room() {
 
 	useEffect(() => {
 		if (!router.isReady) return;
-
 		const { pathname, query } = router;
 		// remove any unwanted params
 		router.replace(
@@ -53,7 +52,6 @@ export default function Room() {
 			undefined,
 			{ shallow: true }
 		);
-
 		const roomName = query.roomName as string;
 		setRoomName(roomName);
 		setup(roomName);
@@ -66,7 +64,7 @@ export default function Room() {
 		getInitialData(roomName, code);
 	}, [verified]);
 
-	const attachListeners = (room: Room_) => {
+	const attachListeners = (room: RoomNoCode) => {
 		socket.emit('join-room', room, (users: User[]) => {
 			setUsers(users);
 		});
@@ -88,8 +86,11 @@ export default function Room() {
 			}
 			data.messages = sortByDate(data.messages);
 			data && setRoomData(data);
-
-			const room = { ...data, messages: undefined } as Room_;
+			const room = {
+				...data,
+				messages: undefined,
+				isPrivate: undefined,
+			} as RoomNoCode;
 			attachListeners(room);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
@@ -110,7 +111,6 @@ export default function Room() {
 			setLoading(false);
 			return;
 		}
-
 		if (res.private) {
 			// room exists and is private
 			const codeFromSession = sessionStorage.getItem(roomName);
@@ -139,13 +139,12 @@ export default function Room() {
 
 	const onSubmit = (text: string) => {
 		if (!roomData) return;
-
 		const message: InputMessage = {
-			userId: user._id,
 			roomId: roomData._id,
+			roomName: roomData.name,
+			user,
 			content: text,
 		};
-
 		socket.emit('message', message, (res: Message) => {
 			addMessage(res);
 			scrollToStart && scrollToStart();

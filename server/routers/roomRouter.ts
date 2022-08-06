@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { RoomData, InputRoom, Room } from 'types';
+import { RoomData, InputRoom, RoomNoCode } from 'types';
 
 const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/rooms`;
 
 export const getPublicRooms = async () => {
 	try {
-		const res = await axios.get<Room[]>(`${uri}`);
+		const res = await axios.get<RoomNoCode[]>(`${uri}`);
 		return res.data;
 	} catch (e) {
 		return null;

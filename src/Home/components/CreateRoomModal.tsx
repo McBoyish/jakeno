@@ -43,39 +43,31 @@ export default function CreateRoomModal() {
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
-
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
 		const codeValid = /^[0-9]{4,}$/.test(code) || code === '';
 		const descriptionValid = description !== '';
-
 		setIsValidRoomName(roomNameValid);
 		setIsValidCode(codeValid);
 		setIsValidDescription(descriptionValid);
-
 		if (!roomNameValid || !codeValid || !descriptionValid) {
 			setLoading(false);
 			return;
 		}
-
 		if (!user._id) {
 			setLoading(false);
 			return;
 		}
-
 		const room: InputRoom = {
-			userId: user._id,
 			name: roomName,
 			description,
 			code,
 		};
-
 		const roomData = await createRoom(room, token);
 		if (!roomData) {
 			showError('Room already exists');
 			setLoading(false);
 			return;
 		}
-
 		sessionStorage.setItem(roomName, code);
 		router.push(`/room/${roomName}`);
 		hideModal();

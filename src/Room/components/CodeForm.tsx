@@ -35,14 +35,12 @@ export default function CodeForm({
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
-
 		const res = await verifyCode(roomName, code);
 		if (!res) {
 			showError('Room not found');
 			setLoading(false);
 			return;
 		}
-
 		setVerified(res.valid);
 		if (!res.valid) {
 			showError('Invalid code');

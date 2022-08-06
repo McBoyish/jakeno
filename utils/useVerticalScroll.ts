@@ -13,9 +13,7 @@ export function useVerticalScroll(inverted?: boolean) {
 	const onWheel = (e: any) => {
 		if (!e || !scrollRef.current) return;
 		e.preventDefault();
-
 		const reverse = inverted ? -1 : 1;
-
 		scrollRef.current.scrollToOffset({
 			offset:
 				scrollRef.current.getScrollableNode().scrollTop + reverse * e.deltaY,
@@ -27,7 +25,6 @@ export function useVerticalScroll(inverted?: boolean) {
 		if (scrollRef.current) {
 			scrollRef.current.getScrollableNode().addEventListener('wheel', onWheel);
 		}
-
 		return () => {
 			if (scrollRef.current) {
 				scrollRef.current

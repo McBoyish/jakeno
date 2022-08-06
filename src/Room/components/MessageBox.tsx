@@ -35,7 +35,6 @@ export default function MessageBox({
 		const shouldAddSpacing =
 			index < messages.length - 1 &&
 			messages[index].user._id !== messages[index + 1].user._id;
-
 		const shouldAddDate =
 			index === messages.length - 1 ||
 			parseDate(messages[index].createdAt).date !==

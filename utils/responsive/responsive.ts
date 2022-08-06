@@ -17,7 +17,7 @@ export function useBreakPoints() {
 		setIsLargeScreen(largeScreen);
 		setIsMediumScreen(mediumScreen);
 		setIsSmallScreen(smallScreen);
-	}, []);
+	}, [extraLargeScreen, largeScreen, mediumScreen, smallScreen]);
 
 	return {
 		isExtraLargeScreen,

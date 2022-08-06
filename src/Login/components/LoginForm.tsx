@@ -26,7 +26,6 @@ export default function LoginForm() {
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
-
 		const userData = await login(username, password);
 		if (!userData) {
 			setLoading(false);
@@ -37,7 +36,6 @@ export default function LoginForm() {
 			}, 3000);
 			return;
 		}
-
 		updateToken(userData.token);
 		router.push('/');
 	};
