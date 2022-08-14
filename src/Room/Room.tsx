@@ -143,7 +143,8 @@ export default function Room() {
 		}
 	};
 
-	const addMessage = (message: Message) => {
+	const addMessage = (message: Message | null) => {
+		if (!message) return;
 		setMessages(prev => {
 			return [message, ...prev];
 		});
@@ -157,7 +158,8 @@ export default function Room() {
 			user,
 			content: text,
 		};
-		socket.emit('message', input, (res: Message) => {
+		socket.emit('message', input, (res: Message | null) => {
+			if (!res) return;
 			addMessage(res);
 			scrollToStart?.();
 		});
