@@ -21,9 +21,13 @@ export default function Room() {
 	const [code, setCode] = useState<string>('');
 	const [verified, setVerified] = useState(false);
 
-	const [room, setRoom] = useState<Room_ | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
+	const [cursor, setCursor] = useState('');
+	const [hasMore, setHasMore] = useState(true);
+
+	const [room, setRoom] = useState<Room_ | null>(null);
 	const [roomName, setRoomName] = useState<string>('');
+
 	const [users, setUsers] = useState<User[] | null>(null);
 	const [usersVisible, setUsersVisible] = useState(false);
 
@@ -76,6 +80,17 @@ export default function Room() {
 		});
 	};
 
+	const updateMessages = async (messages: Message[]) => {
+		if (messages.length === 0) {
+			setHasMore(false);
+			return;
+		}
+		setMessages(prev => {
+			return [...prev, ...messages];
+		});
+		setCursor(messages[messages.length - 1]._id);
+	};
+
 	const getInitialData = async (roomName: string, code: string) => {
 		try {
 			const data = await getRoom(roomName, code);
@@ -85,13 +100,13 @@ export default function Room() {
 			}
 			setRoom(data);
 			attachRoomListeners(data);
-			const messages = await getMessages(roomName, code);
-			if (!messages) {
+			const messages = await getMessages(roomName, code, cursor);
+			if (messages === null) {
 				setLoading(false);
 				setInvalidCode(true);
 				return;
 			}
-			setMessages(messages);
+			updateMessages(messages);
 			socket.on('message', addMessage);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
@@ -144,8 +159,19 @@ export default function Room() {
 		};
 		socket.emit('message', input, (res: Message) => {
 			addMessage(res);
-			scrollToStart && scrollToStart();
+			scrollToStart?.();
 		});
+	};
+
+	const fetchMore = async () => {
+		if (!hasMore) return;
+		const messages = await getMessages(roomName, code, cursor);
+		if (!messages) {
+			setLoading(false);
+			setInvalidCode(true);
+			return;
+		}
+		updateMessages(messages);
 	};
 
 	if (loading) return <Loading />;
@@ -194,13 +220,20 @@ export default function Room() {
 						flex: 1,
 					}}
 				>
-					<Users
-						users={users}
-						usersVisible={usersVisible}
-						setUsersVisible={setUsersVisible}
-					/>
-					<MessageBox messages={messages} setScrollToStart={setScrollToStart} />
 					<MessageInput onSubmit={onSubmit} />
+					<View style={{ flex: 1 }}>
+						<MessageBox
+							messages={messages}
+							fetchMore={fetchMore}
+							setScrollToStart={setScrollToStart}
+							hasMore={hasMore}
+						/>
+						<Users
+							users={users}
+							usersVisible={usersVisible}
+							setUsersVisible={setUsersVisible}
+						/>
+					</View>
 				</View>
 			</View>
 		);

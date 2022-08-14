@@ -42,8 +42,9 @@ const styleSheet = (color: Color, font: Font) =>
 		container: {
 			position: 'absolute',
 			zIndex: 1,
-			alignSelf: 'flex-end',
 			borderRadius: 5,
+			bottom: 0,
+			right: 0,
 		},
 
 		text: {

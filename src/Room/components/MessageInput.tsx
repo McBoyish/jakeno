@@ -76,8 +76,8 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderBottomLeftRadius: 5,
-			borderTopWidth: 2,
+			borderTopLeftRadius: 5,
+			borderBottomWidth: 2,
 			borderColor: color.background,
 			paddingHorizontal: 10,
 			fontSize: font.size.primary,
@@ -91,8 +91,8 @@ const styleSheet = (color: Color, font: Font) =>
 
 		button: {
 			borderRadius: 0,
-			borderBottomRightRadius: 5,
-			borderTopWidth: 2,
+			borderTopRightRadius: 5,
+			borderBottomWidth: 2,
 			borderLeftWidth: 2,
 			borderColor: color.background,
 			backgroundColor: color.secondary,
