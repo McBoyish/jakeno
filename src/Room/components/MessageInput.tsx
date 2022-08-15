@@ -69,20 +69,16 @@ const styleSheet = (color: Color, font: Font) =>
 			flexDirection: 'row',
 			flexGrow: 0,
 			width: '100%',
-
-			[sm]: {
-				width: 385,
-			},
 		},
 
 		textInput: {
-			borderTopLeftRadius: 5,
-			borderBottomWidth: 2,
+			borderBottomLeftRadius: 5,
+			borderTopWidth: 2,
 			borderColor: color.background,
 			paddingHorizontal: 10,
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
-			height: 50,
+			height: 30,
 			width: '100%',
 			outlineStyle: 'none',
 			backgroundColor: color.secondary,
@@ -91,12 +87,12 @@ const styleSheet = (color: Color, font: Font) =>
 
 		button: {
 			borderRadius: 0,
-			borderTopRightRadius: 5,
-			borderBottomWidth: 2,
+			borderBottomRightRadius: 5,
+			borderTopWidth: 2,
 			borderLeftWidth: 2,
 			borderColor: color.background,
 			backgroundColor: color.secondary,
-			height: 50,
+			height: 30,
 			width: 75,
 		},
 

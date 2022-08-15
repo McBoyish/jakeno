@@ -217,26 +217,20 @@ export default function Room() {
 	if (room && users)
 		return (
 			<View style={styles.container}>
-				<View
-					style={{
-						flex: 1,
-					}}
-				>
-					<MessageInput onSubmit={onSubmit} />
-					<View style={{ flex: 1 }}>
-						<MessageBox
-							messages={messages}
-							fetchMore={fetchMore}
-							setScrollToStart={setScrollToStart}
-							hasMore={hasMore}
-						/>
-						<Users
-							users={users}
-							usersVisible={usersVisible}
-							setUsersVisible={setUsersVisible}
-						/>
-					</View>
+				<View style={{ width: '100%', flex: 1 }}>
+					<MessageBox
+						messages={messages}
+						fetchMore={fetchMore}
+						setScrollToStart={setScrollToStart}
+						hasMore={hasMore}
+					/>
+					<Users
+						users={users}
+						usersVisible={usersVisible}
+						setUsersVisible={setUsersVisible}
+					/>
 				</View>
+				<MessageInput onSubmit={onSubmit} />
 			</View>
 		);
 

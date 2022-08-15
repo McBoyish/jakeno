@@ -56,8 +56,10 @@ export default function MessageBox({
 				scrollEnabled
 				showsVerticalScrollIndicator={false}
 				ref={scrollRef}
+				inverted
+				disableVirtualization
 				onEndReached={handleOnEndReached}
-				onEndReachedThreshold={0.5}
+				onEndReachedThreshold={0.3}
 			/>
 		</View>
 	);
@@ -71,13 +73,9 @@ const styleSheet = (color: Color) =>
 			width: '100%',
 			height: 1, // hack
 			padding: 10,
-			borderBottomLeftRadius: 5,
-			borderBottomRightRadius: 5,
+			borderTopLeftRadius: 5,
+			borderTopRightRadius: 5,
 			backgroundColor: color.secondary,
-
-			[sm]: {
-				width: 385,
-			},
 		},
 
 		separator: {
