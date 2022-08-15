@@ -5,7 +5,6 @@ import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
-import ImageComponent from 'next/image';
 
 export default function NavBar() {
 	const router = useRouter();

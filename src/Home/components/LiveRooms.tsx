@@ -4,6 +4,7 @@ import { useTheme } from 'react-native-paper';
 import StyleSheet from 'react-native-media-query';
 import { Color, Font, LiveRoom } from 'types';
 import { useRouter } from 'next/router';
+import { container } from 'src/common/css';
 import { useBreakPoints } from 'utils/responsive';
 
 interface LiveRoomsProps {
@@ -31,7 +32,7 @@ export default function LiveRooms({ liveRooms }: LiveRoomsProps) {
 							{`Users: ${liveRoom.activeUsers}`}
 						</Text>
 					</View>
-					<Text style={styles.text} numberOfLines={5}>
+					<Text style={styles.text} numberOfLines={3}>
 						{liveRoom.description}
 					</Text>
 				</View>
@@ -72,9 +73,7 @@ const styleSheet = (
 ) =>
 	StyleSheet.create({
 		container: {
-			padding: 20,
-			borderRadius: 5,
-			backgroundColor: color.primary,
+			...container,
 			alignSelf: 'center',
 		},
 
@@ -87,6 +86,7 @@ const styleSheet = (
 			flexWrap: 'wrap',
 			flexDirection: 'row',
 			justifyContent: 'center',
+			padding: 20,
 		},
 
 		heading: {
@@ -98,19 +98,18 @@ const styleSheet = (
 		},
 
 		cardContainer: {
-			width: '100%',
-			height: isMediumScreen ? 300 : isSmallScreen ? 250 : 200,
 			backgroundColor: color.secondary,
-			borderRadius: 5,
-			padding: 10,
+			padding: 20,
+			width: '100%',
+			minHeight: isMediumScreen ? 200 : isSmallScreen ? 150 : 100,
 			justifyContent: 'space-between',
 		},
 
 		cardText: {
-			height: isMediumScreen ? 300 : isSmallScreen ? 250 : 200,
+			minHeight: isMediumScreen ? 200 : isSmallScreen ? 150 : 100,
 			fontSize: font.size.primary,
 			fontFamily: font.family.text,
-			color: color.background,
+			color: color.text,
 		},
 
 		header: {

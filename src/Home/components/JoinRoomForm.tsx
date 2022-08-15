@@ -8,6 +8,7 @@ import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
+import { textInput } from 'src/common/css';
 import { useUserContext } from 'src/common/context/UserContext';
 
 export default function JoinRoomForm() {
@@ -83,9 +84,6 @@ export default function JoinRoomForm() {
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		formContainer: {
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
 			alignSelf: 'center',
 		},
@@ -104,13 +102,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: 225,
 		},

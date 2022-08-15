@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
+import { textInput, container } from 'src/common/css';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
 import { useMediaQueries, useBreakPoints } from 'utils/responsive';
 
@@ -161,8 +162,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			backgroundColor: color.secondary,
-			borderRadius: 5,
+			backgroundColor: color.background,
 		},
 
 		icon: {
@@ -193,13 +193,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: 225,
 
@@ -209,13 +203,8 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		},
 
 		descriptionInput: {
-			borderRadius: 5,
+			...textInput,
 			padding: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
 			height: 100,
 			width: 225,
 
@@ -232,7 +221,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		formHelperText: {
 			fontSize: font.size.small,
 			fontFamily: font.family.text,
-			color: color.primary,
+			color: color.text,
 			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',

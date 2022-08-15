@@ -219,6 +219,11 @@ export default function Room() {
 	if (room && users)
 		return (
 			<View style={styles.container}>
+				<Users
+					users={users}
+					usersVisible={usersVisible}
+					setUsersVisible={setUsersVisible}
+				/>
 				<View style={{ width: '100%', flex: 1 }}>
 					<MessageBox
 						messages={messages}
@@ -226,11 +231,6 @@ export default function Room() {
 						setScrollToStart={setScrollToStart}
 						hasMore={hasMore}
 						isFetching={isFetching}
-					/>
-					<Users
-						users={users}
-						usersVisible={usersVisible}
-						setUsersVisible={setUsersVisible}
 					/>
 				</View>
 				<MessageInput onSubmit={onSubmit} />

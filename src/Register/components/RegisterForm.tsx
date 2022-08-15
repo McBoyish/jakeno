@@ -8,6 +8,7 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouter } from 'next/router';
 import { register } from 'server/routers';
+import { textInput } from 'src/common/css';
 import { useBreakPoints, useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
@@ -135,9 +136,6 @@ export default function RegisterForm() {
 const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		formContainer: {
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
 		},
 
@@ -154,13 +152,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: isMediumScreen ? 300 : 225,
 		},
@@ -177,7 +169,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		formHelperText: {
 			fontSize: font.size.small,
 			fontFamily: font.family.text,
-			color: color.primary,
+			color: color.text,
 			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',

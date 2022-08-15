@@ -7,26 +7,58 @@ import StyleSheet from 'react-native-media-query';
 
 interface MessageBubbleProps {
 	message: Message;
+	messages: Message[];
+	index: number;
 }
 
-export default function MessageBubble({ message }: MessageBubbleProps) {
+function MessageBubble({ message, messages, index }: MessageBubbleProps) {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
+	const date = new Date(message.createdAt);
+	const dateString = date.toLocaleDateString();
+
+	const shouldAddDate =
+		message._id === messages[messages.length - 1]._id ||
+		dateString !== new Date(messages[index + 1].createdAt).toLocaleDateString();
+
 	return (
-		<View style={styles.container}>
-			<View style={styles.textContainer}>
-				<HyperLink linkDefault linkStyle={styles.hyperlink}>
-					<Text>
-						<Text style={styles.username}>{`${message.user.name}:`}</Text>
-						<View style={styles.spacing} />
-						<Text style={styles.text}>{`${message.content}`}</Text>
-					</Text>
-				</HyperLink>
+		<View>
+			{shouldAddDate && (
+				<View style={styles.dateContainer}>
+					<View style={styles.line} />
+					<Text style={styles.date}>{`${dateString}`}</Text>
+					<View style={styles.line} />
+				</View>
+			)}
+			<View style={styles.container}>
+				<View style={styles.textContainer}>
+					<HyperLink linkDefault linkStyle={styles.hyperlink}>
+						<Text>
+							<Text style={styles.username}>
+								{`${date.toLocaleTimeString()} ${message.user.name}:`}
+							</Text>
+							<View style={styles.spacing} />
+							<Text style={styles.text}>{`${message.content}`}</Text>
+						</Text>
+					</HyperLink>
+				</View>
 			</View>
 		</View>
 	);
 }
+
+const separator = () => <View style={{ height: 5 }} />;
+
+export const MemoizedSeparator = React.memo(separator, () => true);
+
+export default React.memo(MessageBubble, (prev, next) => {
+	const message = prev.message;
+	const prevLength = prev.messages.length;
+	const nextLength = next.messages.length;
+	if (prevLength === nextLength) return true;
+	return prev.messages[prevLength - 1]._id !== message._id;
+});
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
@@ -39,6 +71,27 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.text,
 			fontSize: font.size.primary,
 			color: color.primary,
+		},
+
+		line: {
+			height: 3,
+			backgroundColor: color.primary,
+			opacity: 0.5,
+			flex: 1,
+		},
+
+		dateContainer: {
+			justifyContent: 'center',
+			alignItems: 'center',
+			flexDirection: 'row',
+		},
+
+		date: {
+			fontFamily: font.family.text,
+			fontSize: font.size.primary,
+			color: color.text,
+			marginHorizontal: 5,
+			flex: 0,
 		},
 
 		textContainer: {

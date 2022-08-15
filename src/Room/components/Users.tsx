@@ -44,13 +44,13 @@ const styleSheet = (color: Color, font: Font) =>
 			zIndex: 1,
 			borderRadius: 5,
 			top: 0,
-			right: 0,
+			right: 20,
 		},
 
 		text: {
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.primary,
-			padding: 10,
+			lineHeight: 20,
 		},
 	});

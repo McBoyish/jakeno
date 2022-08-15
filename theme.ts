@@ -11,7 +11,7 @@ declare global {
 	}
 }
 
-const theme = {
+export const theme = {
 	...DefaultTheme,
 	color: {
 		primary: '#3F72AF',

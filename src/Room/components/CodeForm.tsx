@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, Text } from 'react-native';
 import StyleSheet from 'react-native-media-query';
+import { textInput } from 'src/common/css';
 import { verifyCode } from 'server/routers';
 
 interface CodeFormProps {
@@ -52,6 +53,7 @@ export default function CodeForm({
 
 	return (
 		<View style={styles.formContainer}>
+			<Text style={styles.heading}>{'Room is private'}</Text>
 			<View style={styles.inputContainer}>
 				<TextInput
 					onChangeText={setCode}
@@ -75,9 +77,6 @@ export default function CodeForm({
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		formContainer: {
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
 			alignSelf: 'center',
 		},
@@ -88,13 +87,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: 225,
 		},
@@ -102,5 +95,13 @@ const styleSheet = (color: Color, font: Font) =>
 		error: {
 			borderColor: color.error,
 			borderWidth: 1,
+		},
+
+		heading: {
+			fontSize: font.size.heading,
+			fontFamily: font.family.heading,
+			color: color.text,
+			textAlign: 'center',
+			marginBottom: 15,
 		},
 	});

@@ -9,6 +9,7 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
+import { textInput } from 'src/common/css';
 import { useMediaQueries } from 'utils/responsive';
 
 interface MessageInputProps {
@@ -72,28 +73,17 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderBottomLeftRadius: 5,
-			borderWidth: 2.5,
+			...textInput,
 			borderTopWidth: 0,
-			borderColor: color.primary,
-			paddingHorizontal: 10,
 			fontSize: font.size.secondary,
-			fontFamily: font.family.text,
 			height: 35,
 			width: '100%',
-			outlineStyle: 'none',
-			backgroundColor: color.secondary,
-			color: color.text,
 		},
 
 		button: {
-			borderRadius: 0,
-			borderBottomRightRadius: 5,
-			borderWidth: 2.5,
 			borderTopWidth: 0,
 			borderLeftWidth: 0,
-			borderColor: color.primary,
-			backgroundColor: color.secondary,
+			backgroundColor: color.background,
 			height: 35,
 			width: 75,
 		},

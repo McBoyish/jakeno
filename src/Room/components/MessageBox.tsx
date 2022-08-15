@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { Color, Message } from 'types';
 import { useTheme } from 'react-native-paper';
-import MessageBubble from './MessageBubble';
+import MessageBubble, { MemoizedSeparator } from './MessageBubble';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
+import { container } from 'src/common/css';
 import { useVerticalScroll } from 'utils/useVerticalScroll';
 
 interface MessageBoxProps {
@@ -16,16 +17,6 @@ interface MessageBoxProps {
 }
 
 const { sm } = useMediaQueries();
-
-const MemoizedMessageBubble = React.memo(MessageBubble, () => true);
-
-const renderItem = ({ item }: { item: Message; index: number }) => {
-	return <MemoizedMessageBubble message={item} />;
-};
-
-const separator = () => <View style={{ height: 5 }} />;
-
-const MemoizedSeparator = React.memo(separator, () => true);
 
 export default function MessageBox({
 	messages,
@@ -42,6 +33,10 @@ export default function MessageBox({
 	useEffect(() => {
 		setScrollToStart(() => scrollToStart);
 	}, []);
+
+	const renderItem = ({ item, index }: { item: Message; index: number }) => {
+		return <MessageBubble message={item} messages={messages} index={index} />;
+	};
 
 	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
 		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
@@ -60,7 +55,7 @@ export default function MessageBox({
 				ref={scrollRef}
 				inverted
 				disableVirtualization
-				contentContainerStyle={{ margin: 10 }}
+				contentContainerStyle={{ padding: 10 }}
 				onEndReached={handleOnEndReached}
 				onEndReachedThreshold={0.5}
 			/>
@@ -71,14 +66,10 @@ export default function MessageBox({
 const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
+			...container,
 			flexDirection: 'column',
 			flexGrow: 1,
 			width: '100%',
 			height: 1, // hack
-			borderTopLeftRadius: 5,
-			borderTopRightRadius: 5,
-			backgroundColor: color.secondary,
-			borderWidth: 2.5,
-			borderColor: color.primary,
 		},
 	});

@@ -8,6 +8,7 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouter } from 'next/router';
 import { login } from 'server/routers';
+import { textInput } from 'src/common/css';
 import { useBreakPoints } from 'utils/responsive';
 
 export default function LoginForm() {
@@ -88,9 +89,6 @@ export default function LoginForm() {
 const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		container: {
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
 		},
 
@@ -99,13 +97,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			backgroundColor: color.background,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: isMediumScreen ? 300 : 225,
 		},
