@@ -73,13 +73,13 @@ const styleSheet = (color: Color, font: Font) =>
 
 		textInput: {
 			borderBottomLeftRadius: 5,
-			borderWidth: 2,
+			borderWidth: 2.5,
 			borderTopWidth: 0,
 			borderColor: color.primary,
 			paddingHorizontal: 10,
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
-			height: 30,
+			height: 35,
 			width: '100%',
 			outlineStyle: 'none',
 			backgroundColor: color.secondary,
@@ -89,12 +89,12 @@ const styleSheet = (color: Color, font: Font) =>
 		button: {
 			borderRadius: 0,
 			borderBottomRightRadius: 5,
-			borderWidth: 2,
+			borderWidth: 2.5,
 			borderTopWidth: 0,
 			borderLeftWidth: 0,
 			borderColor: color.primary,
 			backgroundColor: color.secondary,
-			height: 30,
+			height: 35,
 			width: 75,
 		},
 

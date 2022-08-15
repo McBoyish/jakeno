@@ -60,7 +60,7 @@ export default function MessageBox({
 				disableVirtualization
 				contentContainerStyle={{ margin: 10 }}
 				onEndReached={handleOnEndReached}
-				onEndReachedThreshold={0.3}
+				onEndReachedThreshold={0.5}
 			/>
 		</View>
 	);
@@ -76,7 +76,7 @@ const styleSheet = (color: Color) =>
 			borderTopLeftRadius: 5,
 			borderTopRightRadius: 5,
 			backgroundColor: color.secondary,
-			borderWidth: 2,
+			borderWidth: 2.5,
 			borderColor: color.primary,
 		},
 
