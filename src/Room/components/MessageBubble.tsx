@@ -18,7 +18,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 			<View style={styles.textContainer}>
 				<HyperLink linkDefault linkStyle={styles.hyperlink}>
 					<Text>
-						<Text style={styles.username}>{`${message.user.name}`}</Text>
+						<Text style={styles.username}>{`${message.user.name}:`}</Text>
 						<View style={styles.spacing} />
 						<Text style={styles.text}>{`${message.content}`}</Text>
 					</Text>
@@ -39,7 +39,6 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.text,
 			fontSize: font.size.primary,
 			color: color.primary,
-			lineHeight: 16,
 		},
 
 		textContainer: {
@@ -50,8 +49,6 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.text,
 			fontSize: font.size.primary,
 			color: color.text,
-			lineHeight: 16,
-			flexWrap: 'wrap',
 		},
 
 		hyperlink: {

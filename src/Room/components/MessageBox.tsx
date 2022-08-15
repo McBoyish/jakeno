@@ -58,6 +58,7 @@ export default function MessageBox({
 				ref={scrollRef}
 				inverted
 				disableVirtualization
+				contentContainerStyle={{ margin: 10 }}
 				onEndReached={handleOnEndReached}
 				onEndReachedThreshold={0.3}
 			/>
@@ -72,10 +73,11 @@ const styleSheet = (color: Color) =>
 			flexGrow: 1,
 			width: '100%',
 			height: 1, // hack
-			padding: 10,
 			borderTopLeftRadius: 5,
 			borderTopRightRadius: 5,
 			backgroundColor: color.secondary,
+			borderWidth: 2,
+			borderColor: color.primary,
 		},
 
 		separator: {

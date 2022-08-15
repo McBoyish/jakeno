@@ -34,7 +34,7 @@ export default function NavBar() {
 	return (
 		<View style={styles.container}>
 			<Pressable style={styles.navContainer} onPress={redirectToHomePage}>
-				<ImageComponent src='/ufo.png' width={60} height={40} />
+				<Text style={styles.text}>{'Home'}</Text>
 			</Pressable>
 			<View style={styles.navContainer}>
 				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}

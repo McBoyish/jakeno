@@ -73,10 +73,11 @@ const styleSheet = (color: Color, font: Font) =>
 
 		textInput: {
 			borderBottomLeftRadius: 5,
-			borderTopWidth: 2,
-			borderColor: color.background,
+			borderWidth: 2,
+			borderTopWidth: 0,
+			borderColor: color.primary,
 			paddingHorizontal: 10,
-			fontSize: font.size.primary,
+			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			height: 30,
 			width: '100%',
@@ -88,9 +89,10 @@ const styleSheet = (color: Color, font: Font) =>
 		button: {
 			borderRadius: 0,
 			borderBottomRightRadius: 5,
-			borderTopWidth: 2,
-			borderLeftWidth: 2,
-			borderColor: color.background,
+			borderWidth: 2,
+			borderTopWidth: 0,
+			borderLeftWidth: 0,
+			borderColor: color.primary,
 			backgroundColor: color.secondary,
 			height: 30,
 			width: 75,
@@ -98,5 +100,6 @@ const styleSheet = (color: Color, font: Font) =>
 
 		buttonText: {
 			color: color.primary,
+			fontSize: font.size.secondary,
 		},
 	});

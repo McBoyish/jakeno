@@ -246,7 +246,7 @@ const styleSheet = (color: Color, font: Font) =>
 			justifyContent: 'center',
 			width: '100%',
 			backgroundColor: color.background,
-			padding: 10,
+			padding: 20,
 		},
 
 		text: {
