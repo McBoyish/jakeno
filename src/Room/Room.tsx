@@ -23,6 +23,7 @@ export default function Room() {
 
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [cursor, setCursor] = useState('');
+	const [isFetching, setIsFetching] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
 
 	const [room, setRoom] = useState<Room_ | null>(null);
@@ -166,7 +167,7 @@ export default function Room() {
 	};
 
 	const fetchMore = async () => {
-		if (!hasMore) return;
+		setIsFetching(true);
 		const messages = await getMessages(roomName, code, cursor);
 		if (!messages) {
 			setLoading(false);
@@ -174,6 +175,7 @@ export default function Room() {
 			return;
 		}
 		updateMessages(messages);
+		setIsFetching(false);
 	};
 
 	if (loading) return <Loading />;
@@ -223,6 +225,7 @@ export default function Room() {
 						fetchMore={fetchMore}
 						setScrollToStart={setScrollToStart}
 						hasMore={hasMore}
+						isFetching={isFetching}
 					/>
 					<Users
 						users={users}

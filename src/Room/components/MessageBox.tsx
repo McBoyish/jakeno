@@ -12,23 +12,27 @@ interface MessageBoxProps {
 	setScrollToStart: (_: () => void) => void;
 	fetchMore: () => Promise<void>;
 	hasMore: boolean;
+	isFetching: boolean;
 }
 
 const { sm } = useMediaQueries();
 
-const MemoizedMessageBubble = React.memo(MessageBubble, (prev, next) => {
-	return true;
-});
+const MemoizedMessageBubble = React.memo(MessageBubble, () => true);
 
 const renderItem = ({ item }: { item: Message; index: number }) => {
 	return <MemoizedMessageBubble message={item} />;
 };
+
+const separator = () => <View style={{ height: 5 }} />;
+
+const MemoizedSeparator = React.memo(separator, () => true);
 
 export default function MessageBox({
 	messages,
 	fetchMore,
 	hasMore,
 	setScrollToStart,
+	isFetching,
 }: MessageBoxProps) {
 	const { scrollRef, scrollToStart } = useVerticalScroll(true);
 
@@ -39,10 +43,8 @@ export default function MessageBox({
 		setScrollToStart(() => scrollToStart);
 	}, []);
 
-	const separator = () => <View style={styles.separator} />;
-
-	const handleOnEndReached = () => {
-		if (!hasMore) return;
+	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
+		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
 		fetchMore().catch(console.error);
 	};
 
@@ -52,9 +54,9 @@ export default function MessageBox({
 				data={messages}
 				renderItem={renderItem}
 				keyExtractor={item => item._id}
-				ItemSeparatorComponent={separator}
+				ItemSeparatorComponent={MemoizedSeparator}
 				scrollEnabled
-				showsVerticalScrollIndicator={false}
+				showsVerticalScrollIndicator={true}
 				ref={scrollRef}
 				inverted
 				disableVirtualization
@@ -78,9 +80,5 @@ const styleSheet = (color: Color) =>
 			backgroundColor: color.secondary,
 			borderWidth: 2.5,
 			borderColor: color.primary,
-		},
-
-		separator: {
-			height: 5,
 		},
 	});
