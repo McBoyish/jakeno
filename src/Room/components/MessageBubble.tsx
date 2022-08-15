@@ -35,9 +35,7 @@ function MessageBubble({ message, messages, index }: MessageBubbleProps) {
 				<View style={styles.textContainer}>
 					<HyperLink linkDefault linkStyle={styles.hyperlink}>
 						<Text>
-							<Text style={styles.username}>
-								{`${date.toLocaleTimeString()} ${message.user.name}:`}
-							</Text>
+							<Text style={styles.username}>{`${message.user.name}:`}</Text>
 							<View style={styles.spacing} />
 							<Text style={styles.text}>{`${message.content}`}</Text>
 						</Text>
@@ -74,7 +72,7 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		line: {
-			height: 3,
+			height: 1,
 			backgroundColor: color.primary,
 			opacity: 0.5,
 			flex: 1,

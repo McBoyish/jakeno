@@ -224,15 +224,15 @@ export default function Room() {
 					usersVisible={usersVisible}
 					setUsersVisible={setUsersVisible}
 				/>
-				<View style={{ width: '100%', flex: 1 }}>
-					<MessageBox
-						messages={messages}
-						fetchMore={fetchMore}
-						setScrollToStart={setScrollToStart}
-						hasMore={hasMore}
-						isFetching={isFetching}
-					/>
-				</View>
+				{/* <View style={{ width: '100%', flex: 1 }}> */}
+				<MessageBox
+					messages={messages}
+					fetchMore={fetchMore}
+					setScrollToStart={setScrollToStart}
+					hasMore={hasMore}
+					isFetching={isFetching}
+				/>
+				{/* </View> */}
 				<MessageInput onSubmit={onSubmit} />
 			</View>
 		);

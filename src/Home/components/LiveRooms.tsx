@@ -32,7 +32,7 @@ export default function LiveRooms({ liveRooms }: LiveRoomsProps) {
 							{`Users: ${liveRoom.activeUsers}`}
 						</Text>
 					</View>
-					<Text style={styles.text} numberOfLines={3}>
+					<Text style={styles.text} numberOfLines={2}>
 						{liveRoom.description}
 					</Text>
 				</View>
@@ -99,7 +99,7 @@ const styleSheet = (
 
 		cardContainer: {
 			backgroundColor: color.secondary,
-			padding: 20,
+			padding: 10,
 			width: '100%',
 			minHeight: isMediumScreen ? 200 : isSmallScreen ? 150 : 100,
 			justifyContent: 'space-between',
@@ -135,6 +135,6 @@ const styleSheet = (
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			alignItems: 'flex-start',
-			marginBottom: 20,
+			marginBottom: 5,
 		},
 	});

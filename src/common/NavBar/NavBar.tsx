@@ -77,18 +77,10 @@ const styleSheet = (color: Color, font: Font) =>
 
 		navContainer: {
 			flexDirection: 'row',
-			padding: 5,
 		},
 
 		separator: {
 			width: 20,
-		},
-
-		heading: {
-			fontSize: font.size.heading,
-			fontFamily: font.family.heading,
-			color: color.text,
-			textAlign: 'center',
 		},
 
 		text: {
