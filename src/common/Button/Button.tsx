@@ -3,6 +3,7 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
 import { useUserContext } from '../context/UserContext';
+import { container } from '../css';
 import {
 	TouchableOpacity,
 	Text,
@@ -48,12 +49,11 @@ export default function Button({
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
+			...container,
 			padding: 10,
 			justifyContent: 'center',
 			alignItems: 'center',
 			backgroundColor: color.primary,
-			borderWidth: 2.5,
-			borderColor: color.primary,
 			height: 50,
 			width: 250,
 		},
