@@ -28,13 +28,13 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		if (text === '') return;
+		if (text.trim() === '') return;
 		if (e.nativeEvent.key === 'Enter') handleOnSubmit();
 	};
 
 	const handleOnSubmit = () => {
 		setText('');
-		onSubmit(text);
+		onSubmit(text.trim());
 	};
 
 	const handleOnButtonPress = () => {
@@ -55,10 +55,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 			/>
 			<Button
 				text={'Send'}
-				disabled={text === ''}
+				disabled={text.trim() === ''}
 				onClick={handleOnButtonPress}
 				containerStyle={styles.button}
 				textStyle={styles.buttonText}
+				disableTouchOpacity
 			/>
 		</View>
 	);

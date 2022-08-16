@@ -4,13 +4,7 @@ import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
 import { useUserContext } from '../context/UserContext';
 import { container } from '../css';
-import {
-	TouchableOpacity,
-	Text,
-	StyleProp,
-	ViewStyle,
-	TextStyle,
-} from 'react-native';
+import { Text, StyleProp, ViewStyle, TextStyle, Pressable } from 'react-native';
 
 interface ButtonProps {
 	text: string;
@@ -19,6 +13,7 @@ interface ButtonProps {
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	textStyle?: StyleProp<TextStyle>;
+	disableTouchOpacity?: boolean;
 }
 
 export default function Button({
@@ -28,6 +23,7 @@ export default function Button({
 	loading,
 	containerStyle,
 	textStyle,
+	disableTouchOpacity,
 }: ButtonProps) {
 	const { userLoading } = useUserContext();
 
@@ -35,14 +31,18 @@ export default function Button({
 	const { styles } = styleSheet(color, font);
 
 	return (
-		<TouchableOpacity
+		<Pressable
 			onPress={onClick}
 			disabled={disabled || loading || userLoading}
-			style={[styles.container, containerStyle]}
+			style={({ pressed }) => [
+				styles.container,
+				containerStyle,
+				{ opacity: disableTouchOpacity || !pressed ? 1 : 0.5 },
+			]}
 		>
 			{loading && <ActivityIndicator color={color.secondary} size={'small'} />}
 			{!loading && <Text style={[styles.label, textStyle]}>{text}</Text>}
-		</TouchableOpacity>
+		</Pressable>
 	);
 }
 
