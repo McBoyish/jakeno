@@ -94,7 +94,7 @@ const styleSheet = (color: Color, font: Font) =>
 
 		error: {
 			borderColor: color.error,
-			borderWidth: 1,
+			borderWidth: 2.5,
 		},
 
 		heading: {
