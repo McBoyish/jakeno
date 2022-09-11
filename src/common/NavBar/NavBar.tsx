@@ -30,11 +30,17 @@ export default function NavBar() {
 		router.push('/register');
 	};
 
+	const redirectToAboutPage = () => {
+		router.push('/about');
+	};
+
 	return (
 		<View style={styles.container}>
-			<Pressable style={styles.navContainer} onPress={redirectToHomePage}>
-				<Text style={styles.text}>{'Home'}</Text>
-			</Pressable>
+			<View style={styles.navContainer}>
+				<Pressable onPress={redirectToHomePage}>
+					<Text style={styles.text}>{'Home'}</Text>
+				</Pressable>
+			</View>
 			<View style={styles.navContainer}>
 				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}
 				{!userLoading && loggedIn && (
@@ -54,6 +60,10 @@ export default function NavBar() {
 						<View style={styles.separator} />
 						<Pressable onPress={redirectToRegisterPage}>
 							<Text style={styles.text}>{'Register'}</Text>
+						</Pressable>
+						<View style={styles.separator} />
+						<Pressable onPress={redirectToAboutPage}>
+							<Text style={styles.text}>{'About'}</Text>
 						</Pressable>
 					</>
 				)}
