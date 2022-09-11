@@ -215,7 +215,7 @@ const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 
 		error: {
 			borderColor: color.error,
-			borderWidth: 1,
+			borderWidth: 2.5,
 		},
 
 		formHelperText: {

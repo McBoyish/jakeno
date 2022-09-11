@@ -82,6 +82,7 @@ const styleSheet = (color: Color, font: Font) =>
 			justifyContent: 'center',
 			alignItems: 'center',
 			flexDirection: 'row',
+			marginBottom: 5,
 		},
 
 		date: {
