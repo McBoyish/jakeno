@@ -41,6 +41,8 @@ export default function Room() {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
+	const limit = 100;
+
 	useEffect(() => {
 		return () => {
 			socket.removeAllListeners();
@@ -101,7 +103,7 @@ export default function Room() {
 			}
 			setRoom(data);
 			attachRoomListeners(data);
-			const messages = await getMessages(roomName, code, cursor);
+			const messages = await getMessages(roomName, code, cursor, limit);
 			if (messages === null) {
 				setLoading(false);
 				setInvalidCode(true);
@@ -168,7 +170,7 @@ export default function Room() {
 
 	const fetchMore = async () => {
 		setIsFetching(true);
-		const messages = await getMessages(roomName, code, cursor);
+		const messages = await getMessages(roomName, code, cursor, limit);
 		if (!messages) {
 			setLoading(false);
 			setInvalidCode(true);
