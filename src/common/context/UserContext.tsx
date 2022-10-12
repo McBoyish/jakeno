@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
+import { uri, io } from 'server/socket';
 import { verify } from 'server/routers';
+import { Socket } from 'socket.io-client';
 
 interface UserContextData {
 	user: User;
@@ -9,18 +11,20 @@ interface UserContextData {
 	loggedIn: boolean;
 	token: string;
 	updateToken: (_: string) => void;
-	logoff: () => void;
+	logout: () => void;
+	socket: Socket;
 }
 
 const initialValue: User = { name: 'anon', _id: 'anon' };
-
+const socket = io(uri);
 const UserContext = createContext<UserContextData>({
 	user: initialValue,
 	userLoading: true,
 	loggedIn: false,
 	token: '',
 	updateToken: () => null,
-	logoff: () => null,
+	logout: () => null,
+	socket,
 });
 
 function useUserContext() {
@@ -35,31 +39,20 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		// retrieve and verify token on page load
-		let isMounted = true;
 		const verifyToken = async () => {
 			const token = localStorage.getItem('token');
+			if (!token) {
+				logout();
+				return;
+			}
 			const user = await verify(token);
-			if (isMounted && token && user) {
-				setUser(user);
-				setLoggedIn(true);
-				setToken(token);
-				setUserLoading(false);
-				return;
-			}
-			if (isMounted && token && !user) {
-				logoff();
-				return;
-			}
-			if (isMounted && !token) {
-				localStorage.setItem('token', '');
-				setUserLoading(false);
-				return;
+			if (user) {
+				updateStates(token, user);
+			} else {
+				logout();
 			}
 		};
 		verifyToken();
-		return () => {
-			isMounted = false;
-		};
 	}, []);
 
 	const updateToken = async (token: string) => {
@@ -67,24 +60,42 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
 		if (user) {
 			// update token if it is valid
 			localStorage.setItem('token', token);
-			setToken(token);
-			setUser(user);
-			!loggedIn && setLoggedIn(true);
-			userLoading && setUserLoading(false);
+			updateStates(token, user);
 		}
 	};
 
-	const logoff = () => {
-		localStorage.setItem('token', '');
+	const logout = () => {
+		localStorage.removeItem('token');
+		clearStates();
+	};
+
+	const updateStates = (token: string, user: User) => {
+		setToken(token);
+		setUser(user);
+		setLoggedIn(true);
+		setUserLoading(false);
+		socket.emit('login', user);
+	};
+
+	const clearStates = () => {
 		setToken('');
 		setUser(initialValue);
-		loggedIn && setLoggedIn(false);
-		userLoading && setUserLoading(false);
+		setLoggedIn(false);
+		setUserLoading(false);
+		socket.emit('logout');
 	};
 
 	return (
 		<UserContext.Provider
-			value={{ user, userLoading, loggedIn, token, updateToken, logoff }}
+			value={{
+				user,
+				userLoading,
+				loggedIn,
+				token,
+				updateToken,
+				logout,
+				socket,
+			}}
 		>
 			{children}
 		</UserContext.Provider>

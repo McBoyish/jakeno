@@ -15,11 +15,11 @@ export default function Title() {
 		<View>
 			<View style={styles.headingContainer}>
 				<Text style={styles.heading} dataSet={{ media: ids.heading }}>
-					{'Random Stranger'}
+					{'Jakeno'}
 				</Text>
 			</View>
 			<Text style={styles.description}>
-				{'Start chatting with random strangers now.'}
+				{'Start chatting with people now.'}
 			</Text>
 		</View>
 	);

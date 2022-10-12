@@ -1,17 +1,23 @@
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-export interface BreakPoints {
-	isExtraLargeScreen: boolean;
-	isLargeScreen: boolean;
-	isMediumScreen: boolean;
-	isSmallScreen: boolean;
-}
-
 export function useBreakPoints() {
-	const isExtraLargeScreen = useMediaQuery({ minWidth: 1440 });
-	const isLargeScreen = useMediaQuery({ minWidth: 1024 });
-	const isMediumScreen = useMediaQuery({ minWidth: 768 });
-	const isSmallScreen = useMediaQuery({ minWidth: 425 });
+	const extraLargeScreen = useMediaQuery({ minWidth: 1440 });
+	const largeScreen = useMediaQuery({ minWidth: 1024 });
+	const mediumScreen = useMediaQuery({ minWidth: 768 });
+	const smallScreen = useMediaQuery({ minWidth: 425 });
+
+	const [isExtraLargeScreen, setIsExtraLargeScreen] = useState(false);
+	const [isLargeScreen, setIsLargeScreen] = useState(false);
+	const [isMediumScreen, setIsMediumScreen] = useState(false);
+	const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+	useEffect(() => {
+		setIsExtraLargeScreen(extraLargeScreen);
+		setIsLargeScreen(largeScreen);
+		setIsMediumScreen(mediumScreen);
+		setIsSmallScreen(smallScreen);
+	}, [extraLargeScreen, largeScreen, mediumScreen, smallScreen]);
 
 	return {
 		isExtraLargeScreen,

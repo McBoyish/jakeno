@@ -9,6 +9,7 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
+import { textInput } from 'src/common/css';
 import { useMediaQueries } from 'utils/responsive';
 
 interface MessageInputProps {
@@ -20,18 +21,20 @@ const { sm } = useMediaQueries();
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
+
 	const [text, setText] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		if (text === '') return;
+		if (text.trim() === '') return;
 		if (e.nativeEvent.key === 'Enter') handleOnSubmit();
 	};
 
 	const handleOnSubmit = () => {
 		setText('');
-		onSubmit(text);
+		onSubmit(text.trim());
 	};
 
 	const handleOnButtonPress = () => {
@@ -50,13 +53,13 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				blurOnSubmit={false}
 				ref={textInputRef}
 			/>
-			<View style={styles.separator} />
 			<Button
 				text={'Send'}
-				disabled={text === ''}
+				disabled={text.trim() === ''}
 				onClick={handleOnButtonPress}
-				width={75}
-				height={50}
+				containerStyle={styles.button}
+				textStyle={styles.buttonText}
+				disableTouchOpacity
 			/>
 		</View>
 	);
@@ -68,27 +71,26 @@ const styleSheet = (color: Color, font: Font) =>
 			flexDirection: 'row',
 			flexGrow: 0,
 			width: '100%',
-			marginVertical: 5,
-
-			[sm]: {
-				width: 385,
-			},
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			height: 50,
+			...textInput,
+			borderTopWidth: 0,
+			fontSize: font.size.secondary,
+			height: 35,
 			width: '100%',
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
 		},
 
-		separator: {
-			width: 5,
+		button: {
+			borderTopWidth: 0,
+			borderLeftWidth: 0,
+			backgroundColor: color.background,
+			height: 35,
+			width: 75,
+		},
+
+		buttonText: {
+			color: color.primary,
+			fontSize: font.size.secondary,
 		},
 	});

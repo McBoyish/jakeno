@@ -16,7 +16,7 @@ function Layout({ children }: LayoutProps) {
 			<CreateRoomModalContextProvider>
 				<UserContextProvider>
 					<Portal.Host>
-						<View style={{ flexGrow: 1 }}>
+						<View style={{ flexGrow: 1, backgroundColor: '#F9F7F7' }}>
 							<NavBar />
 							{children}
 						</View>

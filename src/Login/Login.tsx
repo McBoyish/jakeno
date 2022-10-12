@@ -16,6 +16,7 @@ export default function Home() {
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
 			<Title />
+			<View style={styles.separator} dataSet={{ media: ids.separator }} />
 			<LoginForm />
 		</View>
 	);
@@ -28,13 +29,22 @@ const styleSheet = (color: Color) =>
 			flexDirection: 'column',
 			alignSelf: 'center',
 			alignItems: 'center',
-			justifyContent: 'space-evenly',
+			justifyContent: 'center',
 			backgroundColor: color.background,
 			width: '100%',
-			padding: 20,
+			padding: 10,
 
 			[md]: {
 				flexDirection: 'row',
+				justifyContent: 'space-evenly',
+			},
+		},
+
+		separator: {
+			height: 15,
+
+			[md]: {
+				height: 0,
 			},
 		},
 	});

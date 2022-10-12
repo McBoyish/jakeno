@@ -4,7 +4,7 @@ interface FontSize {
 	subheading: number;
 	primary: number;
 	secondary: number;
-	tertiary: number;
+	small: number;
 }
 
 interface FontFamily {
@@ -22,7 +22,6 @@ export interface Color {
 	text: string;
 	background: string;
 	secondary: string;
-	tertiary: string;
 	black: string;
 	white: string;
 	hyperlink: string;
@@ -48,15 +47,14 @@ export interface Message {
 /***************API INTERFACES***************/
 export interface InputMessage {
 	roomId: string;
+	roomName: string;
+	user: User;
 	content: string;
-	userId: string;
 }
 
 export interface InputRoom {
-	userId: string;
 	name: string;
 	description: string;
-	locked: boolean;
 	code: string;
 }
 
@@ -65,14 +63,17 @@ export interface InputAccount {
 	password: string;
 }
 
-export interface RoomData {
+export interface Room {
 	_id: string;
-	userId: string;
 	name: string;
 	description: string;
-	locked: boolean;
-	messages: Message[];
+	user: User;
+	isPrivate: boolean;
 	createdAt: DateTime;
+}
+
+export interface LiveRoom extends Room {
+	activeUsers: number;
 }
 
 export interface UserData extends User {

@@ -3,91 +3,64 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme, ActivityIndicator } from 'react-native-paper';
 import { Color, Font } from 'types';
 import { useUserContext } from '../context/UserContext';
-import {
-	View,
-	TouchableOpacity,
-	Text,
-	StyleProp,
-	ViewStyle,
-} from 'react-native';
+import { container } from '../css';
+import { Text, StyleProp, ViewStyle, TextStyle, Pressable } from 'react-native';
 
 interface ButtonProps {
 	text: string;
 	onClick: () => void;
-	disabled: boolean;
-	width?: number;
-	height?: number;
+	disabled?: boolean;
 	loading?: boolean;
-	style?: StyleProp<ViewStyle>;
-	dataSet?: {
-		media: string;
-	};
+	containerStyle?: StyleProp<ViewStyle>;
+	textStyle?: StyleProp<TextStyle>;
+	disableTouchOpacity?: boolean;
 }
 
 export default function Button({
 	text,
 	onClick,
 	disabled,
-	width,
-	height,
 	loading,
-	style,
-	dataSet,
+	containerStyle,
+	textStyle,
+	disableTouchOpacity,
 }: ButtonProps) {
 	const { userLoading } = useUserContext();
+
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font, width, height);
+	const { styles } = styleSheet(color, font);
 
 	return (
-		<View
-			style={[
+		<Pressable
+			onPress={onClick}
+			disabled={disabled || loading || userLoading}
+			style={({ pressed }) => [
 				styles.container,
-				disabled || loading || userLoading ? { opacity: 0.5 } : undefined,
-				style,
+				containerStyle,
+				{ opacity: disableTouchOpacity || !pressed ? 1 : 0.5 },
 			]}
-			dataSet={dataSet}
 		>
-			<TouchableOpacity
-				onPress={onClick}
-				disabled={disabled || loading || userLoading}
-				style={styles.content}
-			>
-				{loading && <ActivityIndicator color={color.black} />}
-				{!loading && <Text style={styles.label}>{text}</Text>}
-			</TouchableOpacity>
-		</View>
+			{loading && <ActivityIndicator color={color.secondary} size={'small'} />}
+			{!loading && <Text style={[styles.label, textStyle]}>{text}</Text>}
+		</Pressable>
 	);
 }
 
-const styleSheet = (
-	color: Color,
-	font: Font,
-	width?: number,
-	height?: number
-) =>
+const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
 		container: {
-			borderRadius: 5,
-			backgroundColor: 'transparent',
-			height: height || 50,
-			width: width || 250,
-		},
-
-		content: {
+			...container,
 			padding: 10,
-			borderRadius: 5,
-			borderStyle: 'solid',
-			borderColor: color.primary,
-			backgroundColor: color.primary,
-			height: '100%',
-			width: '100%',
 			justifyContent: 'center',
 			alignItems: 'center',
+			backgroundColor: color.primary,
+			height: 50,
+			width: 250,
 		},
 
 		label: {
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
-			color: color.text,
+			color: color.secondary,
 		},
 	});

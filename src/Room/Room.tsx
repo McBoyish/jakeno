@@ -1,93 +1,245 @@
 import React, { useEffect, useState } from 'react';
 import MessageBox from './components/MessageBox';
 import { View, Text } from 'react-native';
+import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
-import { io, uri } from 'server/socket';
-import { InputMessage, Message, RoomData } from 'types';
+import { InputMessage, Message, Room as Room_, User } from 'types';
+import { getRoom, isPrivate, getMessages } from 'server/routers';
+import Loading from 'src/common/Loading';
 import { Color, Font } from 'types';
 import MessageInput from './components/MessageInput';
+import Users from './components/Users';
+import CodeForm from './components/CodeForm';
 import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
-import { Socket } from 'socket.io-client';
 
-interface RoomProps {
-	initialRoomData: RoomData | null;
-}
+export default function Room() {
+	const { user, socket } = useUserContext();
+	const router = useRouter();
 
-export default function Room({ initialRoomData }: RoomProps) {
-	const { user } = useUserContext();
-	const [socket, setSocket] = useState<Socket>();
-	const [roomData, setRoomData] = useState<RoomData | null>(initialRoomData);
-	const [messageSent, setMessageSent] = useState(false);
+	const [requireCode, setRequireCode] = useState(false);
+	const [code, setCode] = useState<string>('');
+	const [verified, setVerified] = useState(false);
+
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [cursor, setCursor] = useState('');
+	const [isFetching, setIsFetching] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
+
+	const [room, setRoom] = useState<Room_ | null>(null);
+	const [roomName, setRoomName] = useState<string>('');
+
+	const [users, setUsers] = useState<User[] | null>(null);
+	const [usersVisible, setUsersVisible] = useState(false);
+
+	const [loading, setLoading] = useState(true);
+	const [invalidCode, setInvalidCode] = useState(false);
+	const [unknownError, setUnknownError] = useState(false);
+
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
+	const limit = 100;
+
 	useEffect(() => {
-		if (!initialRoomData) return;
-		const socket = io(uri);
-		socket.emit('join-room', initialRoomData._id);
-		socket.on('message', (message: Message) => {
-			addMessage(message);
-		});
-		setSocket(socket);
-		return leaveRoom;
+		return () => {
+			socket.removeAllListeners();
+			socket.emit('leave-room');
+		};
 	}, []);
 
 	useEffect(() => {
-		if (!scrollToStart || !messageSent) return;
-		scrollToStart();
-		setMessageSent(false);
-	}, [scrollToStart, messageSent]);
+		if (!router.isReady) return;
+		const { pathname, query } = router;
+		// remove any unwanted params
+		router.replace(
+			{ pathname, query: { roomName: query.roomName } },
+			undefined,
+			{ shallow: true }
+		);
+		const roomName = query.roomName as string;
+		setRoomName(roomName);
+		setup(roomName);
+	}, [router.isReady]);
 
-	const leaveRoom = () => {
-		if (!socket || !roomData) return;
-		socket.emit('leave-room', roomData._id);
-		socket.removeAllListeners();
-		socket.disconnect();
+	useEffect(() => {
+		if (!verified) return;
+		setLoading(true);
+		setRequireCode(false);
+		getInitialData(roomName, code);
+	}, [verified]);
+
+	const attachRoomListeners = (room: Room_) => {
+		socket.emit('join-room', room, (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('join-room', (users: User[]) => {
+			setUsers(users);
+		});
+		socket.on('leave-room', (users: User[]) => {
+			setUsers(users);
+		});
 	};
 
-	const addMessage = (message: Message) => {
-		setRoomData(prev => {
-			if (!prev) return null;
-			return {
-				...prev,
-				messages: [message, ...prev.messages],
-			};
+	const updateMessages = async (messages: Message[]) => {
+		if (messages.length === 0) {
+			setHasMore(false);
+			return;
+		}
+		setMessages(prev => {
+			return [...prev, ...messages];
+		});
+		setCursor(messages[messages.length - 1]._id);
+	};
+
+	const getInitialData = async (roomName: string, code: string) => {
+		try {
+			const data = await getRoom(roomName, code);
+			if (!data) {
+				setLoading(false);
+				return;
+			}
+			setRoom(data);
+			attachRoomListeners(data);
+			const messages = await getMessages(roomName, code, cursor, limit);
+			if (messages === null) {
+				setLoading(false);
+				setInvalidCode(true);
+				return;
+			}
+			updateMessages(messages);
+			socket.on('message', addMessage);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (e: any) {
+			if (e.response && e.response.data.message === 'invalid-room-code') {
+				setInvalidCode(true);
+			} else {
+				setUnknownError(true);
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const setup = async (roomName: string) => {
+		const res = await isPrivate(roomName);
+		if (!res) {
+			// room does not exist
+			setLoading(false);
+			return;
+		}
+		if (res.private) {
+			// room exists and is private
+			const codeFromSession = sessionStorage.getItem(roomName);
+			sessionStorage.removeItem(roomName);
+			if (codeFromSession) {
+				getInitialData(roomName, codeFromSession);
+			} else {
+				setRequireCode(true);
+				setLoading(false);
+			}
+		} else {
+			// room exists and not private
+			getInitialData(roomName, '');
+		}
+	};
+
+	const addMessage = (message: Message | null) => {
+		if (!message) return;
+		setMessages(prev => {
+			return [message, ...prev];
 		});
 	};
 
 	const onSubmit = (text: string) => {
-		if (!socket || !roomData) return;
-		const message: InputMessage = {
-			userId: user._id,
-			roomId: roomData._id,
+		if (!room) return;
+		const input: InputMessage = {
+			roomId: room._id,
+			roomName: room.name,
+			user,
 			content: text,
 		};
-		socket.emit('message', message, (res: Message) => {
+		socket.emit('message', input, (res: Message | null) => {
+			if (!res) return;
 			addMessage(res);
-			setMessageSent(true);
+			scrollToStart?.();
 		});
 	};
 
-	if (!roomData)
+	const fetchMore = async () => {
+		setIsFetching(true);
+		const messages = await getMessages(roomName, code, cursor, limit);
+		if (!messages) {
+			setLoading(false);
+			setInvalidCode(true);
+			return;
+		}
+		updateMessages(messages);
+		setIsFetching(false);
+	};
+
+	if (loading) return <Loading />;
+
+	if (unknownError)
 		return (
 			<View style={styles.container}>
-				<Text style={styles.text}>{'Could not find room'}</Text>
+				<Text style={styles.text}>{'An unknown error has occurred'}</Text>
 			</View>
 		);
 
-	return (
-		<View style={styles.container}>
-			<>
-				<MessageBox
-					messages={roomData.messages}
-					setScrollToStart={setScrollToStart}
+	// invalid code error should never happen normally
+	if (invalidCode)
+		return (
+			<View style={styles.container}>
+				<Text style={styles.text}>{'Code is invalid'}</Text>
+			</View>
+		);
+
+	if (requireCode)
+		return (
+			<View style={styles.container}>
+				<CodeForm
+					roomName={roomName}
+					code={code}
+					setCode={setCode}
+					setVerified={setVerified}
 				/>
+			</View>
+		);
+
+	if (!room)
+		return (
+			<View style={styles.container}>
+				<Text
+					style={styles.text}
+				>{`Room ${router.query.roomName} does not exist`}</Text>
+			</View>
+		);
+
+	if (room && users)
+		return (
+			<View style={styles.container}>
+				<Users
+					users={users}
+					usersVisible={usersVisible}
+					setUsersVisible={setUsersVisible}
+				/>
+				{/* <View style={{ width: '100%', flex: 1 }}> */}
+				<MessageBox
+					messages={messages}
+					fetchMore={fetchMore}
+					setScrollToStart={setScrollToStart}
+					hasMore={hasMore}
+					isFetching={isFetching}
+				/>
+				{/* </View> */}
 				<MessageInput onSubmit={onSubmit} />
-			</>
-		</View>
-	);
+			</View>
+		);
+
+	return <Loading />;
 }
 
 const styleSheet = (color: Color, font: Font) =>
@@ -96,13 +248,14 @@ const styleSheet = (color: Color, font: Font) =>
 			flex: 1,
 			alignSelf: 'center',
 			alignItems: 'center',
+			justifyContent: 'center',
 			width: '100%',
 			backgroundColor: color.background,
 			padding: 20,
 		},
 
 		text: {
-			fontSize: font.size.subheading,
+			fontSize: font.size.primary,
 			fontFamily: font.family.text,
 			color: color.text,
 			textAlign: 'center',

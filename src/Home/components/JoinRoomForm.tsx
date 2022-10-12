@@ -2,83 +2,88 @@ import React from 'react';
 import { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 import Button from 'src/common/Button';
+import { exists } from 'server/routers';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
-import { getRoom } from 'server/routers';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
+import { textInput } from 'src/common/css';
 import { useUserContext } from 'src/common/context/UserContext';
 
 export default function JoinRoomForm() {
 	const { userLoading, loggedIn } = useUserContext();
-	const { showModal } = useCreateRoomModalContext();
+	const { showModal, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
+
 	const [roomName, setRoomName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
+	const showError = (msg: string) => {
+		setErrorMsg(msg);
+		setTimeout(() => {
+			setErrorMsg('');
+		}, 3000);
+	};
+
 	const handleOnSubmit = async () => {
 		setLoading(true);
-		const room = await getRoom(roomName);
-		if (!room) {
+		const res = await exists(roomName);
+		if (!res) {
+			showError('An error has occurred');
 			setLoading(false);
-			setErrorMsg('Cound not find room');
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 3000);
+			return;
+		}
+		if (!res.exists) {
+			showError('Room not found');
+			setLoading(false);
 			return;
 		}
 		router.push(`/room/${roomName}`);
+		hideModal();
 	};
 
 	return (
-		<View style={styles.container}>
+		<View>
 			<Text style={styles.heading}>{'Start chatting!'}</Text>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setRoomName}
-					value={roomName}
-					style={[styles.textInput, errorMsg ? styles.error : undefined]}
-					placeholder={'Enter room name'}
-					editable={!loading}
+			<View style={styles.formContainer}>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setRoomName}
+						value={roomName}
+						style={[styles.textInput, errorMsg ? styles.error : undefined]}
+						placeholder={'Enter room name'}
+						editable={!loading}
+					/>
+				</View>
+				<Button
+					text={errorMsg || 'Join'}
+					disabled={!roomName || errorMsg !== ''}
+					onClick={handleOnSubmit}
+					containerStyle={{ width: 225, height: 50 }}
+					loading={loading}
 				/>
+				{loggedIn && <View style={{ height: 15 }} />}
+				{loggedIn && (
+					<Button
+						text={'Create a room'}
+						disabled={!loggedIn}
+						onClick={showModal}
+						containerStyle={{ width: 225, height: 50 }}
+					/>
+				)}
 			</View>
-			<Button
-				text={errorMsg || 'Join'}
-				disabled={!roomName || errorMsg !== ''}
-				onClick={handleOnSubmit}
-				width={225}
-				height={50}
-				loading={loading}
-			/>
-			<View style={{ height: 15 }} />
-			<Button
-				text={
-					userLoading
-						? 'Loading'
-						: loggedIn
-						? 'Create a room'
-						: 'Login to create room'
-				}
-				disabled={!loggedIn}
-				onClick={showModal}
-				width={225}
-				height={50}
-			/>
 		</View>
 	);
 }
 
 const styleSheet = (color: Color, font: Font) =>
 	StyleSheet.create({
-		container: {
-			marginVertical: 5,
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
+		formContainer: {
 			alignItems: 'center',
 			alignSelf: 'center',
 		},
@@ -97,20 +102,13 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: 225,
 		},
 
 		error: {
 			borderColor: color.error,
-			borderWidth: 1,
+			borderWidth: 2.5,
 		},
 	});

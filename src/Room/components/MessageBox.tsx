@@ -2,60 +2,45 @@ import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { Color, Message } from 'types';
 import { useTheme } from 'react-native-paper';
-import MessageBubble from './MessageBubble';
-import DateBubble from './DateBubble';
-import { parseDate } from 'utils/date';
+import MessageBubble, { MemoizedSeparator } from './MessageBubble';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
+import { container } from 'src/common/css';
 import { useVerticalScroll } from 'utils/useVerticalScroll';
 
 interface MessageBoxProps {
 	messages: Message[];
 	setScrollToStart: (_: () => void) => void;
+	fetchMore: () => Promise<void>;
+	hasMore: boolean;
+	isFetching: boolean;
 }
 
 const { sm } = useMediaQueries();
 
 export default function MessageBox({
 	messages,
+	fetchMore,
+	hasMore,
 	setScrollToStart,
+	isFetching,
 }: MessageBoxProps) {
 	const { scrollRef, scrollToStart } = useVerticalScroll(true);
+
 	const { color } = useTheme();
 	const { styles, ids } = styleSheet(color);
 
 	useEffect(() => {
-		setScrollToStart(scrollToStart);
-	}, [scrollToStart]);
-
-	const separator = () => <View style={styles.separator} />;
+		setScrollToStart(() => scrollToStart);
+	}, []);
 
 	const renderItem = ({ item, index }: { item: Message; index: number }) => {
-		const shouldAddSpacing =
-			index < messages.length - 1 &&
-			messages[index].user._id !== messages[index + 1].user._id;
-		const shouldAddDate =
-			index === messages.length - 1 ||
-			parseDate(messages[index].createdAt).date !==
-				parseDate(messages[index + 1].createdAt).date;
-		if (shouldAddDate)
-			return (
-				<>
-					<MessageBubble message={item} />
-					<View style={styles.separator} />
-					<View style={styles.separator} />
-					<DateBubble date={item.createdAt} />
-					{index < messages.length - 1 && <View style={styles.separator} />}
-				</>
-			);
-		if (shouldAddSpacing)
-			return (
-				<>
-					<MessageBubble message={item} />
-					<View style={styles.separator} />
-				</>
-			);
-		return <MessageBubble message={item} />;
+		return <MessageBubble message={item} messages={messages} index={index} />;
+	};
+
+	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
+		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
+		fetchMore().catch(console.error);
 	};
 
 	return (
@@ -64,11 +49,15 @@ export default function MessageBox({
 				data={messages}
 				renderItem={renderItem}
 				keyExtractor={item => item._id}
-				ItemSeparatorComponent={separator}
+				ItemSeparatorComponent={MemoizedSeparator}
 				scrollEnabled
+				showsVerticalScrollIndicator={true}
 				ref={scrollRef}
 				inverted
 				disableVirtualization
+				contentContainerStyle={{ padding: 10 }}
+				onEndReached={handleOnEndReached}
+				onEndReachedThreshold={0.5}
 			/>
 		</View>
 	);
@@ -77,22 +66,10 @@ export default function MessageBox({
 const styleSheet = (color: Color) =>
 	StyleSheet.create({
 		container: {
+			...container,
 			flexDirection: 'column',
 			flexGrow: 1,
 			width: '100%',
 			height: 1, // hack
-			marginVertical: 5,
-			padding: 10,
-			borderRadius: 5,
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-
-			[sm]: {
-				width: 385,
-			},
-		},
-
-		separator: {
-			height: 5,
 		},
 	});

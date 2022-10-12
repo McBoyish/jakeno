@@ -5,13 +5,18 @@ import { Text, View, Pressable } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useRouter } from 'next/router';
 import { useUserContext } from '../context/UserContext';
-import ImageComponent from 'next/image';
 
 export default function NavBar() {
 	const router = useRouter();
-	const { loggedIn, user, logoff, userLoading } = useUserContext();
+	const { loggedIn, user, logout, userLoading } = useUserContext();
+
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
+
+	const handleLogout = () => {
+		logout();
+		router.push('/');
+	};
 
 	const redirectToHomePage = () => {
 		router.push('/');
@@ -25,18 +30,24 @@ export default function NavBar() {
 		router.push('/register');
 	};
 
+	const redirectToAboutPage = () => {
+		router.push('/about');
+	};
+
 	return (
 		<View style={styles.container}>
-			<Pressable style={styles.navContainer} onPress={redirectToHomePage}>
-				<ImageComponent src='/ufo.png' width={60} height={40} />
-			</Pressable>
+			<View style={styles.navContainer}>
+				<Pressable onPress={redirectToHomePage}>
+					<Text style={styles.text}>{'Home'}</Text>
+				</Pressable>
+			</View>
 			<View style={styles.navContainer}>
 				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}
 				{!userLoading && loggedIn && (
 					<>
 						<Text style={styles.text}>{user.name}</Text>
 						<View style={styles.separator} />
-						<Pressable onPress={logoff}>
+						<Pressable onPress={handleLogout}>
 							<Text style={styles.text}>{'Log out'}</Text>
 						</Pressable>
 					</>
@@ -49,6 +60,10 @@ export default function NavBar() {
 						<View style={styles.separator} />
 						<Pressable onPress={redirectToRegisterPage}>
 							<Text style={styles.text}>{'Register'}</Text>
+						</Pressable>
+						<View style={styles.separator} />
+						<Pressable onPress={redirectToAboutPage}>
+							<Text style={styles.text}>{'About'}</Text>
 						</Pressable>
 					</>
 				)}
@@ -64,26 +79,18 @@ const styleSheet = (color: Color, font: Font) =>
 			alignSelf: 'center',
 			alignItems: 'center',
 			justifyContent: 'space-between',
-			backgroundColor: color.tertiary,
-			height: 60,
+			backgroundColor: `${color.secondary}`,
+			height: 45,
 			width: '100%',
 			padding: 20,
 		},
 
 		navContainer: {
 			flexDirection: 'row',
-			padding: 5,
 		},
 
 		separator: {
 			width: 20,
-		},
-
-		heading: {
-			fontSize: font.size.heading,
-			fontFamily: font.family.heading,
-			color: color.text,
-			textAlign: 'center',
 		},
 
 		text: {

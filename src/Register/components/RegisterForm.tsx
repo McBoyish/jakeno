@@ -8,23 +8,29 @@ import StyleSheet from 'react-native-media-query';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouter } from 'next/router';
 import { register } from 'server/routers';
-import { useMediaQueries } from 'utils/responsive';
+import { textInput } from 'src/common/css';
+import { useBreakPoints, useMediaQueries } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
 export default function RegisterForm() {
 	const router = useRouter();
 	const { updateToken } = useUserContext();
+
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirm, setConfirm] = useState('');
+
 	const [isValidUsername, setIsValidUsername] = useState(true);
 	const [isValidPassword, setIsValidPassword] = useState(true);
 	const [isValidConfirm, setIsValidConfirm] = useState(true);
+
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
+
 	const { color, font } = useTheme();
-	const { styles, ids } = styleSheet(color, font);
+	const { isMediumScreen } = useBreakPoints();
+	const { styles, ids } = styleSheet(color, font, isMediumScreen);
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
@@ -54,10 +60,8 @@ export default function RegisterForm() {
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.headingContainer}>
-				<Text style={styles.heading}>{'Create an account'}</Text>
-			</View>
+		<View>
+			<Text style={styles.heading}>{'Create an account'}</Text>
 			<View style={styles.formContainer}>
 				<View style={styles.inputContainer}>
 					<TextInput
@@ -81,7 +85,6 @@ export default function RegisterForm() {
 							!isValidPassword ? styles.error : undefined,
 						]}
 						placeholder={'Enter password'}
-						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
@@ -96,7 +99,6 @@ export default function RegisterForm() {
 							!isValidConfirm ? styles.error : undefined,
 						]}
 						placeholder={'Confirm password'}
-						textContentType={'password'}
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
@@ -107,17 +109,22 @@ export default function RegisterForm() {
 					disabled={!username || !password || !confirm || errorMsg !== ''}
 					onClick={handleOnSubmit}
 					loading={loading}
-					dataSet={{ media: ids.button }}
-					style={styles.button}
+					containerStyle={styles.button}
 				/>
 				<View
 					style={styles.formHelperContainer}
 					dataSet={{ media: ids.formHelperContainer }}
 				>
-					<Text style={styles.formHelperText}>
+					<Text
+						style={styles.formHelperText}
+						dataSet={{ media: ids.formHelperText }}
+					>
 						{'Username should be 3-12 numbers/letters'}
 					</Text>
-					<Text style={styles.formHelperText}>
+					<Text
+						style={styles.formHelperText}
+						dataSet={{ media: ids.formHelperText }}
+					>
 						{'Password should be 8-20 numbers/letters'}
 					</Text>
 				</View>
@@ -126,22 +133,10 @@ export default function RegisterForm() {
 	);
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
-		container: {
-			marginVertical: 5,
-		},
-
 		formContainer: {
-			marginVertical: 5,
-			padding: 20,
-			backgroundColor: color.secondary,
-			borderRadius: 5,
 			alignItems: 'center',
-		},
-
-		headingContainer: {
-			marginBottom: 15,
 		},
 
 		inputContainer: {
@@ -153,46 +148,37 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.heading,
 			color: color.text,
 			textAlign: 'center',
+			marginBottom: 15,
 		},
 
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
+			...textInput,
 			height: 50,
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		button: {
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		error: {
 			borderColor: color.error,
-			borderWidth: 1,
+			borderWidth: 2.5,
 		},
 
 		formHelperText: {
-			fontSize: font.size.tertiary,
+			fontSize: font.size.small,
 			fontFamily: font.family.text,
 			color: color.text,
+			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',
 			paddingHorizontal: 10,
-			lineHeight: 15,
+			marginVertical: 1,
+
+			[md]: {
+				fontSize: font.size.secondary,
+			},
 		},
 
 		formHelperContainer: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useTheme, Switch, Portal, Modal } from 'react-native-paper';
+import { useTheme, Portal, Modal } from 'react-native-paper';
 import Button from 'src/common/Button';
 import { Color, Font } from 'types';
 import { Text, TextInput, View } from 'react-native';
@@ -9,8 +9,9 @@ import { useRouter } from 'next/router';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
+import { textInput, container } from 'src/common/css';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
-import { useMediaQueries } from 'utils/responsive';
+import { useMediaQueries, useBreakPoints } from 'utils/responsive';
 
 const { md } = useMediaQueries();
 
@@ -18,34 +19,38 @@ export default function CreateRoomModal() {
 	const { user, token, loggedIn } = useUserContext();
 	const { isVisible, hideModal } = useCreateRoomModalContext();
 	const router = useRouter();
+
 	const [roomName, setRoomName] = useState('');
 	const [code, setCode] = useState('');
-	const [locked, setLocked] = useState(false);
 	const [description, setDescription] = useState('');
+
 	const [isValidRoomName, setIsValidRoomName] = useState(true);
 	const [isValidCode, setIsValidCode] = useState(true);
 	const [isValidDescription, setIsValidDescription] = useState(true);
+
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState('');
-	const { color, font } = useTheme();
-	const { styles, ids } = styleSheet(color, font);
 
-	const handleSwitch = (value: boolean) => {
-		if (loading) return;
-		setCode('');
-		setIsValidCode(true);
-		setLocked(value);
+	const { color, font } = useTheme();
+	const { isMediumScreen } = useBreakPoints();
+	const { styles, ids } = styleSheet(color, font, isMediumScreen);
+
+	const showError = (msg: string) => {
+		setErrorMsg(msg);
+		setTimeout(() => {
+			setErrorMsg('');
+		}, 3000);
 	};
 
 	const handleOnSubmit = async () => {
 		setLoading(true);
 		const roomNameValid = /^[a-zA-Z0-9]{1,12}$/.test(roomName);
-		const codeValid = /^[0-9]{4,8}$/.test(code);
+		const codeValid = /^[0-9]{4,}$/.test(code) || code === '';
 		const descriptionValid = description !== '';
 		setIsValidRoomName(roomNameValid);
-		setIsValidCode(!locked || codeValid);
+		setIsValidCode(codeValid);
 		setIsValidDescription(descriptionValid);
-		if (!roomNameValid || (locked && !codeValid) || !descriptionValid) {
+		if (!roomNameValid || !codeValid || !descriptionValid) {
 			setLoading(false);
 			return;
 		}
@@ -54,22 +59,19 @@ export default function CreateRoomModal() {
 			return;
 		}
 		const room: InputRoom = {
-			userId: user._id,
 			name: roomName,
 			description,
-			locked,
-			code: locked ? code : '',
+			code,
 		};
-		const roomData = await createRoom(room, token);
-		if (!roomData) {
+		const res = await createRoom(room, token);
+		if (!res) {
+			showError('Room already exists');
 			setLoading(false);
-			setErrorMsg('Room name already exists');
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 3000);
 			return;
 		}
+		sessionStorage.setItem(roomName, code);
 		router.push(`/room/${roomName}`);
+		hideModal();
 	};
 
 	return (
@@ -97,38 +99,18 @@ export default function CreateRoomModal() {
 							dataSet={{ media: ids.textInput }}
 						/>
 					</View>
-					<View
-						style={styles.switchContainer}
-						dataSet={{ media: ids.switchContainer }}
-					>
-						<View
-							style={[styles.switch, loggedIn ? undefined : { opacity: 0.5 }]}
-						>
-							<Text style={styles.smallText} dataSet={{ media: ids.smallText }}>
-								{'Lock'}
-							</Text>
-							<View style={styles.spacing} />
-							<Switch
-								value={locked}
-								onValueChange={handleSwitch}
-								color={color.primary}
-								disabled={!loggedIn}
-								style={{ width: 30, height: 15 }}
-							/>
-						</View>
-						<View style={styles.spacing} />
+					<View style={styles.inputContainer}>
 						<TextInput
 							onChangeText={setCode}
 							value={code}
 							style={[
-								styles.codeInput,
+								styles.textInput,
 								!isValidCode ? styles.error : undefined,
-								!locked || !loggedIn ? { opacity: 0.5 } : undefined,
+								loggedIn ? undefined : { opacity: 0.5 },
 							]}
-							placeholder={'Enter code'}
-							textContentType={'none'}
-							editable={loggedIn && locked && !loading}
-							dataSet={{ media: ids.codeInput }}
+							placeholder={'Enter code (optional)'}
+							editable={loggedIn && !loading}
+							dataSet={{ media: ids.textInput }}
 						/>
 					</View>
 					<View style={styles.inputContainer}>
@@ -148,23 +130,26 @@ export default function CreateRoomModal() {
 					</View>
 					<Button
 						text={errorMsg || 'Create'}
-						disabled={
-							!roomName || (locked && !code) || !description || errorMsg !== ''
-						}
+						disabled={!roomName || !description || errorMsg !== ''}
 						onClick={handleOnSubmit}
 						loading={loading}
-						dataSet={{ media: ids.button }}
-						style={styles.button}
+						containerStyle={styles.button}
 					/>
 					<View
 						style={styles.formHelperContainer}
 						dataSet={{ media: ids.formHelperContainer }}
 					>
-						<Text style={styles.formHelperText}>
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
 							{'Name should be 1-12 numbers/letters'}
 						</Text>
-						<Text style={styles.formHelperText}>
-							{'Code should be 4-8 numbers'}
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
+							{'Code should be at least 4 numbers'}
 						</Text>
 					</View>
 				</View>
@@ -173,12 +158,11 @@ export default function CreateRoomModal() {
 	);
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, isMediumScreen: boolean) =>
 	StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			backgroundColor: color.secondary,
-			borderRadius: 5,
+			backgroundColor: color.background,
 		},
 
 		icon: {
@@ -197,38 +181,8 @@ const styleSheet = (color: Color, font: Font) =>
 			marginBottom: 15,
 		},
 
-		switchContainer: {
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			marginBottom: 15,
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
-		},
-
 		button: {
-			width: 225,
-
-			[md]: {
-				width: 300,
-			},
-		},
-
-		switch: {
-			flexDirection: 'row',
-			alignItems: 'center',
-			backgroundColor: color.tertiary,
-			height: 50,
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			justifyContent: 'space-evenly',
-		},
-
-		spacing: {
-			width: 10,
+			width: isMediumScreen ? 300 : 225,
 		},
 
 		heading: {
@@ -238,32 +192,8 @@ const styleSheet = (color: Color, font: Font) =>
 			textAlign: 'center',
 		},
 
-		codeInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
-			height: 50,
-			width: 125,
-
-			[md]: {
-				width: 200,
-			},
-		},
-
 		textInput: {
-			borderRadius: 5,
-			paddingHorizontal: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
+			...textInput,
 			height: 50,
 			width: 225,
 
@@ -273,14 +203,8 @@ const styleSheet = (color: Color, font: Font) =>
 		},
 
 		descriptionInput: {
-			borderRadius: 5,
+			...textInput,
 			padding: 10,
-			fontSize: font.size.primary,
-			fontFamily: font.family.text,
-			outlineStyle: 'none',
-			borderColor: color.primary,
-			backgroundColor: color.tertiary,
-			color: color.text,
 			height: 100,
 			width: 225,
 
@@ -291,17 +215,22 @@ const styleSheet = (color: Color, font: Font) =>
 
 		error: {
 			borderColor: color.error,
-			borderWidth: 1,
+			borderWidth: 2.5,
 		},
 
 		formHelperText: {
-			fontSize: font.size.tertiary,
+			fontSize: font.size.small,
 			fontFamily: font.family.text,
 			color: color.text,
+			opacity: 0.5,
 			textAlign: 'center',
 			alignSelf: 'center',
 			paddingHorizontal: 10,
-			lineHeight: 15,
+			marginVertical: 1,
+
+			[md]: {
+				fontSize: font.size.secondary,
+			},
 		},
 
 		formHelperContainer: {
@@ -317,9 +246,5 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.secondary,
 			fontFamily: font.family.text,
 			color: color.text,
-
-			[md]: {
-				fontSize: font.size.primary,
-			},
 		},
 	});
