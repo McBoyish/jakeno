@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Message } from 'types';
+import { https } from 'server/socket';
 
-const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/message`;
+const uri = `${https}/api/message`;
 
 export const getMessages = async (
 	roomName: string,

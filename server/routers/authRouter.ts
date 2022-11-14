@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { User } from 'types';
+import { https } from 'server/socket';
 
-const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/auth`;
+const uri = `${https}/api/auth`;
 
 export const verify = async (token: string | null) => {
 	try {

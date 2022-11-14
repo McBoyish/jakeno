@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { InputRoom, Room } from 'types';
+import { https } from 'server/socket';
 
-const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/room`;
+const uri = `${https}/api/room`;
 
 export const getPublicRooms = async () => {
 	try {

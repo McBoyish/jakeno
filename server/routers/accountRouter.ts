@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { UserData, InputAccount } from 'types';
+import { https } from 'server/socket';
 
-const uri = `${process.env.HTTPS || 'http://localhost:4000'}/api/account`;
+const uri = `${https}/api/account`;
 
 export const register = async (name: string, password: string) => {
 	try {
