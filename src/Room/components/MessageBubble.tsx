@@ -27,7 +27,7 @@ function MessageBubble({ message, messages, index }: MessageBubbleProps) {
 			{shouldAddDate && (
 				<View style={styles.dateContainer}>
 					<View style={styles.line} />
-					<Text style={styles.date}>{`${dateString}`}</Text>
+					<Text style={styles.date} numberOfLines={1}>{`${dateString}`}</Text>
 					<View style={styles.line} />
 				</View>
 			)}
@@ -90,7 +90,6 @@ const styleSheet = (color: Color, font: Font) =>
 			fontSize: font.size.primary,
 			color: color.text,
 			marginHorizontal: 5,
-			flex: 0,
 		},
 
 		textContainer: {
