@@ -47,9 +47,6 @@ export default function Home() {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
-				<JoinRoomForm />
-			</View>
 			<View
 				style={styles.roomsContainer}
 				dataSet={{ media: ids.roomsContainer }}
@@ -57,6 +54,9 @@ export default function Home() {
 				<LiveRooms liveRooms={liveRooms} />
 				<View style={{ height: 50 }} />
 				<AllRooms rooms={allRooms} />
+			</View>
+			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
+				<JoinRoomForm />
 			</View>
 			<CreateRoomModal />
 		</View>
