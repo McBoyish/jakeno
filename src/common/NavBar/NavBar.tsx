@@ -45,23 +45,19 @@ export default function NavBar() {
 				{userLoading && <Text style={styles.text}>{'Loading...'}</Text>}
 				{!userLoading && loggedIn && (
 					<>
-						<Pressable onPress={redirectToAboutPage}>
-							<Text style={styles.text}>{'About'}</Text>
-						</Pressable>
-						<View style={styles.separator} />
 						<Text style={styles.text}>{user.name}</Text>
 						<View style={styles.separator} />
 						<Pressable onPress={handleLogout}>
 							<Text style={styles.text}>{'Log out'}</Text>
 						</Pressable>
+						<View style={styles.separator} />
+						<Pressable onPress={redirectToAboutPage}>
+							<Text style={styles.text}>{'About'}</Text>
+						</Pressable>
 					</>
 				)}
 				{!userLoading && !loggedIn && (
 					<>
-						<Pressable onPress={redirectToAboutPage}>
-							<Text style={styles.text}>{'About'}</Text>
-						</Pressable>
-						<View style={styles.separator} />
 						<Pressable onPress={redirectToLoginPage}>
 							<Text style={styles.text}>{'Log in'}</Text>
 						</Pressable>
@@ -70,6 +66,9 @@ export default function NavBar() {
 							<Text style={styles.text}>{'Register'}</Text>
 						</Pressable>
 						<View style={styles.separator} />
+						<Pressable onPress={redirectToAboutPage}>
+							<Text style={styles.text}>{'About'}</Text>
+						</Pressable>
 					</>
 				)}
 			</View>
