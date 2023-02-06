@@ -73,7 +73,7 @@ export interface Room {
 }
 
 export interface LiveRoom extends Room {
-	activeUsers: number;
+	activeUsers?: number;
 }
 
 export interface UserData extends User {

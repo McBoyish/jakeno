@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'react-native-paper';
-import { Color, LiveRoom } from 'types';
+import { Color, LiveRoom, Room } from 'types';
 import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
 import { useUserContext } from 'src/common/context/UserContext';
@@ -8,11 +8,14 @@ import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
 import CreateRoomModal from './components/CreateRoomModal';
 import LiveRooms from './components/LiveRooms';
+import { getPublicRooms } from 'server/routers';
+import AllRooms from './components/AllRooms';
 
 const { md } = useMediaQueries();
 
 export default function Home() {
 	const [liveRooms, setLiveRooms] = useState<LiveRoom[]>([]);
+	const [allRooms, setAllRooms] = useState<Room[]>([]);
 
 	const { socket } = useUserContext();
 
@@ -20,6 +23,9 @@ export default function Home() {
 	const { styles, ids } = styleSheet(color);
 
 	useEffect(() => {
+		getPublicRooms().then(rooms => {
+			rooms && setAllRooms(rooms);
+		});
 		socket.emit('join-home', (liveRooms: LiveRoom[]) => {
 			setLiveRooms(liveRooms);
 		});
@@ -49,6 +55,8 @@ export default function Home() {
 				dataSet={{ media: ids.roomsContainer }}
 			>
 				<LiveRooms liveRooms={liveRooms} />
+				<View style={{ height: 50 }} />
+				<AllRooms rooms={allRooms} />
 			</View>
 			<CreateRoomModal />
 		</View>
@@ -63,7 +71,7 @@ const styleSheet = (color: Color) =>
 			width: '100%',
 			padding: 10,
 			flexDirection: 'column',
-			alignItems: 'center',
+			// alignItems: 'center',
 			justifyContent: 'space-around',
 
 			[md]: {
