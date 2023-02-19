@@ -13,9 +13,12 @@ import AllRooms from './components/AllRooms';
 
 const { md } = useMediaQueries();
 
-export default function Home() {
+interface HomeProps {
+	rooms: Room[];
+}
+
+export default function Home({ rooms }: HomeProps) {
 	const [liveRooms, setLiveRooms] = useState<LiveRoom[]>([]);
-	const [allRooms, setAllRooms] = useState<Room[]>([]);
 
 	const { socket } = useUserContext();
 
@@ -23,9 +26,6 @@ export default function Home() {
 	const { styles, ids } = styleSheet(color);
 
 	useEffect(() => {
-		getPublicRooms().then(rooms => {
-			rooms && setAllRooms(rooms);
-		});
 		socket.emit('join-home', (liveRooms: LiveRoom[]) => {
 			setLiveRooms(liveRooms);
 		});
@@ -53,7 +53,7 @@ export default function Home() {
 			>
 				<LiveRooms liveRooms={liveRooms} />
 				<View style={{ height: 50 }} />
-				<AllRooms rooms={allRooms} />
+				<AllRooms rooms={rooms} />
 			</View>
 			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
 				<JoinRoomForm />
