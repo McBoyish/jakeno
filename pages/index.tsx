@@ -22,4 +22,6 @@ export async function getStaticProps() {
 	};
 }
 
+// test
+
 export default HomePage;
