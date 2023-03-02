@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'types';
-import { uri, io } from 'server/socket';
+import { uri, io } from 'server/api';
 import { verify } from 'server/routers';
 import { Socket } from 'socket.io-client';
 

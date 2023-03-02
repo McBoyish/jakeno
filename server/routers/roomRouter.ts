@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { InputRoom, Room } from 'types';
-import { https } from 'server/socket';
+import { https } from 'server/api';
 
 const uri = `${https}/api/room`;
 
