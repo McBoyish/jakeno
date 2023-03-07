@@ -4,6 +4,7 @@ import HyperLink from 'react-native-hyperlink';
 import { Color, Font, Message } from 'types';
 import { useTheme } from 'react-native-paper';
 import StyleSheet from 'react-native-media-query';
+import { useUserContext } from 'src/common/context/UserContext';
 
 interface MessageBubbleProps {
 	message: Message;
@@ -12,11 +13,14 @@ interface MessageBubbleProps {
 }
 
 function MessageBubble({ message, messages, index }: MessageBubbleProps) {
+	const { user, loggedIn } = useUserContext();
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	const date = new Date(message.createdAt);
 	const dateString = date.toLocaleDateString();
+
+	const isSelf = user.name === message.user.name;
 
 	const shouldAddDate =
 		message._id === messages[messages.length - 1]._id ||
@@ -35,7 +39,12 @@ function MessageBubble({ message, messages, index }: MessageBubbleProps) {
 				<View style={styles.textContainer}>
 					<HyperLink linkDefault linkStyle={styles.hyperlink}>
 						<Text>
-							<Text style={styles.username}>{`${message.user.name}:`}</Text>
+							{isSelf && loggedIn ? (
+								<Text style={styles.username}>{`${message.user.name}:`}</Text>
+							) : (
+								<Text style={styles.username}>{`${message.user.name}:`}</Text>
+							)}
+
 							<View style={styles.spacing} />
 							<Text style={styles.text}>{`${message.content}`}</Text>
 						</Text>
@@ -69,6 +78,12 @@ const styleSheet = (color: Color, font: Font) =>
 			fontFamily: font.family.text,
 			fontSize: font.size.primary,
 			color: color.primary,
+		},
+
+		usernameSelf: {
+			fontFamily: font.family.text,
+			fontSize: font.size.primary,
+			color: color.secondary,
 		},
 
 		line: {
