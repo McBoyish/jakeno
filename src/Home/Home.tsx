@@ -47,16 +47,16 @@ export default function Home({ rooms }: HomeProps) {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
+			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
+				<JoinRoomForm />
+				<View style={{ height: 50 }} />
+				<LiveRooms liveRooms={liveRooms} />
+			</View>
 			<View
 				style={styles.roomsContainer}
 				dataSet={{ media: ids.roomsContainer }}
 			>
-				<LiveRooms liveRooms={liveRooms} />
-				<View style={{ height: 50 }} />
 				<AllRooms rooms={rooms} />
-			</View>
-			<View style={styles.formContainer} dataSet={{ media: ids.formContainer }}>
-				<JoinRoomForm />
 			</View>
 			<CreateRoomModal />
 		</View>
@@ -71,8 +71,7 @@ const styleSheet = (color: Color) =>
 			width: '100%',
 			padding: 10,
 			flexDirection: 'column',
-			// alignItems: 'center',
-			justifyContent: 'space-around',
+			justifyContent: 'space-evenly',
 
 			[md]: {
 				flexDirection: 'row',

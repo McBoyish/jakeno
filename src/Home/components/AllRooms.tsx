@@ -76,7 +76,7 @@ const styleSheet = (
 
 		listContainer: {
 			width: isMediumScreen ? 350 : isSmallScreen ? 300 : 225,
-			maxHeight: 395,
+			height: 600,
 		},
 
 		content: {
