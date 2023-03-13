@@ -6,10 +6,9 @@ import JoinRoomForm from './components/JoinRoomForm';
 import { useUserContext } from 'src/common/context/UserContext';
 import StyleSheet from 'react-native-media-query';
 import { useMediaQueries } from 'utils/responsive';
-import CreateRoomModal from './components/CreateRoomModal';
 import LiveRooms from './components/LiveRooms';
-import { getPublicRooms } from 'server/routers';
 import AllRooms from './components/AllRooms';
+import CreateRoomModal from './components/CreateRoomModal';
 
 const { md } = useMediaQueries();
 

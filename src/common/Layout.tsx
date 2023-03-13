@@ -1,10 +1,10 @@
 import React from 'react';
-import { Provider as PaperProvider, Portal } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import theme from 'theme';
 import { UserContextProvider } from 'src/common/context/UserContext';
 import { CreateRoomModalContextProvider } from './context/CreateRoomModalContext';
 import NavBar from 'src/common/NavBar';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -15,12 +15,10 @@ function Layout({ children }: LayoutProps) {
 		<PaperProvider theme={theme}>
 			<CreateRoomModalContextProvider>
 				<UserContextProvider>
-					<Portal.Host>
-						<View style={{ flexGrow: 1, backgroundColor: '#F9F7F7' }}>
-							<NavBar />
-							{children}
-						</View>
-					</Portal.Host>
+					<ScrollView style={{ flexGrow: 1, backgroundColor: '#F9F7F7' }}>
+						<NavBar />
+						{children}
+					</ScrollView>
 				</UserContextProvider>
 			</CreateRoomModalContextProvider>
 		</PaperProvider>
