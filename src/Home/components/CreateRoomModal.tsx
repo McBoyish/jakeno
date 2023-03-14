@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { InputRoom } from 'types';
 import { createRoom } from 'server/routers';
 import { useUserContext } from 'src/common/context/UserContext';
-import { textInput, container } from 'src/common/css';
+import { textInput } from 'src/common/css';
 import { useCreateRoomModalContext } from 'src/common/context/CreateRoomModalContext';
 import { useMediaQueries, useBreakPoints } from 'utils/responsive';
 
