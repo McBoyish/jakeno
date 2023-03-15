@@ -33,7 +33,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					value={text}
 					placeholder={'Message'}
 					style={styles.textInput}
-					onSubmitEditing={isMobile ? undefined : handleSubmit}
+					onSubmitEditing={handleSubmit}
 					blurOnSubmit={false}
 					ref={textInputRef}
 					textContentType={'none'}
@@ -44,14 +44,14 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					spellCheck={false}
 				/>
 			</form>
-			<Button
+			{/* <Button
 				text={'Send'}
 				disabled={text.trim() === ''}
 				onClick={handleSubmit}
 				containerStyle={styles.button}
 				textStyle={styles.buttonText}
 				disableTouchOpacity
-			/>
+			/> */}
 		</View>
 	);
 }

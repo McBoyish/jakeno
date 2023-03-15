@@ -250,6 +250,7 @@ const styleSheet = (color: Color, font: Font) =>
 			width: '100%',
 			backgroundColor: color.background,
 			padding: 20,
+			maxWidth: 1024,
 		},
 
 		text: {
