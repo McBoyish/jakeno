@@ -27,8 +27,8 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	};
 
 	return (
-		<form>
-			<View style={styles.container} dataSet={{ media: ids.container }}>
+		<View style={styles.container} dataSet={{ media: ids.container }}>
+			<form style={{ width: '100%' }}>
 				<TextInput
 					onChangeText={setText}
 					value={text}
@@ -41,16 +41,16 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					autoCompleteType={'off'}
 					keyboardType={'default'}
 				/>
-				<Button
-					text={'Send'}
-					disabled={text.trim() === ''}
-					onClick={handleSubmit}
-					containerStyle={styles.button}
-					textStyle={styles.buttonText}
-					disableTouchOpacity
-				/>
-			</View>
-		</form>
+			</form>
+			<Button
+				text={'Send'}
+				disabled={text.trim() === ''}
+				onClick={handleSubmit}
+				containerStyle={styles.button}
+				textStyle={styles.buttonText}
+				disableTouchOpacity
+			/>
+		</View>
 	);
 }
 
