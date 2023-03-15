@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Portal, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { Color, LiveRoom, Room } from 'types';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import JoinRoomForm from './components/JoinRoomForm';
 import { useUserContext } from 'src/common/context/UserContext';
 import StyleSheet from 'react-native-media-query';
@@ -47,27 +47,25 @@ export default function Home({ rooms }: HomeProps) {
 
 	return (
 		<CreateRoomModalContextProvider>
-			<Portal.Host>
-				<View>
-					<View style={styles.container} dataSet={{ media: ids.container }}>
-						<View
-							style={styles.formContainer}
-							dataSet={{ media: ids.formContainer }}
-						>
-							<JoinRoomForm />
-							<View style={{ height: 50 }} />
-							<LiveRooms liveRooms={liveRooms} />
-						</View>
-						<View
-							style={styles.roomsContainer}
-							dataSet={{ media: ids.roomsContainer }}
-						>
-							<AllRooms rooms={rooms} />
-						</View>
+			<View>
+				<View style={styles.container} dataSet={{ media: ids.container }}>
+					<View
+						style={styles.formContainer}
+						dataSet={{ media: ids.formContainer }}
+					>
+						<JoinRoomForm />
+						<View style={{ height: 50 }} />
+						<LiveRooms liveRooms={liveRooms} />
 					</View>
-					<CreateRoomModal />
+					<View
+						style={styles.roomsContainer}
+						dataSet={{ media: ids.roomsContainer }}
+					>
+						<AllRooms rooms={rooms} />
+					</View>
 				</View>
-			</Portal.Host>
+				<CreateRoomModal />
+			</View>
 		</CreateRoomModalContextProvider>
 	);
 }
