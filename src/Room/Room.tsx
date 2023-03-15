@@ -161,9 +161,9 @@ export default function Room() {
 			user,
 			content: text,
 		};
-		scrollToStart?.();
 		socket.emit('message', input, (res: Message | null) => {
 			if (!res) return;
+			// scrollToStart?.();
 			addMessage(res);
 		});
 	};
@@ -226,7 +226,6 @@ export default function Room() {
 					usersVisible={usersVisible}
 					setUsersVisible={setUsersVisible}
 				/>
-				{/* <View style={{ width: '100%', flex: 1 }}> */}
 				<MessageBox
 					messages={messages}
 					fetchMore={fetchMore}
@@ -234,7 +233,6 @@ export default function Room() {
 					hasMore={hasMore}
 					isFetching={isFetching}
 				/>
-				{/* </View> */}
 				<MessageInput onSubmit={onSubmit} />
 			</View>
 		);

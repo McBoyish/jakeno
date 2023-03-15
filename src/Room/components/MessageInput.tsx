@@ -4,21 +4,17 @@ import {
 	TextInput,
 	NativeSyntheticEvent,
 	TextInputKeyPressEventData,
-	Platform,
 } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
 import { textInput } from 'src/common/css';
-import { useMediaQueries } from 'utils/responsive';
 
 interface MessageInputProps {
 	onSubmit: (_: string) => void;
 }
 type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
-
-const { sm } = useMediaQueries();
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
@@ -29,20 +25,20 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		if (text.trim() === '') return;
-		if (e.nativeEvent.key === 'Enter') {
-			textInputRef?.current?.focus();
-			handleOnSubmit();
-		}
+		// if (text.trim() === '') return;
+		// if (e.nativeEvent.key === 'Enter') {
+		// 	textInputRef?.current?.focus();
+		// 	handleOnSubmit();
+		// }
 	};
 
 	const handleOnSubmit = () => {
-		setText('');
 		onSubmit(text.trim());
+		setText('');
 	};
 
 	const handleOnButtonPress = () => {
-		textInputRef?.current?.focus();
+		// textInputRef?.current?.focus();
 		handleOnSubmit();
 	};
 
