@@ -38,6 +38,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onKeyPress={e => {
 					if (e.key === 'Enter') handleSubmit();
 				}}
+				type={'text'}
 			/>
 			{/* <TextInput
 				onChangeText={setText}

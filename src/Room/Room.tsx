@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MessageBox from './components/MessageBox';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
 import { InputMessage, Message, Room as Room_, User } from 'types';
@@ -220,7 +220,7 @@ export default function Room() {
 
 	if (room && users)
 		return (
-			<View style={styles.container}>
+			<ScrollView contentContainerStyle={styles.container}>
 				<Users
 					users={users}
 					usersVisible={usersVisible}
@@ -234,7 +234,7 @@ export default function Room() {
 					isFetching={isFetching}
 				/>
 				<MessageInput onSubmit={onSubmit} />
-			</View>
+			</ScrollView>
 		);
 
 	return <Loading />;
