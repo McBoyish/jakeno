@@ -36,7 +36,7 @@ export default function MessageBox({
 	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
 		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
 		fetchMore().catch(() => {
-			// ?
+			// ...
 		});
 	};
 
@@ -66,6 +66,6 @@ const styleSheet = () =>
 			...container,
 			flexDirection: 'column',
 			width: '100%',
-			height: 500,
+			flex: 1,
 		},
 	});

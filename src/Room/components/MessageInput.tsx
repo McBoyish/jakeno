@@ -3,9 +3,7 @@ import { View, TextInput } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
-import Button from 'src/common/Button';
 import { textInput } from 'src/common/css';
-import { isMobile } from 'react-device-detect';
 
 interface MessageInputProps {
 	onSubmit: (text: string) => void;
@@ -23,6 +21,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 		if (text.trim() === '') return;
 		onSubmit(text.trim());
 		setText('');
+		window.scrollTo(0, document.body.scrollHeight);
 	};
 
 	return (
