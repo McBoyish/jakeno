@@ -5,14 +5,13 @@ import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
 import { textInput } from 'src/common/css';
-import { isMobile } from 'react-device-detect';
 
 interface MessageInputProps {
 	onSubmit: (text: string) => void;
 }
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
-	const textInputRef = useRef<TextInput>(null);
+	const textInputRef = useRef<HTMLInputElement>(null);
 
 	const [text, setText] = useState('');
 
@@ -28,7 +27,19 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<TextInput
+			<input
+				value={text}
+				onChange={e => {
+					setText(e.target.value);
+				}}
+				style={styles.textInput}
+				ref={textInputRef}
+				placeholder={'Message'}
+				onKeyPress={e => {
+					if (e.key === 'Enter') handleSubmit();
+				}}
+			/>
+			{/* <TextInput
 				onChangeText={setText}
 				value={text}
 				placeholder={'Message'}
@@ -36,7 +47,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onSubmitEditing={isMobile ? undefined : handleSubmit}
 				blurOnSubmit={false}
 				ref={textInputRef}
-			/>
+			/> */}
 			<Button
 				text={'Send'}
 				disabled={text.trim() === ''}
@@ -61,8 +72,10 @@ const styleSheet = (color: Color, font: Font) =>
 			...textInput,
 			borderTopWidth: 0,
 			fontSize: font.size.secondary,
-			height: 35,
+			height: 30.5,
 			width: '100%',
+			paddingLeft: 10,
+			borderStyle: 'solid',
 		},
 
 		button: {
