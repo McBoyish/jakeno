@@ -53,8 +53,8 @@ export default function MessageBox({
 				scrollEnabled
 				showsVerticalScrollIndicator={true}
 				ref={scrollRef}
-				inverted
-				disableVirtualization
+				// inverted
+				// disableVirtualization
 				contentContainerStyle={{ padding: 10 }}
 				onEndReached={handleOnEndReached}
 				onEndReachedThreshold={0.5}
@@ -68,8 +68,9 @@ const styleSheet = (color: Color) =>
 		container: {
 			...container,
 			flexDirection: 'column',
-			flexGrow: 1,
+			// flexGrow: 1,
 			width: '100%',
-			height: 1, // hack
+			// height: 1, // hack
+			height: 200,
 		},
 	});
