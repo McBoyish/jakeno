@@ -41,7 +41,7 @@ const styleSheet = (color: Color) =>
 		},
 
 		separator: {
-			height: 15,
+			height: 100,
 
 			[md]: {
 				height: 0,
