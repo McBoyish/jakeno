@@ -163,7 +163,7 @@ export default function Room() {
 		};
 		socket.emit('message', input, (res: Message | null) => {
 			if (!res) return;
-			scrollToStart?.();
+			// scrollToStart?.();
 			addMessage(res);
 		});
 	};
