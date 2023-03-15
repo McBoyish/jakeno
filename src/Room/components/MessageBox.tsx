@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, KeyboardAvoidingView } from 'react-native';
 import { Color, Message } from 'types';
 import { useTheme } from 'react-native-paper';
 import MessageBubble, { MemoizedSeparator } from './MessageBubble';
@@ -44,7 +44,10 @@ export default function MessageBox({
 	};
 
 	return (
-		<View style={styles.container} dataSet={{ media: ids.container }}>
+		<KeyboardAvoidingView
+			style={styles.container}
+			dataSet={{ media: ids.container }}
+		>
 			<FlatList
 				data={messages}
 				renderItem={renderItem}
@@ -59,7 +62,7 @@ export default function MessageBox({
 				onEndReached={handleOnEndReached}
 				onEndReachedThreshold={0.5}
 			/>
-		</View>
+		</KeyboardAvoidingView>
 	);
 }
 

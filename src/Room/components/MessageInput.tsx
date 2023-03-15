@@ -29,10 +29,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		if (Platform.OS !== 'web') return;
 		if (text.trim() === '') return;
-		if (textInputRef && textInputRef.current) textInputRef.current.focus();
-		if (e.nativeEvent.key === 'Enter') handleOnSubmit();
+		if (e.nativeEvent.key === 'Enter') {
+			textInputRef?.current?.focus();
+			handleOnSubmit();
+		}
 	};
 
 	const handleOnSubmit = () => {
@@ -41,7 +42,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	};
 
 	const handleOnButtonPress = () => {
-		if (textInputRef && textInputRef.current) textInputRef.current.focus();
+		textInputRef?.current?.focus();
 		handleOnSubmit();
 	};
 
