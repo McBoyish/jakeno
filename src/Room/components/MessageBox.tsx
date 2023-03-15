@@ -68,9 +68,7 @@ const styleSheet = (color: Color) =>
 		container: {
 			...container,
 			flexDirection: 'column',
-			// flexGrow: 1,
 			width: '100%',
-			// height: 1, // hack
-			height: '100vh',
+			flex: 1,
 		},
 	});

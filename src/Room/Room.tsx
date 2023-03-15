@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MessageBox from './components/MessageBox';
-import { View, Text, KeyboardAvoidingView } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
 import { InputMessage, Message, Room as Room_, User } from 'types';
@@ -15,6 +15,7 @@ import { useUserContext } from 'src/common/context/UserContext';
 
 export default function Room() {
 	const { user, socket } = useUserContext();
+	const { height } = useWindowDimensions();
 	const router = useRouter();
 
 	const [requireCode, setRequireCode] = useState(false);
@@ -39,7 +40,7 @@ export default function Room() {
 	const [scrollToStart, setScrollToStart] = useState<(() => void) | null>(null);
 
 	const { color, font } = useTheme();
-	const { styles } = styleSheet(color, font);
+	const { styles } = styleSheet(color, font, height);
 
 	const limit = 100;
 
@@ -240,16 +241,16 @@ export default function Room() {
 	return <Loading />;
 }
 
-const styleSheet = (color: Color, font: Font) =>
+const styleSheet = (color: Color, font: Font, height: number) =>
 	StyleSheet.create({
 		container: {
-			flex: 1,
 			alignSelf: 'center',
 			alignItems: 'center',
 			justifyContent: 'center',
 			width: '100%',
 			backgroundColor: color.background,
 			padding: 20,
+			height: height - 45,
 		},
 
 		text: {
