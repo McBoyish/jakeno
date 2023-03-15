@@ -1,21 +1,14 @@
 import React, { useState, useRef } from 'react';
-import {
-	View,
-	TextInput,
-	NativeSyntheticEvent,
-	TextInputKeyPressEventData,
-} from 'react-native';
+import { View, TextInput } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
-import { isMobile } from 'react-device-detect';
 import { textInput } from 'src/common/css';
 
 interface MessageInputProps {
-	onSubmit: (text: string, callback?: () => void) => void;
+	onSubmit: (text: string) => void;
 }
-type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const textInputRef = useRef<TextInput>(null);
@@ -25,21 +18,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { color, font } = useTheme();
 	const { styles, ids } = styleSheet(color, font);
 
-	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		if (isMobile) return;
+	const handleSubmit = () => {
+		textInputRef?.current?.focus();
 		if (text.trim() === '') return;
-		if (e.nativeEvent.key === 'Enter') {
-			handleOnSubmit();
-		}
-	};
-
-	const handleOnSubmit = (callback?: () => void) => {
-		onSubmit(text.trim(), callback);
+		onSubmit(text.trim());
 		setText('');
-	};
-
-	const handleOnButtonPress = () => {
-		handleOnSubmit(textInputRef?.current?.focus);
 	};
 
 	return (
@@ -49,14 +32,14 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				value={text}
 				placeholder={'Message'}
 				style={styles.textInput}
-				onKeyPress={handleOnKeyPress}
 				blurOnSubmit={false}
+				onSubmitEditing={handleSubmit}
 				ref={textInputRef}
 			/>
 			<Button
 				text={'Send'}
 				disabled={text.trim() === ''}
-				onClick={handleOnButtonPress}
+				onClick={handleSubmit}
 				containerStyle={styles.button}
 				textStyle={styles.buttonText}
 				disableTouchOpacity
