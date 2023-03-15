@@ -4,15 +4,18 @@ import { Text, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import StyleSheet from 'react-native-media-query';
+import Layout from 'src/common/Layout';
 
 const Error404Page: NextPage = () => {
 	const { color, font } = useTheme();
 	const { styles } = styleSheet(color, font);
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.text}>{'Error 404: Page not found'}</Text>
-		</View>
+		<Layout>
+			<View style={styles.container}>
+				<Text style={styles.text}>{'Error 404: Page not found'}</Text>
+			</View>
+		</Layout>
 	);
 };
 

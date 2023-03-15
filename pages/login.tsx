@@ -4,6 +4,7 @@ import Login from 'src/Login';
 import { useUserContext } from 'src/common/context/UserContext';
 import { useRouter } from 'next/router';
 import Loading from 'src/common/Loading';
+import Layout from 'src/common/Layout';
 
 const LoginPage: NextPage = () => {
 	const { loggedIn } = useUserContext();
@@ -11,10 +12,18 @@ const LoginPage: NextPage = () => {
 
 	if (loggedIn) {
 		router.push('/');
-		return <Loading />;
+		return (
+			<Layout>
+				<Loading />
+			</Layout>
+		);
 	}
 
-	return <Login />;
+	return (
+		<Layout>
+			<Login />
+		</Layout>
+	);
 };
 
 export default LoginPage;
