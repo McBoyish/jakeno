@@ -153,7 +153,7 @@ export default function Room() {
 		});
 	};
 
-	const onSubmit = (text: string) => {
+	const onSubmit = (text: string, callback?: () => void) => {
 		if (!room) return;
 		const input: InputMessage = {
 			roomId: room._id,
@@ -165,6 +165,7 @@ export default function Room() {
 			if (!res) return;
 			scrollToStart?.();
 			addMessage(res);
+			callback?.();
 		});
 	};
 

@@ -13,7 +13,7 @@ import { isMobile } from 'react-device-detect';
 import { textInput } from 'src/common/css';
 
 interface MessageInputProps {
-	onSubmit: (_: string) => void;
+	onSubmit: (text: string, callback?: () => void) => void;
 }
 type OnKeyPressEvent = NativeSyntheticEvent<TextInputKeyPressEventData>;
 
@@ -33,14 +33,13 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 		}
 	};
 
-	const handleOnSubmit = () => {
-		onSubmit(text.trim());
+	const handleOnSubmit = (callback?: () => void) => {
+		onSubmit(text.trim(), callback);
 		setText('');
 	};
 
 	const handleOnButtonPress = () => {
-		textInputRef?.current?.focus();
-		handleOnSubmit();
+		handleOnSubmit(textInputRef?.current?.focus);
 	};
 
 	return (
