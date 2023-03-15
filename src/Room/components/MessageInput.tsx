@@ -4,6 +4,7 @@ import {
 	TextInput,
 	NativeSyntheticEvent,
 	TextInputKeyPressEventData,
+	Platform,
 } from 'react-native';
 import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
@@ -28,6 +29,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
+		if (Platform.OS !== 'web') return;
 		if (text.trim() === '') return;
 		if (textInputRef && textInputRef.current) textInputRef.current.focus();
 		if (e.nativeEvent.key === 'Enter') handleOnSubmit();
@@ -53,7 +55,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onKeyPress={handleOnKeyPress}
 				blurOnSubmit={false}
 				ref={textInputRef}
-				keyboardType={'default'}
 			/>
 			<Button
 				text={'Send'}
