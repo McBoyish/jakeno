@@ -31,7 +31,6 @@ export default class MyDocument extends Document {
 		return (
 			<Html style={{ height: '100%' }}>
 				<Head>
-					<title>{'Jakeno'}</title>
 					<link rel='icon' href='/ufo.png' />
 					<link
 						href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
