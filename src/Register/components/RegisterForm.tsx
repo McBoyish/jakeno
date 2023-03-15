@@ -74,6 +74,9 @@ export default function RegisterForm() {
 						placeholder={'Enter username'}
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -88,6 +91,9 @@ export default function RegisterForm() {
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
 					/>
 				</View>
 				<View style={styles.inputContainer}>
@@ -102,6 +108,9 @@ export default function RegisterForm() {
 						secureTextEntry
 						dataSet={{ media: ids.textInput }}
 						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
 					/>
 				</View>
 				<Button

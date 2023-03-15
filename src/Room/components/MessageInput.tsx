@@ -36,6 +36,9 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onSubmitEditing={isMobile ? undefined : handleSubmit}
 				blurOnSubmit={false}
 				ref={textInputRef}
+				textContentType={'none'}
+				autoCompleteType={'off'}
+				keyboardType={'default'}
 			/>
 			<Button
 				text={'Send'}

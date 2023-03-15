@@ -58,6 +58,9 @@ export default function JoinRoomForm() {
 						style={[styles.textInput, errorMsg ? styles.error : undefined]}
 						placeholder={'Enter room name'}
 						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
 					/>
 				</View>
 				<Button

@@ -55,6 +55,9 @@ export default function LoginForm() {
 					placeholder={'Username'}
 					dataSet={{ media: ids.textInput }}
 					editable={!loading}
+					textContentType={'none'}
+					autoCompleteType={'off'}
+					keyboardType={'default'}
 				/>
 			</View>
 			<View style={styles.inputContainer}>
@@ -66,6 +69,9 @@ export default function LoginForm() {
 					secureTextEntry
 					dataSet={{ media: ids.textInput }}
 					editable={!loading}
+					textContentType={'none'}
+					autoCompleteType={'off'}
+					keyboardType={'default'}
 				/>
 			</View>
 			<Button

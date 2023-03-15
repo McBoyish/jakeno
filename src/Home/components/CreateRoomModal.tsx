@@ -97,6 +97,9 @@ export default function CreateRoomModal() {
 							placeholder={'Enter room name'}
 							editable={loggedIn && !loading}
 							dataSet={{ media: ids.textInput }}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
 						/>
 					</View>
 					<View style={styles.inputContainer}>
@@ -111,6 +114,9 @@ export default function CreateRoomModal() {
 							placeholder={'Enter code (optional)'}
 							editable={loggedIn && !loading}
 							dataSet={{ media: ids.textInput }}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
 						/>
 					</View>
 					<View style={styles.inputContainer}>
@@ -126,6 +132,9 @@ export default function CreateRoomModal() {
 							placeholder={'Enter description'}
 							editable={loggedIn && !loading}
 							dataSet={{ media: ids.descriptionInput }}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
 						/>
 					</View>
 					<Button

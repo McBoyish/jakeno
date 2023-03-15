@@ -61,6 +61,9 @@ export default function CodeForm({
 					style={[styles.textInput, errorMsg ? styles.error : undefined]}
 					placeholder={'Enter code'}
 					editable={!loading}
+					textContentType={'none'}
+					autoCompleteType={'off'}
+					keyboardType={'default'}
 				/>
 			</View>
 			<Button
