@@ -72,8 +72,9 @@ const styleSheet = (color: Color) =>
 		container: {
 			...container,
 			flexDirection: 'column',
-			flexGrow: 1,
+			// flexGrow: 1,
+			height: 500,
 			width: '100%',
-			height: 1, // hack
+			// height: 1, // hack
 		},
 	});
