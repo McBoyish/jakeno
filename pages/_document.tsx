@@ -37,6 +37,18 @@ export default class MyDocument extends Document {
 						href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
 						rel='stylesheet'
 					/>
+					<meta
+						name='description'
+						content={
+							'Create new public or private rooms where you can chat with other people, anonymously or by registering an account!'
+						}
+					/>
+					<meta
+						name='keywords'
+						content={
+							'join room, create room, chat, message, username, login, register, jakeno, private, public, chat room, room'
+						}
+					/>
 				</Head>
 				<body style={{ height: '100%' }}>
 					<Main />
