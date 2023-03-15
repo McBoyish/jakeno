@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
-import { Color, Message } from 'types';
-import { useTheme } from 'react-native-paper';
+import { Message } from 'types';
 import MessageBubble, { MemoizedSeparator } from './MessageBubble';
 import StyleSheet from 'react-native-media-query';
-import { useMediaQueries } from 'utils/responsive';
 import { container } from 'src/common/css';
 import { useVerticalScroll } from 'utils/useVerticalScroll';
 
@@ -16,8 +14,6 @@ interface MessageBoxProps {
 	isFetching: boolean;
 }
 
-const { sm } = useMediaQueries();
-
 export default function MessageBox({
 	messages,
 	fetchMore,
@@ -27,8 +23,7 @@ export default function MessageBox({
 }: MessageBoxProps) {
 	const { scrollRef, scrollToStart } = useVerticalScroll(true);
 
-	const { color } = useTheme();
-	const { styles, ids } = styleSheet(color);
+	const { styles, ids } = styleSheet();
 
 	useEffect(() => {
 		setScrollToStart(() => scrollToStart);
@@ -40,7 +35,9 @@ export default function MessageBox({
 
 	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
 		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
-		fetchMore().catch(console.error);
+		fetchMore().catch(() => {
+			// ?
+		});
 	};
 
 	return (
@@ -63,12 +60,12 @@ export default function MessageBox({
 	);
 }
 
-const styleSheet = (color: Color) =>
+const styleSheet = () =>
 	StyleSheet.create({
 		container: {
 			...container,
 			flexDirection: 'column',
 			width: '100%',
-			flex: 1,
+			height: 500,
 		},
 	});
