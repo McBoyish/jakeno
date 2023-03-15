@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
 
 	render() {
 		return (
-			<Html style={{ height: '100%' }}>
+			<Html style={{ height: '100vh' }}>
 				<Head>
 					<title>{'Jakeno'}</title>
 					<link rel='icon' href='/ufo.png' />
