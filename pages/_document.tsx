@@ -35,6 +35,10 @@ export default class MyDocument extends Document {
 						href='https://fonts.googleapis.com/css2?family=Roboto&display=swap'
 						rel='stylesheet'
 					/>
+					<meta
+						content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+						name='viewport'
+					/>
 				</Head>
 				<body style={{ height: '100%' }}>
 					<Main />
