@@ -28,6 +28,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
+		if (textInputRef && textInputRef.current) textInputRef.current.focus();
 		if (text.trim() === '') return;
 		if (e.nativeEvent.key === 'Enter') handleOnSubmit();
 	};

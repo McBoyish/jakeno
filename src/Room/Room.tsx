@@ -161,10 +161,10 @@ export default function Room() {
 			user,
 			content: text,
 		};
+		scrollToStart?.();
 		socket.emit('message', input, (res: Message | null) => {
 			if (!res) return;
 			addMessage(res);
-			scrollToStart?.();
 		});
 	};
 
