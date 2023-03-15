@@ -36,6 +36,9 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					style={styles.textInput}
 					onSubmitEditing={isMobile ? undefined : handleSubmit}
 					blurOnSubmit={false}
+					onBlur={() => {
+						textInputRef?.current?.focus();
+					}}
 					ref={textInputRef}
 					textContentType={'none'}
 					autoCompleteType={'off'}
