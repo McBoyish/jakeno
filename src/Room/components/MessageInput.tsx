@@ -20,7 +20,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleSubmit = () => {
-		textInputRef?.current?.focus();
 		if (text.trim() === '') return;
 		onSubmit(text.trim());
 		setText('');
@@ -36,10 +35,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					style={styles.textInput}
 					onSubmitEditing={isMobile ? undefined : handleSubmit}
 					blurOnSubmit={false}
-					onBlur={e => {
-						e.preventDefault();
-						textInputRef?.current?.focus();
-					}}
 					ref={textInputRef}
 					textContentType={'none'}
 					autoCompleteType={'off'}
