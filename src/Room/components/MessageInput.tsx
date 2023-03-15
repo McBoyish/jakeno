@@ -53,6 +53,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				onKeyPress={handleOnKeyPress}
 				blurOnSubmit={false}
 				ref={textInputRef}
+				keyboardType={'default'}
 			/>
 			<Button
 				text={'Send'}

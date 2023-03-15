@@ -10,13 +10,15 @@ interface LayoutProps {
 function Layout({ children, scrollView }: LayoutProps) {
 	if (scrollView)
 		return (
-			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+			<ScrollView
+				contentContainerStyle={{ flexGrow: 1, backgroundColor: '#F9F7F7' }}
+			>
 				<NavBar />
 				{children}
 			</ScrollView>
 		);
 	return (
-		<View style={{ flexGrow: 1 }}>
+		<View style={{ flexGrow: 1, backgroundColor: '#F9F7F7' }}>
 			<NavBar />
 			{children}
 		</View>

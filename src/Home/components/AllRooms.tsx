@@ -41,7 +41,7 @@ export default function AllRooms({ rooms }: AllRoomsProps) {
 	};
 
 	return (
-		<View>
+		<View style={{ flex: 1 }}>
 			<Text style={styles.heading}>{'All rooms'}</Text>
 			<View style={styles.container}>
 				<ScrollView
@@ -72,11 +72,12 @@ const styleSheet = (
 		container: {
 			...container,
 			alignSelf: 'center',
+			height: isMediumScreen ? 1 : 400,
+			flexGrow: 1,
 		},
 
 		listContainer: {
 			width: isMediumScreen ? 350 : isSmallScreen ? 300 : 225,
-			height: 600,
 		},
 
 		content: {
