@@ -20,7 +20,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleSubmit = () => {
-		textInputRef?.current?.focus();
+		// textInputRef?.current?.focus();
 		if (text.trim() === '') return;
 		onSubmit(text.trim());
 		setText('');

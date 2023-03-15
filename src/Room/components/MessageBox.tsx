@@ -57,7 +57,7 @@ export default function MessageBox({
 				scrollEnabled
 				showsVerticalScrollIndicator={true}
 				ref={scrollRef}
-				// inverted
+				inverted
 				disableVirtualization
 				contentContainerStyle={{ padding: 10 }}
 				onEndReached={handleOnEndReached}
