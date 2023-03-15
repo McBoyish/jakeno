@@ -9,6 +9,7 @@ import StyleSheet from 'react-native-media-query';
 import { useTheme } from 'react-native-paper';
 import { Color, Font } from 'types';
 import Button from 'src/common/Button';
+import { isMobile } from 'react-device-detect';
 import { textInput } from 'src/common/css';
 
 interface MessageInputProps {
@@ -25,11 +26,11 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	const { styles, ids } = styleSheet(color, font);
 
 	const handleOnKeyPress = (e: OnKeyPressEvent) => {
-		// if (text.trim() === '') return;
-		// if (e.nativeEvent.key === 'Enter') {
-		// 	textInputRef?.current?.focus();
-		// 	handleOnSubmit();
-		// }
+		if (isMobile) return;
+		if (text.trim() === '') return;
+		if (e.nativeEvent.key === 'Enter') {
+			handleOnSubmit();
+		}
 	};
 
 	const handleOnSubmit = () => {
@@ -38,7 +39,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	};
 
 	const handleOnButtonPress = () => {
-		// textInputRef?.current?.focus();
+		textInputRef?.current?.focus();
 		handleOnSubmit();
 	};
 
