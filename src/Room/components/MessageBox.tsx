@@ -71,6 +71,6 @@ const styleSheet = (color: Color) =>
 			// flexGrow: 1,
 			width: '100%',
 			// height: 1, // hack
-			height: 200,
+			height: '100vh',
 		},
 	});
