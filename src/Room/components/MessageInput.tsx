@@ -27,28 +27,30 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 	};
 
 	return (
-		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<TextInput
-				onChangeText={setText}
-				value={text}
-				placeholder={'Message'}
-				style={styles.textInput}
-				onSubmitEditing={isMobile ? undefined : handleSubmit}
-				blurOnSubmit={false}
-				ref={textInputRef}
-				textContentType={'none'}
-				autoCompleteType={'off'}
-				keyboardType={'default'}
-			/>
-			<Button
-				text={'Send'}
-				disabled={text.trim() === ''}
-				onClick={handleSubmit}
-				containerStyle={styles.button}
-				textStyle={styles.buttonText}
-				disableTouchOpacity
-			/>
-		</View>
+		<form>
+			<View style={styles.container} dataSet={{ media: ids.container }}>
+				<TextInput
+					onChangeText={setText}
+					value={text}
+					placeholder={'Message'}
+					style={styles.textInput}
+					onSubmitEditing={isMobile ? undefined : handleSubmit}
+					blurOnSubmit={false}
+					ref={textInputRef}
+					textContentType={'none'}
+					autoCompleteType={'off'}
+					keyboardType={'default'}
+				/>
+				<Button
+					text={'Send'}
+					disabled={text.trim() === ''}
+					onClick={handleSubmit}
+					containerStyle={styles.button}
+					textStyle={styles.buttonText}
+					disableTouchOpacity
+				/>
+			</View>
+		</form>
 	);
 }
 

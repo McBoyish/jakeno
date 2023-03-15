@@ -46,49 +46,51 @@ export default function LoginForm() {
 	};
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setUsername}
-					value={username}
-					style={[styles.textInput, errorMessage ? styles.error : undefined]}
-					placeholder={'Username'}
-					dataSet={{ media: ids.textInput }}
-					editable={!loading}
-					textContentType={'none'}
-					autoCompleteType={'off'}
-					keyboardType={'default'}
+		<form>
+			<View style={styles.container}>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setUsername}
+						value={username}
+						style={[styles.textInput, errorMessage ? styles.error : undefined]}
+						placeholder={'Username'}
+						dataSet={{ media: ids.textInput }}
+						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
+					/>
+				</View>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setPassword}
+						value={password}
+						style={[styles.textInput, errorMessage ? styles.error : undefined]}
+						placeholder={'Password'}
+						secureTextEntry
+						dataSet={{ media: ids.textInput }}
+						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
+					/>
+				</View>
+				<Button
+					text={errorMessage || 'Login'}
+					disabled={!username || !password || errorMessage !== ''}
+					onClick={handleOnSubmit}
+					loading={loading}
+					containerStyle={styles.button}
+				/>
+				<View style={styles.divider} />
+				<Button
+					text={'Register'}
+					disabled={false}
+					onClick={redirectToRegisterPage}
+					containerStyle={styles.button}
 				/>
 			</View>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setPassword}
-					value={password}
-					style={[styles.textInput, errorMessage ? styles.error : undefined]}
-					placeholder={'Password'}
-					secureTextEntry
-					dataSet={{ media: ids.textInput }}
-					editable={!loading}
-					textContentType={'none'}
-					autoCompleteType={'off'}
-					keyboardType={'default'}
-				/>
-			</View>
-			<Button
-				text={errorMessage || 'Login'}
-				disabled={!username || !password || errorMessage !== ''}
-				onClick={handleOnSubmit}
-				loading={loading}
-				containerStyle={styles.button}
-			/>
-			<View style={styles.divider} />
-			<Button
-				text={'Register'}
-				disabled={false}
-				onClick={redirectToRegisterPage}
-				containerStyle={styles.button}
-			/>
-		</View>
+		</form>
 	);
 }
 

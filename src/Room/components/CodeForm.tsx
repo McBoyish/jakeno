@@ -54,25 +54,27 @@ export default function CodeForm({
 	return (
 		<View style={styles.formContainer}>
 			<Text style={styles.heading}>{'Room is private'}</Text>
-			<View style={styles.inputContainer}>
-				<TextInput
-					onChangeText={setCode}
-					value={code}
-					style={[styles.textInput, errorMsg ? styles.error : undefined]}
-					placeholder={'Enter code'}
-					editable={!loading}
-					textContentType={'none'}
-					autoCompleteType={'off'}
-					keyboardType={'default'}
+			<form>
+				<View style={styles.inputContainer}>
+					<TextInput
+						onChangeText={setCode}
+						value={code}
+						style={[styles.textInput, errorMsg ? styles.error : undefined]}
+						placeholder={'Enter code'}
+						editable={!loading}
+						textContentType={'none'}
+						autoCompleteType={'off'}
+						keyboardType={'default'}
+					/>
+				</View>
+				<Button
+					text={errorMsg || 'Join'}
+					disabled={!code || errorMsg !== ''}
+					onClick={handleOnSubmit}
+					containerStyle={{ width: 225, height: 50 }}
+					loading={loading}
 				/>
-			</View>
-			<Button
-				text={errorMsg || 'Join'}
-				disabled={!code || errorMsg !== ''}
-				onClick={handleOnSubmit}
-				containerStyle={{ width: 225, height: 50 }}
-				loading={loading}
-			/>
+			</form>
 		</View>
 	);
 }

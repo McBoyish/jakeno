@@ -85,65 +85,67 @@ export default function CreateRoomModal() {
 					style={styles.formContainer}
 					dataSet={{ media: ids.formContainer }}
 				>
-					<View style={styles.inputContainer}>
-						<TextInput
-							onChangeText={setRoomName}
-							value={roomName}
-							style={[
-								styles.textInput,
-								!isValidRoomName ? styles.error : undefined,
-								loggedIn ? undefined : { opacity: 0.5 },
-							]}
-							placeholder={'Enter room name'}
-							editable={loggedIn && !loading}
-							dataSet={{ media: ids.textInput }}
-							textContentType={'none'}
-							autoCompleteType={'off'}
-							keyboardType={'default'}
+					<form>
+						<View style={styles.inputContainer}>
+							<TextInput
+								onChangeText={setRoomName}
+								value={roomName}
+								style={[
+									styles.textInput,
+									!isValidRoomName ? styles.error : undefined,
+									loggedIn ? undefined : { opacity: 0.5 },
+								]}
+								placeholder={'Enter room name'}
+								editable={loggedIn && !loading}
+								dataSet={{ media: ids.textInput }}
+								textContentType={'none'}
+								autoCompleteType={'off'}
+								keyboardType={'default'}
+							/>
+						</View>
+						<View style={styles.inputContainer}>
+							<TextInput
+								onChangeText={setCode}
+								value={code}
+								style={[
+									styles.textInput,
+									!isValidCode ? styles.error : undefined,
+									loggedIn ? undefined : { opacity: 0.5 },
+								]}
+								placeholder={'Enter code (optional)'}
+								editable={loggedIn && !loading}
+								dataSet={{ media: ids.textInput }}
+								textContentType={'none'}
+								autoCompleteType={'off'}
+								keyboardType={'default'}
+							/>
+						</View>
+						<View style={styles.inputContainer}>
+							<TextInput
+								onChangeText={setDescription}
+								value={description}
+								multiline
+								style={[
+									styles.descriptionInput,
+									!isValidDescription ? styles.error : undefined,
+									loggedIn ? undefined : { opacity: 0.5 },
+								]}
+								placeholder={'Enter description'}
+								editable={loggedIn && !loading}
+								dataSet={{ media: ids.descriptionInput }}
+								textContentType={'none'}
+								autoCompleteType={'off'}
+								keyboardType={'default'}
+							/>
+						</View>
+						<Button
+							text={errorMsg || 'Create'}
+							disabled={!roomName || !description || errorMsg !== ''}
+							onClick={handleOnSubmit}
+							loading={loading}
+							containerStyle={styles.button}
 						/>
-					</View>
-					<View style={styles.inputContainer}>
-						<TextInput
-							onChangeText={setCode}
-							value={code}
-							style={[
-								styles.textInput,
-								!isValidCode ? styles.error : undefined,
-								loggedIn ? undefined : { opacity: 0.5 },
-							]}
-							placeholder={'Enter code (optional)'}
-							editable={loggedIn && !loading}
-							dataSet={{ media: ids.textInput }}
-							textContentType={'none'}
-							autoCompleteType={'off'}
-							keyboardType={'default'}
-						/>
-					</View>
-					<View style={styles.inputContainer}>
-						<TextInput
-							onChangeText={setDescription}
-							value={description}
-							multiline
-							style={[
-								styles.descriptionInput,
-								!isValidDescription ? styles.error : undefined,
-								loggedIn ? undefined : { opacity: 0.5 },
-							]}
-							placeholder={'Enter description'}
-							editable={loggedIn && !loading}
-							dataSet={{ media: ids.descriptionInput }}
-							textContentType={'none'}
-							autoCompleteType={'off'}
-							keyboardType={'default'}
-						/>
-					</View>
-					<Button
-						text={errorMsg || 'Create'}
-						disabled={!roomName || !description || errorMsg !== ''}
-						onClick={handleOnSubmit}
-						loading={loading}
-						containerStyle={styles.button}
-					/>
+					</form>
 					<View
 						style={styles.formHelperContainer}
 						dataSet={{ media: ids.formHelperContainer }}

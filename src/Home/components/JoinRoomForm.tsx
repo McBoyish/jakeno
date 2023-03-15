@@ -51,34 +51,36 @@ export default function JoinRoomForm() {
 		<View>
 			<Text style={styles.heading}>{'Start chatting!'}</Text>
 			<View style={styles.formContainer}>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setRoomName}
-						value={roomName}
-						style={[styles.textInput, errorMsg ? styles.error : undefined]}
-						placeholder={'Enter room name'}
-						editable={!loading}
-						textContentType={'none'}
-						autoCompleteType={'off'}
-						keyboardType={'default'}
-					/>
-				</View>
-				<Button
-					text={errorMsg || 'Join'}
-					disabled={!roomName || errorMsg !== ''}
-					onClick={handleOnSubmit}
-					containerStyle={{ width: 225, height: 50 }}
-					loading={loading}
-				/>
-				{loggedIn && <View style={{ height: 15 }} />}
-				{loggedIn && (
+				<form>
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setRoomName}
+							value={roomName}
+							style={[styles.textInput, errorMsg ? styles.error : undefined]}
+							placeholder={'Enter room name'}
+							editable={!loading}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
+						/>
+					</View>
 					<Button
-						text={'Create a room'}
-						disabled={!loggedIn}
-						onClick={showModal}
+						text={errorMsg || 'Join'}
+						disabled={!roomName || errorMsg !== ''}
+						onClick={handleOnSubmit}
 						containerStyle={{ width: 225, height: 50 }}
+						loading={loading}
 					/>
-				)}
+					{loggedIn && <View style={{ height: 15 }} />}
+					{loggedIn && (
+						<Button
+							text={'Create a room'}
+							disabled={!loggedIn}
+							onClick={showModal}
+							containerStyle={{ width: 225, height: 50 }}
+						/>
+					)}
+				</form>
 			</View>
 		</View>
 	);

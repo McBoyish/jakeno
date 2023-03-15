@@ -62,82 +62,84 @@ export default function RegisterForm() {
 	return (
 		<View>
 			<Text style={styles.heading}>{'Create an account'}</Text>
-			<View style={styles.formContainer}>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setUsername}
-						value={username}
-						style={[
-							styles.textInput,
-							!isValidUsername ? styles.error : undefined,
-						]}
-						placeholder={'Enter username'}
-						dataSet={{ media: ids.textInput }}
-						editable={!loading}
-						textContentType={'none'}
-						autoCompleteType={'off'}
-						keyboardType={'default'}
+			<form>
+				<View style={styles.formContainer}>
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setUsername}
+							value={username}
+							style={[
+								styles.textInput,
+								!isValidUsername ? styles.error : undefined,
+							]}
+							placeholder={'Enter username'}
+							dataSet={{ media: ids.textInput }}
+							editable={!loading}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
+						/>
+					</View>
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setPassword}
+							value={password}
+							style={[
+								styles.textInput,
+								!isValidPassword ? styles.error : undefined,
+							]}
+							placeholder={'Enter password'}
+							secureTextEntry
+							dataSet={{ media: ids.textInput }}
+							editable={!loading}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
+						/>
+					</View>
+					<View style={styles.inputContainer}>
+						<TextInput
+							onChangeText={setConfirm}
+							value={confirm}
+							style={[
+								styles.textInput,
+								!isValidConfirm ? styles.error : undefined,
+							]}
+							placeholder={'Confirm password'}
+							secureTextEntry
+							dataSet={{ media: ids.textInput }}
+							editable={!loading}
+							textContentType={'none'}
+							autoCompleteType={'off'}
+							keyboardType={'default'}
+						/>
+					</View>
+					<Button
+						text={errorMsg || 'Register'}
+						disabled={!username || !password || !confirm || errorMsg !== ''}
+						onClick={handleOnSubmit}
+						loading={loading}
+						containerStyle={styles.button}
 					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setPassword}
-						value={password}
-						style={[
-							styles.textInput,
-							!isValidPassword ? styles.error : undefined,
-						]}
-						placeholder={'Enter password'}
-						secureTextEntry
-						dataSet={{ media: ids.textInput }}
-						editable={!loading}
-						textContentType={'none'}
-						autoCompleteType={'off'}
-						keyboardType={'default'}
-					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<TextInput
-						onChangeText={setConfirm}
-						value={confirm}
-						style={[
-							styles.textInput,
-							!isValidConfirm ? styles.error : undefined,
-						]}
-						placeholder={'Confirm password'}
-						secureTextEntry
-						dataSet={{ media: ids.textInput }}
-						editable={!loading}
-						textContentType={'none'}
-						autoCompleteType={'off'}
-						keyboardType={'default'}
-					/>
-				</View>
-				<Button
-					text={errorMsg || 'Register'}
-					disabled={!username || !password || !confirm || errorMsg !== ''}
-					onClick={handleOnSubmit}
-					loading={loading}
-					containerStyle={styles.button}
-				/>
-				<View
-					style={styles.formHelperContainer}
-					dataSet={{ media: ids.formHelperContainer }}
-				>
-					<Text
-						style={styles.formHelperText}
-						dataSet={{ media: ids.formHelperText }}
+					<View
+						style={styles.formHelperContainer}
+						dataSet={{ media: ids.formHelperContainer }}
 					>
-						{'Username should be 3-12 numbers/letters'}
-					</Text>
-					<Text
-						style={styles.formHelperText}
-						dataSet={{ media: ids.formHelperText }}
-					>
-						{'Password should be 8-20 numbers/letters'}
-					</Text>
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
+							{'Username should be 3-12 numbers/letters'}
+						</Text>
+						<Text
+							style={styles.formHelperText}
+							dataSet={{ media: ids.formHelperText }}
+						>
+							{'Password should be 8-20 numbers/letters'}
+						</Text>
+					</View>
 				</View>
-			</View>
+			</form>
 		</View>
 	);
 }
