@@ -47,6 +47,7 @@ export default function MessageBox({
 		<KeyboardAvoidingView
 			style={styles.container}
 			dataSet={{ media: ids.container }}
+			behavior={'height'}
 		>
 			<FlatList
 				data={messages}

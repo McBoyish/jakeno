@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MessageBox from './components/MessageBox';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, KeyboardAvoidingView } from 'react-native';
 import { useRouter } from 'next/router';
 import { useTheme } from 'react-native-paper';
 import { InputMessage, Message, Room as Room_, User } from 'types';
@@ -163,7 +163,7 @@ export default function Room() {
 		};
 		socket.emit('message', input, (res: Message | null) => {
 			if (!res) return;
-			// scrollToStart?.();
+			scrollToStart?.();
 			addMessage(res);
 		});
 	};
@@ -220,7 +220,7 @@ export default function Room() {
 
 	if (room && users)
 		return (
-			<ScrollView contentContainerStyle={styles.container}>
+			<View style={styles.container}>
 				<Users
 					users={users}
 					usersVisible={usersVisible}
@@ -234,7 +234,7 @@ export default function Room() {
 					isFetching={isFetching}
 				/>
 				<MessageInput onSubmit={onSubmit} />
-			</ScrollView>
+			</View>
 		);
 
 	return <Loading />;

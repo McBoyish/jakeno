@@ -11,7 +11,7 @@ interface MessageInputProps {
 }
 
 export default function MessageInput({ onSubmit }: MessageInputProps) {
-	const textInputRef = useRef<HTMLInputElement>(null);
+	const textInputRef = useRef<TextInput>(null);
 
 	const [text, setText] = useState('');
 
@@ -27,31 +27,15 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<input
-				value={text}
-				onChange={e => {
-					setText(e.target.value);
-				}}
-				style={styles.textInput}
-				ref={textInputRef}
-				placeholder={'Message'}
-				onKeyPress={e => {
-					if (e.key === 'Enter') {
-						e.preventDefault();
-						handleSubmit();
-					}
-				}}
-				type={'text'}
-			/>
-			{/* <TextInput
+			<TextInput
 				onChangeText={setText}
 				value={text}
 				placeholder={'Message'}
 				style={styles.textInput}
-				onSubmitEditing={isMobile ? undefined : handleSubmit}
+				onSubmitEditing={handleSubmit}
 				blurOnSubmit={false}
 				ref={textInputRef}
-			/> */}
+			/>
 			<Button
 				text={'Send'}
 				disabled={text.trim() === ''}
@@ -76,10 +60,8 @@ const styleSheet = (color: Color, font: Font) =>
 			...textInput,
 			borderTopWidth: 0,
 			fontSize: font.size.secondary,
-			height: 30.5,
+			height: 35,
 			width: '100%',
-			paddingLeft: 10,
-			borderStyle: 'solid',
 		},
 
 		button: {
