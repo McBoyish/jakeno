@@ -21,7 +21,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 		if (text.trim() === '') return;
 		onSubmit(text.trim());
 		setText('');
-		window.scrollTo(0, document.body.scrollHeight);
 	};
 
 	return (
