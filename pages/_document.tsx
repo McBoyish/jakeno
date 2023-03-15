@@ -36,8 +36,8 @@ export default class MyDocument extends Document {
 						rel='stylesheet'
 					/>
 					<meta
-						content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
 						name='viewport'
+						content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'
 					/>
 				</Head>
 				<body style={{ height: '100%' }}>
