@@ -40,6 +40,9 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 					textContentType={'none'}
 					autoCompleteType={'off'}
 					keyboardType={'default'}
+					autoCorrect={false}
+					autoCapitalize={'none'}
+					spellCheck={false}
 				/>
 			</form>
 			<Button
