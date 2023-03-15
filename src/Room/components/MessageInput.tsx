@@ -36,7 +36,10 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				ref={textInputRef}
 				placeholder={'Message'}
 				onKeyPress={e => {
-					if (e.key === 'Enter') handleSubmit();
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						handleSubmit();
+					}
 				}}
 				type={'text'}
 			/>
