@@ -32,7 +32,6 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 				value={text}
 				placeholder={'Message'}
 				style={styles.textInput}
-				blurOnSubmit={false}
 				onSubmitEditing={handleSubmit}
 				ref={textInputRef}
 			/>
