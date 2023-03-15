@@ -28,7 +28,7 @@ export default function MessageInput({ onSubmit }: MessageInputProps) {
 
 	return (
 		<View style={styles.container} dataSet={{ media: ids.container }}>
-			<form style={{ width: '100%' }}>
+			<form style={{ width: '100%' }} onSubmit={e => e.preventDefault()}>
 				<TextInput
 					onChangeText={setText}
 					value={text}
