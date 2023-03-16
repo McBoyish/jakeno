@@ -165,7 +165,7 @@ export default function Room() {
 		scrollToStart?.();
 		socket.emit('message', input, (res: Message | null) => {
 			if (!res) return;
-			// addMessage(res);
+			addMessage(res);
 		});
 	};
 

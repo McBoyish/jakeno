@@ -35,9 +35,7 @@ export default function MessageBox({
 
 	const handleOnEndReached = (info: { distanceFromEnd: number }) => {
 		if (!hasMore || info.distanceFromEnd < 0 || isFetching) return;
-		fetchMore().catch(() => {
-			// ...
-		});
+		fetchMore().catch(() => console.error('error loading more messages'));
 	};
 
 	return (
