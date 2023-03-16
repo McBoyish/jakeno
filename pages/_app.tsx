@@ -11,8 +11,10 @@ function App({ Component, pageProps }: AppProps) {
 		<>
 			<Head>
 				<title>{'Jakeno'}</title>
-				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
-				<meta name='viewport' content='interactive-widget=resizes-content' />
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'
+				/>
 			</Head>
 			<Portal.Host>
 				<PaperProvider theme={theme}>
