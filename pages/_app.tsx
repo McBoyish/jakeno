@@ -13,7 +13,7 @@ function App({ Component, pageProps }: AppProps) {
 				<title>{'Jakeno'}</title>
 				<meta
 					name='viewport'
-					content='width=device-width, initial-scale=1.0, interactive-widget=resizes-content'
+					content='width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content'
 				/>
 			</Head>
 			<Portal.Host>
