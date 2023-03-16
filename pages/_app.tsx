@@ -16,13 +16,13 @@ function App({ Component, pageProps }: AppProps) {
 					content='width=device-width, initial-scale=1.0, maximum-scale=1.0, interactive-widget=resizes-content'
 				/>
 			</Head>
-			<Portal.Host>
-				<PaperProvider theme={theme}>
-					<UserContextProvider>
+			<PaperProvider theme={theme}>
+				<UserContextProvider>
+					<Portal.Host>
 						<Component {...pageProps} />
-					</UserContextProvider>
-				</PaperProvider>
-			</Portal.Host>
+					</Portal.Host>
+				</UserContextProvider>
+			</PaperProvider>
 		</>
 	);
 }
