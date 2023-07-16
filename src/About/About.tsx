@@ -31,7 +31,7 @@ export default function About() {
 					<Text style={styles.subheading}>{'About me'}</Text>
 					<View style={{ height: 10 }} />
 					<Text style={styles.text}>
-						{`I love programming, reading books, tennis and swimming. I have experience in React/React Native and Apollo GraphQL. I developed this website with Expo, Next, Express and MongoDB. During my free time, I enjoy reading about game development concepts and writing small games (you can see some of them on my github).`}
+						{`Hi! I am a computer science graduate that is into software development. I am around junior level in front-end and back-end development, so there is a lot more to learn. I know mostly javascript and node.js (along with frameworks such as react, etc.). I also like to develop small simple games sometimes, using c# and the monogame framework. (you can see them on my github). Aside from that, my hobbies are swimming/diving, tennis, games and anime. I am also self-learning japanese. またね！`}
 					</Text>
 				</View>
 				<View style={styles.separator} />
