@@ -13,10 +13,14 @@
 	<script>
 		function onSubmit() {
 			let value = document.getElementById('code').value;
-			navigator.clipboard.writeText(
-				`https://genshin.hoyoverse.com/en/gift?code=${value}`
-			);
-			alert('Link copied to clipboard');
+			navigator.clipboard
+				.writeText(`https://genshin.hoyoverse.com/en/gift?code=${value}`)
+				.then(() => {
+					alert('Link copied to clipboard');
+				})
+				.catch(() => {
+					alert('An error has occured, please try again');
+				});
 		}
 	</script>
 </html>
