@@ -1,1 +1,22 @@
-<p>Hello world</p>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Genshin code link generator</title>
+	</head>
+
+	<body>
+		<p>Enter code and press button to copy link</p>
+		<input type="text" id="code" value="" />
+		<button onclick="onSubmit()">Copy link</button>
+	</body>
+
+	<script>
+		function onSubmit() {
+			let value = document.getElementById('code').value;
+			navigator.clipboard.writeText(
+				`https://genshin.hoyoverse.com/en/gift?code=${value}`
+			);
+			alert('Link copied to clipboard');
+		}
+	</script>
+</html>
