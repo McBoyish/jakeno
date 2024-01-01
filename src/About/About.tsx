@@ -31,7 +31,7 @@ export default function About() {
 					<Text style={styles.subheading}>{'About me'}</Text>
 					<View style={{ height: 10 }} />
 					<Text style={styles.text}>
-						{`Hi! I am a computer science graduate that is into software development. I have experience in front-end and back-end development. I know javascript, spring bot, node.js, along with front-end frameworks such as react and angular. I also like to develop small games in my free time (you can see them on my github).`}
+						{`Hi! I am a computer science graduate who is into software development. I have experience in front-end and back-end development. I know javascript, spring bot, node.js, along with front-end frameworks such as react and angular. I also like to develop small games in my free time (you can see them on my github).`}
 					</Text>
 				</View>
 				<View style={styles.separator} />
