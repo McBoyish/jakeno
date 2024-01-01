@@ -23,7 +23,7 @@ export async function getStaticProps() {
 		props: {
 			rooms: rooms || [],
 		},
-		revalidate: 60 * 60 * 24 * 7, // every week
+		revalidate: 10, // every 10 seconds
 	};
 }
 
